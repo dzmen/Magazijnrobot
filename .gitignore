@@ -13,4 +13,8 @@ hs_err_pid*
 /TSP-simulator/nbproject/private/
 /ARR-controller/nbproject/private/
 /ASRS-controller/nbproject/private/
+<<<<<<< HEAD
 /BPP-Simuart/BPPsimulator/build/
+=======
+/TSP-simulator/build/
+>>>>>>> origin/master
