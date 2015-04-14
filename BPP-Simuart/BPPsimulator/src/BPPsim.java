@@ -1,3 +1,6 @@
+
+import GUI.Scherm;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,10 +9,12 @@
 
 /**
  *
- * @author Mans
+ * @author Hugo
  */
-public class Doos {
+public class BPPsim {
+    public static void main(String[]args){
+        Scherm screen = new Scherm();
+        screen.setVisible(true);
+    }
     
-    private int size;
-    private Arraylist artikel;      
 }

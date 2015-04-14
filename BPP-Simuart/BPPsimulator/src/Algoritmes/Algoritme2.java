@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package Algoritmes;
 
 /**
  *
- * @author Mans
+ * @author Hugo
  */
-public class Doos {
+public class Algoritme2 {
     
-    private int size;
-    private Arraylist artikel;      
 }
