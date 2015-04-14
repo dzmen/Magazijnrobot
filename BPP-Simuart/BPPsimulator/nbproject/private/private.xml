@@ -3,18 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Hugo/Documents/GitHub/Magazijnrobot/BPP-Simuart/BPPsimulator/src/Artikel.java</file>
-            <file>file:/C:/Users/Hugo/Documents/GitHub/Magazijnrobot/BPP-Simuart/BPPsimulator/src/Doos.java</file>
-            <file>file:/C:/Users/Hugo/Documents/GitHub/Magazijnrobot/BPP-Simuart/BPPsimulator/src/Klant.java</file>
             <file>file:/C:/Users/Hugo/Documents/GitHub/Magazijnrobot/BPP-Simuart/BPPsimulator/src/GUI/Scherm.java</file>
-            <file>file:/C:/Users/Hugo/Documents/GitHub/Magazijnrobot/BPP-Simuart/BPPsimulator/src/Order.java</file>
-            <file>file:/C:/Users/Hugo/Documents/GitHub/Magazijnrobot/BPP-Simuart/BPPsimulator/src/GUI/Tekenpanel.java</file>
+            <file>file:/C:/Users/Hugo/Documents/GitHub/Magazijnrobot/BPP-Simuart/BPPsimulator/src/Customclasses/Order.java</file>
+            <file>file:/C:/Users/Hugo/Documents/GitHub/Magazijnrobot/BPP-Simuart/BPPsimulator/src/Customclasses/BPPsim.java</file>
             <file>file:/C:/Users/Hugo/Documents/GitHub/Magazijnrobot/BPP-Simuart/BPPsimulator/src/Algoritmes/Algoritme3.java</file>
-            <file>file:/C:/Users/Hugo/Documents/GitHub/Magazijnrobot/BPP-Simuart/BPPsimulator/src/bppsimulator/BPPsimulator.java</file>
             <file>file:/C:/Users/Hugo/Documents/GitHub/Magazijnrobot/BPP-Simuart/BPPsimulator/src/Algoritmes/Algoritme2.java</file>
-            <file>file:/C:/Users/Hugo/Documents/GitHub/Magazijnrobot/BPP-Simuart/BPPsimulator/src/GUI/Statscherm.java</file>
             <file>file:/C:/Users/Hugo/Documents/GitHub/Magazijnrobot/BPP-Simuart/BPPsimulator/src/Algoritmes/Algoritme1.java</file>
-            <file>file:/C:/Users/Hugo/Documents/GitHub/Magazijnrobot/BPP-Simuart/BPPsimulator/src/BPPsim.java</file>
+            <file>file:/C:/Users/Hugo/Documents/GitHub/Magazijnrobot/BPP-Simuart/BPPsimulator/src/Algoritmes/AlgoritmeTemplate.java</file>
         </group>
     </open-files>
 </project-private>

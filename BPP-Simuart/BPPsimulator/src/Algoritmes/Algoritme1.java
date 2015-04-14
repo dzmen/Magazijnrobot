@@ -14,9 +14,7 @@ public class Algoritme1 extends AlgoritmeTemplate{
     public Algoritme1(String naam) {
         super(naam);
     }
-    public String getNaam(){
-        return this.naam;
-    }
+
 
     @Override
     public void RunAlgoritme() {

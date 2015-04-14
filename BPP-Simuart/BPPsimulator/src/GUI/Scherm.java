@@ -17,6 +17,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author Hugo
  */
 public class Scherm extends JFrame implements ActionListener {
+    
+    // All objects initialized
 
     private Tekenpanel tekenpaneel;
     private JComboBox selectiemenu;
@@ -30,6 +32,7 @@ public class Scherm extends JFrame implements ActionListener {
     private Algoritme2 alg2 = new Algoritme2("Gretige Algoritme");
     private Algoritme3 alg3 = new Algoritme3("Balans Algoritme");
 
+    @SuppressWarnings("empty-statement")
     public Scherm() {
 
         this.setTitle("BPP-simulator");
@@ -37,8 +40,11 @@ public class Scherm extends JFrame implements ActionListener {
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
-
-        String[] algoritmes = {alg1.getNaam(), "Gretige Algoritme", "Balans Algoritme"};
+        AlgoritmeTemplate[] algs = new AlgoritmeTemplate[3];
+        algs[0] = alg1;
+        algs[1] = alg2;
+        algs[2] = alg3;
+        String[] algoritmes = {alg1.getNaam(), alg2.getNaam(), alg3.getNaam()};
 
         //construct components
         tekenpaneel = new Tekenpanel();
@@ -82,6 +88,7 @@ public class Scherm extends JFrame implements ActionListener {
             System.out.println(a);
             System.out.println("Button pressed");
         }
+        
         // Button "Bestand kiezen"
         if (e.getSource() == xmlSelect) {
             JFileChooser openFile = new JFileChooser();
