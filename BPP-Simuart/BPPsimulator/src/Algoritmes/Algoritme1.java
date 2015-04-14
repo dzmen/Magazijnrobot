@@ -9,6 +9,18 @@ package Algoritmes;
  *
  * @author Hugo
  */
-public class Algoritme1 {
+public class Algoritme1 extends AlgoritmeTemplate{
+
+    public Algoritme1(String naam) {
+        super(naam);
+    }
+    public String getNaam(){
+        return this.naam;
+    }
+
+    @Override
+    public void RunAlgoritme() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
