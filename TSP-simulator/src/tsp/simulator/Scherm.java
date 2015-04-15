@@ -95,8 +95,12 @@ public class Scherm extends JFrame implements ActionListener {
             openFile.setFileFilter(xmlFilter);
             int resultaat = openFile.showOpenDialog(null);
             if (resultaat == openFile.APPROVE_OPTION) {
-                //new XMLReader(openFile.getSelectedFile());
-                bBestand.setText(openFile.getSelectedFile().getName());
+                XMLReader reader = new XMLReader(openFile.getSelectedFile());
+                if (reader.getCompleet()) {
+                    bBestand.setText(openFile.getSelectedFile().getName());
+                } else {
+
+                }
             }
         }
     }
