@@ -11,5 +11,4 @@ package tsp.simulator;
  */
 public abstract class Algoritmes {
 
-    //private Loc loc;
 }
