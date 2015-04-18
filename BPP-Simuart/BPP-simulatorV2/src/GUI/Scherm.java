@@ -36,8 +36,7 @@ public class Scherm extends JFrame implements ActionListener {
         //Graphpanel setup
         tekenpaneel = new Graphpanel();
         tekenpaneel.setBounds(10, 10, 780, 580);
-        tekenpaneel.setBackground(Color.red);
-
+        
         //GenPackages setup
         genPackages = new JButton("Genereer pakketten");
         genPackages.addActionListener(this);
@@ -66,12 +65,15 @@ public class Scherm extends JFrame implements ActionListener {
         this.add(selectAl);
         this.add(execute);
         this.add(avg);
+        
+        this.setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == genPackages) {
             //genereer willekeurige pakketten
+            //
             //activeer sommige knoppen voor eerste gebruik
             selectAl.setEnabled(true);
             execute.setEnabled(true);
