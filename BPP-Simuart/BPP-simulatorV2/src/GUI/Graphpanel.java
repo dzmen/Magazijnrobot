@@ -5,18 +5,12 @@
  */
 package GUI;
 
-import java.awt.Color;
 import javax.swing.JPanel;
 
 /**
  *
  * @author Hugo
  */
-public class Graph extends JPanel{
-
-    public Graph() {
-        this.setBackground(Color.red);
-        this.setBounds(10, 10, 780, 800);
-    }
-
+class Graphpanel extends JPanel{
+    
 }
