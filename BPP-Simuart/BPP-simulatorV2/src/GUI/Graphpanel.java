@@ -5,12 +5,17 @@
  */
 package GUI;
 
+import Items.Doos;
+import Items.Pakket;
+import java.util.ArrayList;
 import javax.swing.JPanel;
 
 /**
  *
  * @author Hugo
  */
-class Graphpanel extends JPanel{
-    
+class Graphpanel extends JPanel {
+
+    private ArrayList<Doos> dozen = new ArrayList();
+    private ArrayList<Pakket> pakketten = new ArrayList();
 }
