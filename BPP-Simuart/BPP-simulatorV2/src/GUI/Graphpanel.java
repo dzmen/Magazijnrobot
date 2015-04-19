@@ -18,15 +18,20 @@ import javax.swing.JPanel;
  *
  * @author Hugo
  */
-public class Graphpanel extends JPanel {
+class Graphpanel extends JPanel {
 
     private ArrayList<Doos> dozen = new ArrayList<Doos>();
     private ArrayList<Pakket> pakketten = new ArrayList<Pakket>();
 
     public Graphpanel() {
+<<<<<<< HEAD
         //setPreferredSize(new Dimension(780, 580));
         //this.setVisible(true);
         //this.setBackground(Color.red);
+=======
+        setPreferredSize(new Dimension(780, 580));
+        this.setVisible(true);
+>>>>>>> parent of deb42f4... iteration
     }
 
     @Override
