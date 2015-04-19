@@ -18,7 +18,7 @@ import javax.swing.JPanel;
  *
  * @author Hugo
  */
-class Graphpanel extends JPanel {
+public class Graphpanel extends JPanel {
 
     private ArrayList<Doos> dozen = new ArrayList<Doos>();
     private ArrayList<Pakket> pakketten = new ArrayList<Pakket>();
@@ -26,6 +26,7 @@ class Graphpanel extends JPanel {
     public Graphpanel() {
         setPreferredSize(new Dimension(780, 580));
         this.setVisible(true);
+        this.setBackground(Color.red);
     }
 
     public void PaintComponent(Graphics g) {

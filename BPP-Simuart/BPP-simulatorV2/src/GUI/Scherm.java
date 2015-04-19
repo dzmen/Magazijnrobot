@@ -22,7 +22,6 @@ import javax.swing.JPanel;
  */
 public class Scherm extends JFrame implements ActionListener {
     
-    private JPanel graphholder;
     private Graphpanel tekenpaneel;
     private JButton genPackages, execute, avg;
     private JComboBox selectAl;
@@ -35,15 +34,11 @@ public class Scherm extends JFrame implements ActionListener {
         this.setTitle("BPP-simulator");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
-        
-        graphholder = new JPanel();
-        graphholder.setBounds(10, 10, 780, 580);
-        graphholder.setLayout(new FlowLayout());
-        
 
         //Graphpanel setup
         tekenpaneel = new Graphpanel();
         tekenpaneel.setVisible(true);
+        tekenpaneel.setBounds(10, 10, 780, 580);
         
         //GenPackages setup
         genPackages = new JButton("Genereer pakketten");
@@ -68,9 +63,7 @@ public class Scherm extends JFrame implements ActionListener {
         avg.setBounds(810, 100, 180, 20);
         avg.setEnabled(false);
 
-        graphholder.add(tekenpaneel);
-        this.add(graphholder);
-        
+        this.add(tekenpaneel);
         this.add(genPackages);
         this.add(selectAl);
         this.add(execute);
