@@ -77,20 +77,33 @@ public class Scherm extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == genPackages) {
             //Verwijder oude pakketten(als die er zijn)
-            tekenpaneel.removePakket();
+            tekenpaneel.removePakketten();
+            //verwijdert alle oude dozen
+            tekenpaneel.removeDozen();
             //Genereer willekeurig aantal pakketten tussen de 5 en 20 stuks
             int b = (int) (Math.random() * 15 + 5);
-            for (int i = 0; i < b ; i++) {
+            for (int i = 0; i < b; i++) {
                 tekenpaneel.addpakket();
             }
-            
-            //Print de verchillende pakketten met de verschillende grotes;
-            int i =1;
-            System.out.println("====");
-            for(Pakket a: tekenpaneel.getPakketten()){
-                System.out.println("PAkket "+i+": "+a.getSize());
-                i++;
+
+            //Versimpeld gretig algoritme om max aantal dozen te berekenen.
+            tekenpaneel.addDoos();
+            Pakket c = new Pakket();
+            c.setSize(1.0);
+            System.out.println("===");
+            double i = 0.0;
+            for (int a = 0; a < tekenpaneel.getPakketten().size(); a++) {
+                
+                if (i + tekenpaneel.getPakketten().get(a).getSize() < 1) {
+
+                    i = i + tekenpaneel.getPakketten().get(a).getSize();
+                } else {
+                    i = 0.0;
+                    tekenpaneel.addDoos();
+                }
+                System.out.println("Pakket " + (a + 1) + ":" + tekenpaneel.getPakketten().get(a).getSize());
             }
+            tekenpaneel.repaint();
             //activeer sommige knoppen voor eerste gebruik
             selectAl.setEnabled(true);
             execute.setEnabled(true);

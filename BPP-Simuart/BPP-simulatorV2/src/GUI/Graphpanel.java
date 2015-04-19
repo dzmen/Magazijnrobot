@@ -32,7 +32,11 @@ public class Graphpanel extends JPanel {
         super.paintComponent(g);
         setBackground(Color.white);
         g.setColor(Color.black);
-        g.drawLine(10, 10, 20, 20);
+        int a =0;
+        for(Doos aa: dozen){
+            g.drawRect(a,10, ((this.getWidth()-10)/dozen.size()), aa.getSize());
+            a = a+((this.getWidth()-10)/dozen.size());
+        }
     }
 
     public void addDoos() {
@@ -42,8 +46,11 @@ public class Graphpanel extends JPanel {
     public void addpakket() {
         pakketten.add(new Pakket());
     }
-    public void removePakket(){
+    public void removePakketten(){
         pakketten.clear();
+    }
+    public void removeDozen(){
+        dozen.clear();
     }
 
     public ArrayList getDozen() {

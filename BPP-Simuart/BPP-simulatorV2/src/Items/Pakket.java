@@ -23,4 +23,7 @@ public class Pakket {
     public double getSize() {
         return this.size;
     }
+    public void setSize(double size){
+        this.size=size;
+    }
 }
