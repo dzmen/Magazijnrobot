@@ -27,9 +27,29 @@ public class Locatie {
         return this.y;
     }
 
+    //Berekent de afstand tot de andere locatie met de stelling van pitagoras
     public double afstandTot(Locatie loc) {
         double xdiff = Math.abs(x - loc.getX());
         double ydiff = Math.abs(y - loc.getY());
         return Math.sqrt(xdiff * xdiff + ydiff * ydiff);
     }
+
+    //De standaard equals functie overschreven om de contains goed te laten verlopen
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Locatie) {
+            return o.hashCode() == hashCode();
+        }
+        return false;
+    }
+
+    //Is blijkbaar nodig als je de equals overschrijft
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 83 * hash + this.x;
+        hash = 83 * hash + this.y;
+        return hash;
+    }
+
 }

@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
+import tsp.simulator.Locatie;
 import tsp.simulator.Order;
 
 /**
@@ -40,8 +41,10 @@ public class TekenPanel extends JPanel {
 
     //Veldgrote is x 700 en y 200
     public void tekenSchappen(Graphics g) {
+        //Bereken de breedte en hoogte van 1 vak
         int breedte = (int) (700 / order.getxVeldGrote());
         int hoogte = (int) (200 / order.getyVeldGrote());
+        //Tekenen de lijnen van de schappen
         for (int i = 0; i < 705; i += breedte) {
             g.setColor(Color.black);
             g.drawLine(i, 0, i, hoogte * order.getyVeldGrote());
@@ -49,6 +52,13 @@ public class TekenPanel extends JPanel {
         for (int i = 0; i < 205; i += hoogte) {
             g.setColor(Color.black);
             g.drawLine(0, i, breedte * order.getxVeldGrote(), i);
+        }
+        //Tekenen van de artikelen
+        for (Locatie loc : order.getArtikelen()) {
+            int xStart = (loc.getX() - 1) * breedte + 1;
+            int yStart = (loc.getY() - 1) * hoogte + 1;
+            g.setColor(Color.orange);
+            g.fillRect(xStart, yStart, breedte - 1, hoogte - 1);
         }
     }
 

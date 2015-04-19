@@ -25,14 +25,19 @@ public class Order {
     }
 
     public void genereerArtikelen() {
+        //Genereer de veld breedte en hoogte
         this.xVeldGrote = randomWaarde(3, 10);
         this.yVeldGrote = randomWaarde(3, 10);
+        //De totaal aantal vakken in het magazijn
         int veldGrote = this.xVeldGrote * this.yVeldGrote;
+        //Random artikelen maken
         int aantalArtikelen = randomWaarde(2, veldGrote - 5);
         for (int i = 0; i < aantalArtikelen; i++) {
-            int x = randomWaarde(0, this.xVeldGrote);
-            int y = randomWaarde(0, this.yVeldGrote);
-            artikelen.add(new Locatie(x, y));
+            int x = randomWaarde(1, this.xVeldGrote);
+            int y = randomWaarde(1, this.yVeldGrote);
+            if (!artikelen.contains(new Locatie(x, y))) {
+                artikelen.add(new Locatie(x, y));
+            }
         }
 
     }
@@ -49,6 +54,7 @@ public class Order {
         return artikelen;
     }
 
+    //Zorgt ervoor dat je een minimaal en maximaal binnen een randomizer kan gebruiken
     private int randomWaarde(int min, int max) {
         int range = (max - min) + 1;
         return (int) (Math.random() * range) + min;
