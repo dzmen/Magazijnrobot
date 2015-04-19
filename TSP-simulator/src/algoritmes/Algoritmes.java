@@ -5,10 +5,24 @@
  */
 package algoritmes;
 
+import java.util.ArrayList;
+import tsp.simulator.Locatie;
+
 /**
  *
  * @author Danny
  */
 public abstract class Algoritmes {
 
+    private ArrayList<Locatie> posities;
+    private ArrayList<Locatie> route;
+    private int berekenTijd;
+
+    public abstract void berekenRoute();
+
+    public abstract ArrayList<Locatie> getRoute();
+
+    public abstract int getBerekenTijd();
+
+    public abstract void setPosities(ArrayList<Locatie> locaties);
 }

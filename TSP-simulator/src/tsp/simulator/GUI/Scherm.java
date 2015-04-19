@@ -60,6 +60,8 @@ public class Scherm extends JFrame implements ActionListener {
         JScrollPane tLogger = new JScrollPane(tLog);
         //De button uitvoeren
         bUitvoeren = new JButton("Uitvoeren");
+        bUitvoeren.addActionListener(this);
+        bUitvoeren.setEnabled(false);
         //De butten order genereren
         bOrder = new JButton("Genereren order");
         bOrder.addActionListener(this);
@@ -106,11 +108,15 @@ public class Scherm extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(bOrder)) {
+            //Maak een nieuwe order
             this.order = new Order();
             this.order.genereerArtikelen();
+            //Geef order weer op veld
             vel.setOrder(order);
             vel.repaint();
+            //Enable overige knoppen na genereren van veld
             dAlgoritme.setEnabled(true);
+            bUitvoeren.setEnabled(true);
             //Log
             tLog.append("breedte van het veld: " + order.getxVeldGrote() + "\n");
             tLog.append("hoogte van het veld: " + order.getyVeldGrote() + "\n");
