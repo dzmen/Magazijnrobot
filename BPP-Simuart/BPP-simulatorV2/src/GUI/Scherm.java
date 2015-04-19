@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import Items.Pakket;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -75,8 +76,21 @@ public class Scherm extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == genPackages) {
-            //genereer willekeurige pakketten
-            //
+            //Verwijder oude pakketten(als die er zijn)
+            tekenpaneel.removePakket();
+            //Genereer willekeurig aantal pakketten tussen de 5 en 20 stuks
+            int b = (int) (Math.random() * 15 + 5);
+            for (int i = 0; i < b ; i++) {
+                tekenpaneel.addpakket();
+            }
+            
+            //Print de verchillende pakketten met de verschillende grotes;
+            int i =1;
+            System.out.println("====");
+            for(Pakket a: tekenpaneel.getPakketten()){
+                System.out.println("PAkket "+i+": "+a.getSize());
+                i++;
+            }
             //activeer sommige knoppen voor eerste gebruik
             selectAl.setEnabled(true);
             execute.setEnabled(true);

@@ -24,9 +24,7 @@ public class Graphpanel extends JPanel {
     private ArrayList<Pakket> pakketten = new ArrayList<Pakket>();
 
     public Graphpanel() {
-        //setPreferredSize(new Dimension(780, 580));
-        //this.setVisible(true);
-        //this.setBackground(Color.red);
+        this.setPreferredSize(new Dimension(780,580));
     }
 
     @Override
@@ -38,18 +36,21 @@ public class Graphpanel extends JPanel {
     }
 
     public void addDoos() {
-        dozen.add(new Doos());
+        dozen.add(new Doos(this.getHeight()-20));
     }
 
     public void addpakket() {
         pakketten.add(new Pakket());
+    }
+    public void removePakket(){
+        pakketten.clear();
     }
 
     public ArrayList getDozen() {
         return this.dozen;
     }
 
-    public ArrayList getPakketten() {
+    public ArrayList<Pakket> getPakketten() {
         return this.pakketten;
     }
 

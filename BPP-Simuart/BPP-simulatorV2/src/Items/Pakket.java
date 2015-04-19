@@ -13,12 +13,11 @@ import static jdk.nashorn.internal.objects.NativeMath.round;
  */
 public class Pakket {
 
-    private double size = -2;
+    private double size;
 
     public Pakket() {
-        while (size < 0.1) {
-            size = round(Math.random(), 1);
-        }
+        int a = (int) (Math.random()*9);
+        size = ((double)a+1)/10;
     }
 
     public double getSize() {

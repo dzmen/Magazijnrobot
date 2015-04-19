@@ -13,8 +13,8 @@ public class Doos {
 
     public int size;
 
-    public Doos() {
-        size = 1;
+    public Doos(int s) {
+        size = s;
     }
 
     public int getSize() {
