@@ -5,10 +5,12 @@
  */
 package tsp.simulator.GUI;
 
-import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
+import tsp.simulator.Order;
 
-public class Scherm extends JFrame {
+public class Scherm extends JFrame implements ActionListener {
 
     private JLabel lGemiddelde;
 
@@ -20,6 +22,7 @@ public class Scherm extends JFrame {
     private JButton bUitvoeren, bOrder;
     private TekenPanel vel;
     private String[] algoritmeItems = {"Volledige enumeratie", "Simpel Gretig algoritme", "Gretig algoritme"};
+    private Order order;
 
     public Scherm() {
         this.setTitle("TSP-Simulator");
@@ -56,6 +59,7 @@ public class Scherm extends JFrame {
         bUitvoeren = new JButton("Uitvoeren");
         //De butten order genereren
         bOrder = new JButton("Genereren order");
+        bOrder.addActionListener(this);
 
         //Items toevoegen aan scherm
         add(tLogger);
@@ -86,7 +90,7 @@ public class Scherm extends JFrame {
         rSimpel.setBounds(465, 325, 100, 25);
         rGretig.setBounds(465, 350, 100, 25);
         lAlgoritme.setBounds(360, 410, 100, 25);
-        vel.setBounds(25, 25, 700, 200);
+        vel.setBounds(25, 25, 703, 203);
         dAlgoritme.setBounds(440, 410, 150, 25);
         bUitvoeren.setBounds(610, 410, 100, 25);
         lGemiddelde.setBounds(560, 275, 100, 25);
@@ -94,5 +98,18 @@ public class Scherm extends JFrame {
         gSimpel.setBounds(560, 325, 100, 25);
         gGretig.setBounds(560, 350, 100, 25);
         bOrder.setBounds(200, 410, 150, 25);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource().equals(bOrder)) {
+            this.order = new Order();
+            this.order.genereerArtikelen();
+            vel.setOrder(order);
+            vel.repaint();
+            System.out.println("order button pressed");
+            System.out.println("breedte: " + order.getxVeldGrote());
+            System.out.println("hoogte: " + order.getyVeldGrote());
+        }
     }
 }
