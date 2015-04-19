@@ -25,11 +25,13 @@ public class Scherm extends JFrame implements ActionListener {
     private Order order;
 
     public Scherm() {
+        //Zet de algemene JFrame instellingen
         this.setTitle("TSP-Simulator");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(750, 480);
         this.setLayout(null);
         this.setResizable(false);
+        this.setLocationRelativeTo(null);
         String[] dAlgoritmeItems = {"Volledige enumeratie", "Simpel Gretig algoritme", "Gretig algoritme"};
 
         //De labels (namen)
@@ -49,6 +51,7 @@ public class Scherm extends JFrame implements ActionListener {
         //De algoritme keuzen
         lAlgoritme = new JLabel("Algoritme:");
         dAlgoritme = new JComboBox(dAlgoritmeItems);
+        dAlgoritme.setEnabled(false);
         //Graphic beeld
         vel = new TekenPanel();
         //Logboek
@@ -107,9 +110,12 @@ public class Scherm extends JFrame implements ActionListener {
             this.order.genereerArtikelen();
             vel.setOrder(order);
             vel.repaint();
-            System.out.println("order button pressed");
-            System.out.println("breedte: " + order.getxVeldGrote());
-            System.out.println("hoogte: " + order.getyVeldGrote());
+            dAlgoritme.setEnabled(true);
+            //Log
+            tLog.append("breedte van het veld: " + order.getxVeldGrote() + "\n");
+            tLog.append("hoogte van het veld: " + order.getyVeldGrote() + "\n");
+            tLog.append("aantal artikelen: " + order.getArtikelen().size() + "\n");
+            tLog.append("Genereren van order is voltooid. Start nu een algoritme.\n");
         }
     }
 }
