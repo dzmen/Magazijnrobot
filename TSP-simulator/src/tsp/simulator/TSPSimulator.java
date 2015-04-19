@@ -5,6 +5,8 @@
  */
 package tsp.simulator;
 
+import tsp.simulator.GUI.Scherm;
+
 /**
  *
  * @author Danny
