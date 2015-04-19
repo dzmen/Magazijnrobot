@@ -7,19 +7,22 @@ package GUI;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  *
  * @author Hugo
  */
 public class Scherm extends JFrame implements ActionListener {
-
+    
+    private JPanel graphholder;
     private Graphpanel tekenpaneel;
     private JButton genPackages, execute, avg;
     private JComboBox selectAl;
@@ -32,10 +35,15 @@ public class Scherm extends JFrame implements ActionListener {
         this.setTitle("BPP-simulator");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
+        
+        graphholder = new JPanel();
+        graphholder.setBounds(10, 10, 780, 580);
+        graphholder.setLayout(new FlowLayout());
+        
 
         //Graphpanel setup
         tekenpaneel = new Graphpanel();
-        tekenpaneel.setBounds(10, 10, 780, 580);
+        tekenpaneel.setVisible(true);
         
         //GenPackages setup
         genPackages = new JButton("Genereer pakketten");
@@ -60,7 +68,9 @@ public class Scherm extends JFrame implements ActionListener {
         avg.setBounds(810, 100, 180, 20);
         avg.setEnabled(false);
 
-        this.add(tekenpaneel);
+        graphholder.add(tekenpaneel);
+        this.add(graphholder);
+        
         this.add(genPackages);
         this.add(selectAl);
         this.add(execute);

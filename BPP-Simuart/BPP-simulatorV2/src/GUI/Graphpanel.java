@@ -8,6 +8,8 @@ package GUI;
 import Items.Doos;
 import Items.Pakket;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import javax.swing.JPanel;
@@ -18,17 +20,17 @@ import javax.swing.JPanel;
  */
 class Graphpanel extends JPanel {
 
-    private ArrayList<Doos> dozen = new ArrayList();
-    private ArrayList<Pakket> pakketten = new ArrayList();
+    private ArrayList<Doos> dozen = new ArrayList<Doos>();
+    private ArrayList<Pakket> pakketten = new ArrayList<Pakket>();
 
     public Graphpanel() {
+        setPreferredSize(new Dimension(780, 580));
         this.setVisible(true);
-
     }
 
     public void PaintComponent(Graphics g) {
         super.paintComponent(g);
-        super.setBackground(Color.WHITE);
+        setBackground(Color.white);
         g.setColor(Color.black);
         g.drawLine(10, 10, 20, 20);
     }
