@@ -17,6 +17,7 @@ import javax.swing.JPanel;
  */
 public class TekenPanel extends JPanel {
 
+    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         setBackground(Color.WHITE);

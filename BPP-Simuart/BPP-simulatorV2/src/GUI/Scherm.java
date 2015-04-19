@@ -21,7 +21,7 @@ import javax.swing.JPanel;
  * @author Hugo
  */
 public class Scherm extends JFrame implements ActionListener {
-    
+
     private Graphpanel tekenpaneel;
     private JButton genPackages, execute, avg;
     private JComboBox selectAl;
@@ -37,9 +37,9 @@ public class Scherm extends JFrame implements ActionListener {
 
         //Graphpanel setup
         tekenpaneel = new Graphpanel();
-        tekenpaneel.setVisible(true);
+        //tekenpaneel.setVisible(true);
         tekenpaneel.setBounds(10, 10, 780, 580);
-        
+
         //GenPackages setup
         genPackages = new JButton("Genereer pakketten");
         genPackages.addActionListener(this);
@@ -68,7 +68,7 @@ public class Scherm extends JFrame implements ActionListener {
         this.add(selectAl);
         this.add(execute);
         this.add(avg);
-        
+
         this.setVisible(true);
     }
 

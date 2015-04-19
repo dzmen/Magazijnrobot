@@ -24,12 +24,13 @@ public class Graphpanel extends JPanel {
     private ArrayList<Pakket> pakketten = new ArrayList<Pakket>();
 
     public Graphpanel() {
-        setPreferredSize(new Dimension(780, 580));
-        this.setVisible(true);
-        this.setBackground(Color.red);
+        //setPreferredSize(new Dimension(780, 580));
+        //this.setVisible(true);
+        //this.setBackground(Color.red);
     }
 
-    public void PaintComponent(Graphics g) {
+    @Override
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
         setBackground(Color.white);
         g.setColor(Color.black);
