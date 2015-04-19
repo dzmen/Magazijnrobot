@@ -26,6 +26,9 @@ public class Scherm extends JFrame implements ActionListener {
 =======
     
     private JPanel graphholder;
+<<<<<<< HEAD
+>>>>>>> parent of deb42f4... iteration
+=======
 >>>>>>> parent of deb42f4... iteration
     private Graphpanel tekenpaneel;
     private JButton genPackages, execute, avg;
@@ -48,10 +51,13 @@ public class Scherm extends JFrame implements ActionListener {
         //Graphpanel setup
         tekenpaneel = new Graphpanel();
 <<<<<<< HEAD
+<<<<<<< HEAD
         //tekenpaneel.setVisible(true);
         tekenpaneel.setBounds(10, 10, 780, 580);
 
 =======
+=======
+>>>>>>> parent of deb42f4... iteration
         tekenpaneel.setVisible(true);
         
 >>>>>>> parent of deb42f4... iteration

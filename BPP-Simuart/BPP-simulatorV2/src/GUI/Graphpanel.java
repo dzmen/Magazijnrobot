@@ -31,6 +31,9 @@ class Graphpanel extends JPanel {
 =======
         setPreferredSize(new Dimension(780, 580));
         this.setVisible(true);
+<<<<<<< HEAD
+>>>>>>> parent of deb42f4... iteration
+=======
 >>>>>>> parent of deb42f4... iteration
     }
 
