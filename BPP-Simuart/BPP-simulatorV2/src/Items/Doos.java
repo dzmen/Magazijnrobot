@@ -5,19 +5,32 @@
  */
 package Items;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Hugo
  */
 public class Doos {
 
-    public int size;
+    private int size;
+    private ArrayList<Pakket> packets;
 
     public Doos(int s) {
         size = s;
+        packets = new ArrayList<Pakket>();
     }
 
     public int getSize() {
         return this.size;
+    }
+    public void addPakket(Pakket a){
+        packets.add(a);
+    }
+    public ArrayList<Pakket> getPakketten(){
+        return this.packets;
+    }
+    public void deletePakketen(){
+        packets.clear();
     }
 }

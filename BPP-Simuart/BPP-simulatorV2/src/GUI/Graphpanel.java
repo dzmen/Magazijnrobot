@@ -24,7 +24,7 @@ public class Graphpanel extends JPanel {
     private ArrayList<Pakket> pakketten = new ArrayList<Pakket>();
 
     public Graphpanel() {
-        this.setPreferredSize(new Dimension(780,580));
+        this.setPreferredSize(new Dimension(780, 580));
     }
 
     @Override
@@ -32,33 +32,51 @@ public class Graphpanel extends JPanel {
         super.paintComponent(g);
         setBackground(Color.white);
         g.setColor(Color.black);
-        int a =5;
-        for(Doos aa: dozen){
-            g.drawRect(a,10, ((this.getWidth()-10)/dozen.size())-5, aa.getSize());
-            a = a+((this.getWidth()-10)/dozen.size());
+        int a = 5;
+        //Tekent elke doos
+        for (Doos aa : dozen) {
+            //breedte van de doos wordt berekend door de grootte van het venster gedeeld door het aantal dozen.
+            int baseW = (int)((this.getWidth() - 10) / dozen.size());
+            //hoogste van de doos is het hoogste van het venster met een marge van 10
+            int baseH = aa.getSize();
+            //de breedte wordt met 5 ingekort, dit om de frames te splitten
+            g.drawRect(a, 10, baseW-5, baseH);
+            
+            int y = aa.getSize();
+            for (Pakket o : aa.getPakketten()) {
+                y = (int) (y - baseH* o.getSize());
+                int xLoc = a+2;
+                g.drawRect(xLoc,y+12, baseW - 9,(int)( baseH *o.getSize()-4));
+            }
+            a = a + ((this.getWidth() - 10) / dozen.size());
         }
     }
 
     public void addDoos() {
-        dozen.add(new Doos(this.getHeight()-20));
+        dozen.add(new Doos(this.getHeight() - 20));
     }
 
     public void addpakket() {
         pakketten.add(new Pakket());
     }
-    public void removePakketten(){
+
+    public void removePakketten() {
         pakketten.clear();
     }
-    public void removeDozen(){
+
+    public void removeDozen() {
         dozen.clear();
     }
 
-    public ArrayList getDozen() {
+    public ArrayList<Doos> getDozen() {
         return this.dozen;
     }
 
     public ArrayList<Pakket> getPakketten() {
         return this.pakketten;
+    }
+    public void SetDozen(ArrayList<Doos> newDozen){
+        this.dozen = newDozen;
     }
 
 }

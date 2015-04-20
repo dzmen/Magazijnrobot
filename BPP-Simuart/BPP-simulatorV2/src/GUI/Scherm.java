@@ -5,6 +5,10 @@
  */
 package GUI;
 
+import Items.Algoritme1;
+import Items.Algoritme2;
+import Items.Algoritme3;
+import Items.Doos;
 import Items.Pakket;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -38,7 +42,6 @@ public class Scherm extends JFrame implements ActionListener {
 
         //Graphpanel setup
         tekenpaneel = new Graphpanel();
-        //tekenpaneel.setVisible(true);
         tekenpaneel.setBounds(10, 10, 780, 580);
 
         //GenPackages setup
@@ -64,6 +67,8 @@ public class Scherm extends JFrame implements ActionListener {
         avg.setBounds(810, 100, 180, 20);
         avg.setEnabled(false);
 
+        //JTextField setup TODO
+        //add all content to scherm
         this.add(tekenpaneel);
         this.add(genPackages);
         this.add(selectAl);
@@ -75,42 +80,57 @@ public class Scherm extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        //Genereer random paketten.
         if (e.getSource() == genPackages) {
-            //Verwijder oude pakketten(als die er zijn)
+            // STAP1: Delete oude data.
             tekenpaneel.removePakketten();
-            //verwijdert alle oude dozen
             tekenpaneel.removeDozen();
-            //Genereer willekeurig aantal pakketten tussen de 5 en 20 stuks
+
+            // STAP2: Genereer willekeurig aantal pakketten (tussend de 5 en 20).
             int b = (int) (Math.random() * 15 + 5);
             for (int i = 0; i < b; i++) {
                 tekenpaneel.addpakket();
             }
-
-            //Versimpeld gretig algoritme om max aantal dozen te berekenen.
-            tekenpaneel.addDoos();
-            Pakket c = new Pakket();
-            c.setSize(1.0);
-            System.out.println("===");
-            double i = 0.0;
-            for (int a = 0; a < tekenpaneel.getPakketten().size(); a++) {
-                
-                if (i + tekenpaneel.getPakketten().get(a).getSize() < 1) {
-
-                    i = i + tekenpaneel.getPakketten().get(a).getSize();
-                } else {
-                    i = 0.0;
-                    tekenpaneel.addDoos();
-                }
-                System.out.println("Pakket " + (a + 1) + ":" + tekenpaneel.getPakketten().get(a).getSize());
+            // print data;
+            System.out.println("======================");
+            for(Pakket a: tekenpaneel.getPakketten()){
+                System.out.println("Pakktet :"+a.getSize());
             }
+
+            // STAP3: Gebruik van versimpeld gretig algoritme om maximum aantal dozen te genereren.
+            //(minimaal 1 doos nodig)
+            tekenpaneel.addDoos();
+            double i = 0.0;
+            for(int a = 0; a<tekenpaneel.getPakketten().size();a++){
+                double u =tekenpaneel.getPakketten().get(a).getSize();
+                if(i+u>1){
+                    tekenpaneel.addDoos();
+                    i = u;
+                } else{
+                    i = i+u;
+                }
+            }
+            
+            // STAP4: Aantal dozen weergeven in Graphpanel.
             tekenpaneel.repaint();
-            //activeer sommige knoppen voor eerste gebruik
+            
+            // STAP5: knoppen aanzetten.
             selectAl.setEnabled(true);
             execute.setEnabled(true);
 
         }
         if (e.getSource() == execute) {
-            System.out.println(selectAl.getSelectedIndex());
+            Algoritme1 alg1 = new Algoritme1();
+            Algoritme2 alg2 = new Algoritme2();
+            Algoritme3 alg3 = new Algoritme3();
+            if(selectAl.getSelectedIndex()==1){
+                for(Doos a: tekenpaneel.getDozen()){
+                    a.deletePakketen();
+                }
+                alg1.runAlgoritme(tekenpaneel.getDozen(), tekenpaneel.getPakketten());
+                tekenpaneel.SetDozen(alg1.getBoxes());
+                tekenpaneel.repaint();
+            }
         }
     }
 
