@@ -32,9 +32,9 @@ public class Graphpanel extends JPanel {
         super.paintComponent(g);
         setBackground(Color.white);
         g.setColor(Color.black);
-        int a =0;
+        int a =5;
         for(Doos aa: dozen){
-            g.drawRect(a,10, ((this.getWidth()-10)/dozen.size()), aa.getSize());
+            g.drawRect(a,10, ((this.getWidth()-10)/dozen.size())-5, aa.getSize());
             a = a+((this.getWidth()-10)/dozen.size());
         }
     }
