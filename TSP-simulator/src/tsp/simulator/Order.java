@@ -18,6 +18,8 @@ public class Order {
 
     private ArrayList<Locatie> artikelen;
 
+    private ArrayList<Locatie> route;
+
     public Order() {
         this.artikelen = new ArrayList<Locatie>();
         this.xVeldGrote = 0;
@@ -52,6 +54,10 @@ public class Order {
 
     public ArrayList<Locatie> getArtikelen() {
         return artikelen;
+    }
+
+    public ArrayList<Locatie> getRoute() {
+        return route;
     }
 
     //Zorgt ervoor dat je een minimaal en maximaal binnen een randomizer kan gebruiken

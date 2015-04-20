@@ -9,6 +9,9 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.geom.Line2D;
 import javax.swing.JPanel;
 import tsp.simulator.Locatie;
 import tsp.simulator.Order;
@@ -27,16 +30,10 @@ public class TekenPanel extends JPanel {
         setBackground(Color.WHITE);
         if (!(order == null)) {
             tekenSchappen(g);
+            if (!(order.getRoute() == null)) {
+                tekenRoute(g);
+            }
         }
-        //g.setColor(Color.BLUE);
-        //g.drawLine(0, 0, 700, 200);
-        //g.drawLine(0, 200, 700, 0);
-        //g.setColor(Color.red);
-        //g.fillOval(20, 20, 120, 120);
-        //g.setColor(Color.black);
-        //Graphics2D g2D = (Graphics2D) g;
-        //g2D.setStroke(new BasicStroke(2F));  // set stroke width of 10
-        //g2D.drawOval(20, 20, 121, 121);
     }
 
     //Veldgrote is x 700 en y 200
@@ -62,7 +59,36 @@ public class TekenPanel extends JPanel {
         }
     }
 
+    //Veldgrote is x 700 en y 200
+    public void tekenRoute(Graphics g) {
+
+    }
+
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    private void tekenPijl(Graphics2D g2, Point boven, Point onder) {
+        double phi = Math.toRadians(40);
+        int barb = 20;
+        //Zet de kleur van de pijl
+        g2.setPaint(Color.black);
+        //Dit zorgt voor een mooie soepele lijn
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        //Teken de rechte lijn
+        g2.draw(new Line2D.Double(onder, boven));
+        double dy = boven.y - onder.y;
+        double dx = boven.x - onder.x;
+        //De hoek berekenen vanaf de lijn
+        double theta = Math.atan2(dy, dx);
+        double x, y, rho = theta + phi;
+        //De schuine lijnen tekenen
+        for (int j = 0; j < 2; j++) {
+            //Bepaal x en y voor schuinelijn
+            x = boven.x - barb * Math.cos(rho);
+            y = boven.y - barb * Math.sin(rho);
+            g2.draw(new Line2D.Double(boven.x, boven.y, x, y));
+            rho = theta - phi;
+        }
     }
 }

@@ -20,9 +20,12 @@ public abstract class Algoritmes {
 
     public abstract void berekenRoute();
 
-    public abstract ArrayList<Locatie> getRoute();
+    public ArrayList<Locatie> getRoute() {
+        return route;
+    }
 
     public abstract int getBerekenTijd();
 
     public abstract void setPosities(ArrayList<Locatie> locaties);
+
 }
