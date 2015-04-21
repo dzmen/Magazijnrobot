@@ -16,6 +16,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -30,6 +31,7 @@ public class Scherm extends JFrame implements ActionListener {
     private Graphpanel tekenpaneel;
     private JButton genPackages, execute, avg;
     private JComboBox selectAl;
+    private ArrayList<Doos> boxTemplate;
 
     public Scherm() {
         // Scherm formaat en standaard instellingen.
@@ -93,44 +95,57 @@ public class Scherm extends JFrame implements ActionListener {
             }
             // print data;
             System.out.println("======================");
-            for(Pakket a: tekenpaneel.getPakketten()){
-                System.out.println("Pakktet :"+a.getSize());
+            for (Pakket a : tekenpaneel.getPakketten()) {
+                System.out.println("Pakktet :" + a.getSize());
             }
 
             // STAP3: Gebruik van versimpeld gretig algoritme om maximum aantal dozen te genereren.
             //(minimaal 1 doos nodig)
             tekenpaneel.addDoos();
             double i = 0.0;
-            for(int a = 0; a<tekenpaneel.getPakketten().size();a++){
-                double u =tekenpaneel.getPakketten().get(a).getSize();
-                if(i+u>1){
+            for (int a = 0; a < tekenpaneel.getPakketten().size(); a++) {
+                double u = tekenpaneel.getPakketten().get(a).getSize();
+                if (i + u > 1) {
                     tekenpaneel.addDoos();
                     i = u;
-                } else{
-                    i = i+u;
+                } else {
+                    i = i + u;
                 }
             }
-            
+            boxTemplate = tekenpaneel.getDozen();
+
             // STAP4: Aantal dozen weergeven in Graphpanel.
             tekenpaneel.repaint();
-            
+
             // STAP5: knoppen aanzetten.
             selectAl.setEnabled(true);
             execute.setEnabled(true);
 
         }
+        // gebruik maken van algoritmes
         if (e.getSource() == execute) {
+            // Maak algoritmes aan voor gebruik.
             Algoritme1 alg1 = new Algoritme1();
             Algoritme2 alg2 = new Algoritme2();
             Algoritme3 alg3 = new Algoritme3();
-            if(selectAl.getSelectedIndex()==1){
-                for(Doos a: tekenpaneel.getDozen()){
-                    a.deletePakketen();
-                }
+            tekenpaneel.SetDozen(boxTemplate);
+            for (Doos a : tekenpaneel.getDozen()) {
+                a.deletePakketen();
+            }
+            if (selectAl.getSelectedIndex() == 1) {
+
                 alg1.runAlgoritme(tekenpaneel.getDozen(), tekenpaneel.getPakketten());
                 tekenpaneel.SetDozen(alg1.getBoxes());
-                tekenpaneel.repaint();
             }
+            if (selectAl.getSelectedIndex() == 0) {
+                alg2.runAlgoritme(tekenpaneel.getDozen(), tekenpaneel.getPakketten());
+                tekenpaneel.SetDozen(alg2.getBoxes());
+            }
+            if (selectAl.getSelectedIndex()==2) {
+                alg3.runAlgoritme(tekenpaneel.getDozen(), tekenpaneel.getPakketten());
+                tekenpaneel.SetDozen(alg3.getBoxes());
+            }
+            tekenpaneel.repaint();
         }
     }
 

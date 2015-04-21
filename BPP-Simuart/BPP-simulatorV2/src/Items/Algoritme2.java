@@ -15,7 +15,13 @@ public class Algoritme2 extends TemplateAlgoritme{
 
     @Override
     public void runAlgoritme(ArrayList<Doos> boxes, ArrayList<Pakket> packets) {
+        int bxSize = boxes.size();
+        int curbx = 0;
+        double boxcnt = 0.0;
+        while(packets.size()>0){
+        }
         //Voer het algoritme uit met gebruik van boxes en packets.
+
         
         //verander de array (zie TemplateAlgoritme
         dozen = boxes;
