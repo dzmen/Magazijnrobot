@@ -15,7 +15,10 @@ public class Algoritme3 extends TemplateAlgoritme{
 
     @Override
     public void runAlgoritme(ArrayList<Doos> boxes, ArrayList<Pakket> packets) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //Voer het algoritme uit met gebruik van boxes en packets.
+        
+        //verander de array (zie TemplateAlgoritme
+        dozen = boxes;
     }
     
 }
