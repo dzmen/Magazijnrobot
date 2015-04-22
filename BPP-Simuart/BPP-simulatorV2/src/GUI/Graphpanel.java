@@ -31,22 +31,32 @@ public class Graphpanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         setBackground(Color.white);
-        g.setColor(Color.black);
+
+        Color[] kleuren = {Color.red, Color.blue, Color.orange, Color.green, Color.pink, Color.yellow, Color.magenta, Color.cyan};
         int a = 5;
+        int color = 0;
+        int colormax = kleuren.length;
         //Tekent elke doos
         for (Doos aa : dozen) {
+            g.setColor(Color.black);
             //breedte van de doos wordt berekend door de grootte van het venster gedeeld door het aantal dozen.
-            int baseW = (int)((this.getWidth() - 10) / dozen.size());
+            int baseW = (int) ((this.getWidth() - 10) / dozen.size());
             //hoogste van de doos is het hoogste van het venster met een marge van 10
             int baseH = aa.getSize();
             //de breedte wordt met 5 ingekort, dit om de frames te splitten
-            g.drawRect(a, 10, baseW-5, baseH);
-            
+            g.drawRect(a, 10, baseW - 5, baseH);
             int y = aa.getSize();
             for (Pakket o : aa.getPakketten()) {
-                y = (int) (y - baseH* o.getSize());
-                int xLoc = a+2;
-                g.drawRect(xLoc,y+12, baseW - 9,(int)( baseH *o.getSize()-4));
+                if (color >= colormax) {
+                    color = 0;
+                }
+                y = (int) (y - baseH * o.getSize());
+                int xLoc = a + 2;
+                g.setColor(Color.black);
+                g.drawRect(xLoc, y + 12, baseW - 9, (int) (baseH * o.getSize() - 4));
+                g.setColor(kleuren[color]);
+                g.fillRect(xLoc + 1, y + 13, baseW - 10, (int) (baseH * o.getSize() - 5));
+                color++;
             }
             a = a + ((this.getWidth() - 10) / dozen.size());
         }
@@ -75,11 +85,13 @@ public class Graphpanel extends JPanel {
     public ArrayList<Pakket> getPakketten() {
         return this.pakketten;
     }
-    public void SetDozen(ArrayList<Doos> newDozen){
+
+    public void SetDozen(ArrayList<Doos> newDozen) {
         this.dozen = newDozen;
     }
-        public void SetPakketten(ArrayList<Pakket> newpacks){
-        this.pakketten =newpacks;
+
+    public void SetPakketten(ArrayList<Pakket> newpacks) {
+        this.pakketten = newpacks;
     }
 
 }
