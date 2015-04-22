@@ -31,6 +31,8 @@ public class Scherm extends JFrame implements ActionListener {
     private Graphpanel tekenpaneel;
     private JButton genPackages, execute, avg;
     private JComboBox selectAl;
+    ArrayList<Pakket> packs;
+    ArrayList<Doos> boxs;
 
     public Scherm() {
         // Scherm formaat en standaard instellingen.
@@ -88,7 +90,7 @@ public class Scherm extends JFrame implements ActionListener {
             tekenpaneel.removeDozen();
 
             // STAP2: Genereer willekeurig aantal pakketten (tussend de 5 en 20).
-            int b = (int) (Math.random() * 5+ 15);
+            int b = (int) (Math.random() * 5 + 15);
             for (int i = 0; i < b; i++) {
                 tekenpaneel.addpakket();
             }
@@ -113,6 +115,8 @@ public class Scherm extends JFrame implements ActionListener {
                     i = i + u;
                 }
             }
+            packs = tekenpaneel.getPakketten();
+            boxs = tekenpaneel.getDozen();
 
             // STAP4: Aantal dozen weergeven in Graphpanel.
             tekenpaneel.repaint();
@@ -123,6 +127,7 @@ public class Scherm extends JFrame implements ActionListener {
 
         }
         // gebruik maken van algoritmes
+        
         if (e.getSource() == execute) {
             // Maak algoritmes aan voor gebruik.
             Algoritme1 alg1 = new Algoritme1();
@@ -130,8 +135,7 @@ public class Scherm extends JFrame implements ActionListener {
             Algoritme3 alg3 = new Algoritme3();
             tekenpaneel.SetDozen(tekenpaneel.getDozen());
             tekenpaneel.SetPakketten(tekenpaneel.getPakketten());
-            ArrayList<Pakket> packs = tekenpaneel.getPakketten();
-            ArrayList<Doos> boxs = tekenpaneel.getDozen();
+
             for (Doos ab : boxs) {
                 ab.deletePakketen();
             }
@@ -139,15 +143,19 @@ public class Scherm extends JFrame implements ActionListener {
 
                 alg1.runAlgoritme(boxs, packs);
                 tekenpaneel.SetDozen(alg1.getBoxes());
+                System.out.println("Algoritme2 uitgevoerd");
             }
             if (selectAl.getSelectedIndex() == 0) {
                 alg2.runAlgoritme(boxs, packs);
                 tekenpaneel.SetDozen(alg2.getBoxes());
+                System.out.println("Algoritme1 uitgevoerd");
             }
-            if (selectAl.getSelectedIndex()==2) {
+            if (selectAl.getSelectedIndex() == 2) {
                 alg3.runAlgoritme(boxs, packs);
                 tekenpaneel.SetDozen(alg3.getBoxes());
+                System.out.println("Algoritme3 uitgevoerd");
             }
+            
             tekenpaneel.repaint();
         }
     }
