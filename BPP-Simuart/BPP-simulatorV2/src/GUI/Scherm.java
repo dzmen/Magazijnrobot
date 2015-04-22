@@ -31,7 +31,6 @@ public class Scherm extends JFrame implements ActionListener {
     private Graphpanel tekenpaneel;
     private JButton genPackages, execute, avg;
     private JComboBox selectAl;
-    private ArrayList<Doos> boxTemplate;
 
     public Scherm() {
         // Scherm formaat en standaard instellingen.
@@ -89,7 +88,7 @@ public class Scherm extends JFrame implements ActionListener {
             tekenpaneel.removeDozen();
 
             // STAP2: Genereer willekeurig aantal pakketten (tussend de 5 en 20).
-            int b = (int) (Math.random() * 15 + 5);
+            int b = (int) (Math.random() * 5+ 15);
             for (int i = 0; i < b; i++) {
                 tekenpaneel.addpakket();
             }
@@ -102,6 +101,8 @@ public class Scherm extends JFrame implements ActionListener {
             // STAP3: Gebruik van versimpeld gretig algoritme om maximum aantal dozen te genereren.
             //(minimaal 1 doos nodig)
             tekenpaneel.addDoos();
+            tekenpaneel.addDoos();
+            tekenpaneel.addDoos();
             double i = 0.0;
             for (int a = 0; a < tekenpaneel.getPakketten().size(); a++) {
                 double u = tekenpaneel.getPakketten().get(a).getSize();
@@ -112,7 +113,6 @@ public class Scherm extends JFrame implements ActionListener {
                     i = i + u;
                 }
             }
-            boxTemplate = tekenpaneel.getDozen();
 
             // STAP4: Aantal dozen weergeven in Graphpanel.
             tekenpaneel.repaint();
@@ -128,21 +128,24 @@ public class Scherm extends JFrame implements ActionListener {
             Algoritme1 alg1 = new Algoritme1();
             Algoritme2 alg2 = new Algoritme2();
             Algoritme3 alg3 = new Algoritme3();
-            tekenpaneel.SetDozen(boxTemplate);
-            for (Doos a : tekenpaneel.getDozen()) {
-                a.deletePakketen();
+            tekenpaneel.SetDozen(tekenpaneel.getDozen());
+            tekenpaneel.SetPakketten(tekenpaneel.getPakketten());
+            ArrayList<Pakket> packs = tekenpaneel.getPakketten();
+            ArrayList<Doos> boxs = tekenpaneel.getDozen();
+            for (Doos ab : boxs) {
+                ab.deletePakketen();
             }
             if (selectAl.getSelectedIndex() == 1) {
 
-                alg1.runAlgoritme(tekenpaneel.getDozen(), tekenpaneel.getPakketten());
+                alg1.runAlgoritme(boxs, packs);
                 tekenpaneel.SetDozen(alg1.getBoxes());
             }
             if (selectAl.getSelectedIndex() == 0) {
-                alg2.runAlgoritme(tekenpaneel.getDozen(), tekenpaneel.getPakketten());
+                alg2.runAlgoritme(boxs, packs);
                 tekenpaneel.SetDozen(alg2.getBoxes());
             }
             if (selectAl.getSelectedIndex()==2) {
-                alg3.runAlgoritme(tekenpaneel.getDozen(), tekenpaneel.getPakketten());
+                alg3.runAlgoritme(boxs, packs);
                 tekenpaneel.SetDozen(alg3.getBoxes());
             }
             tekenpaneel.repaint();

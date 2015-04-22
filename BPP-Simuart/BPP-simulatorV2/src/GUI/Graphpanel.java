@@ -78,5 +78,8 @@ public class Graphpanel extends JPanel {
     public void SetDozen(ArrayList<Doos> newDozen){
         this.dozen = newDozen;
     }
+        public void SetPakketten(ArrayList<Pakket> newpacks){
+        this.pakketten =newpacks;
+    }
 
 }
