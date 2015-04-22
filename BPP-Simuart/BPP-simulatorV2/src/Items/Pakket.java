@@ -16,8 +16,8 @@ public class Pakket {
     private double size;
 
     public Pakket() {
-        int a = (int) (Math.random()*9);
-        size = ((double)a+1)/10;
+        int a = (int) (Math.random()*90);
+        size = ((double)a+1)/100;
     }
 
     public double getSize() {

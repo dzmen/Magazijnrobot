@@ -90,7 +90,7 @@ public class Scherm extends JFrame implements ActionListener {
             tekenpaneel.removeDozen();
 
             // STAP2: Genereer willekeurig aantal pakketten (tussend de 5 en 20).
-            int b = (int) (Math.random() * 5 + 15);
+            int b = (int) (Math.random() * 30 + 20);
             for (int i = 0; i < b; i++) {
                 tekenpaneel.addpakket();
             }
