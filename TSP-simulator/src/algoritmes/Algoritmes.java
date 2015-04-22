@@ -12,20 +12,12 @@ import tsp.simulator.Locatie;
  *
  * @author Danny
  */
-public abstract class Algoritmes {
-
-    private ArrayList<Locatie> posities;
-    private ArrayList<Locatie> route;
-    private int berekenTijd;
+interface Algoritmes {
 
     public abstract void berekenRoute();
 
-    public ArrayList<Locatie> getRoute() {
-        return route;
-    }
+    public ArrayList<Locatie> getRoute();
 
     public abstract int getBerekenTijd();
-
-    public abstract void setPosities(ArrayList<Locatie> locaties);
 
 }

@@ -5,6 +5,7 @@
  */
 package tsp.simulator.GUI;
 
+import algoritmes.Simpel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -122,6 +123,11 @@ public class Scherm extends JFrame implements ActionListener {
             tLog.append("hoogte van het veld: " + order.getyVeldGrote() + "\n");
             tLog.append("aantal artikelen: " + order.getArtikelen().size() + "\n");
             tLog.append("Genereren van order is voltooid. Start nu een algoritme.\n");
+        }
+        if (e.getSource().equals(bUitvoeren)) {
+            order.genereerRoute(dAlgoritme.getSelectedIndex());
+            tLog.append("Generatietijd: " + order.getBerekenTijd());
+            vel.repaint();
         }
     }
 }

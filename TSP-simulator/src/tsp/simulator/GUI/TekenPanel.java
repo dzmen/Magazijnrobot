@@ -5,7 +5,6 @@
  */
 package tsp.simulator.GUI;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -23,6 +22,8 @@ import tsp.simulator.Order;
 public class TekenPanel extends JPanel {
 
     private Order order;
+    private int boxHoogte;
+    private int boxBreedte;
 
     @Override
     public void paintComponent(Graphics g) {
@@ -30,7 +31,7 @@ public class TekenPanel extends JPanel {
         setBackground(Color.WHITE);
         if (!(order == null)) {
             tekenSchappen(g);
-            if (!(order.getRoute() == null)) {
+            if (!order.getRoute().isEmpty()) {
                 tekenRoute(g);
             }
         }
@@ -39,29 +40,51 @@ public class TekenPanel extends JPanel {
     //Veldgrote is x 700 en y 200
     public void tekenSchappen(Graphics g) {
         //Bereken de breedte en hoogte van 1 vak
-        int breedte = (int) (700 / order.getxVeldGrote());
-        int hoogte = (int) (200 / order.getyVeldGrote());
+        boxBreedte = (int) (700 / order.getxVeldGrote());
+        boxHoogte = (int) (200 / order.getyVeldGrote());
         //Tekenen de lijnen van de schappen
-        for (int i = 0; i < 705; i += breedte) {
+        for (int i = 0; i < 705; i += boxBreedte) {
             g.setColor(Color.black);
-            g.drawLine(i, 0, i, hoogte * order.getyVeldGrote());
+            g.drawLine(i, 0, i, boxHoogte * order.getyVeldGrote());
         }
-        for (int i = 0; i < 205; i += hoogte) {
+        for (int i = 0; i < 205; i += boxHoogte) {
             g.setColor(Color.black);
-            g.drawLine(0, i, breedte * order.getxVeldGrote(), i);
+            g.drawLine(0, i, boxBreedte * order.getxVeldGrote(), i);
         }
         //Tekenen van de artikelen
         for (Locatie loc : order.getArtikelen()) {
-            int xStart = (loc.getX() - 1) * breedte + 1;
-            int yStart = (loc.getY() - 1) * hoogte + 1;
+            int xStart = (loc.getX() - 1) * boxBreedte + 1;
+            int yStart = (loc.getY() - 1) * boxHoogte + 1;
             g.setColor(Color.orange);
-            g.fillRect(xStart, yStart, breedte - 1, hoogte - 1);
+            g.fillRect(xStart, yStart, boxBreedte - 1, boxHoogte - 1);
         }
     }
 
     //Veldgrote is x 700 en y 200
     public void tekenRoute(Graphics g) {
-
+        Graphics2D g2d = (Graphics2D) g;
+        Locatie start;
+        Locatie einde;
+        int beginX = 0;
+        int beginY = 200;
+        int eindeX = 0;
+        int eindeY = 0;
+        for (int i = 0; i < order.getRoute().size() - 1; i++) {
+            if (i > 0) {
+                start = order.getRoute().get(i);
+                beginX = ((start.getX() - 1) * boxBreedte) + (boxBreedte / 2) - 5;
+                beginY = ((start.getY() - 1) * boxHoogte) + (boxHoogte / 2) - 5;
+            }
+            einde = order.getRoute().get(i + 1);
+            eindeX = ((einde.getX() - 1) * boxBreedte) + (boxBreedte / 2) + 5;
+            eindeY = ((einde.getY() - 1) * boxHoogte) + (boxHoogte / 2) + 5;
+            Point beginP = new Point(beginX, beginY);
+            Point eindeP = new Point(eindeX, eindeY);
+            tekenPijl(g2d, eindeP, beginP);
+        }
+        Point beginL = new Point(eindeX - 5, eindeY - 5);
+        Point eindeL = new Point(0, 200);
+        tekenPijl(g2d, eindeL, beginL);
     }
 
     public void setOrder(Order order) {
@@ -69,8 +92,8 @@ public class TekenPanel extends JPanel {
     }
 
     private void tekenPijl(Graphics2D g2, Point boven, Point onder) {
-        double phi = Math.toRadians(40);
-        int barb = 20;
+        double phi = Math.toRadians(20);
+        int barb = 15;
         //Zet de kleur van de pijl
         g2.setPaint(Color.black);
         //Dit zorgt voor een mooie soepele lijn
