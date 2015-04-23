@@ -17,6 +17,7 @@ public class Order {
     private int xVeldGrote;
     private int yVeldGrote;
     private int berekenTijd;
+    private int lengte;
 
     private ArrayList<Locatie> artikelen;
 
@@ -25,6 +26,7 @@ public class Order {
     public Order() {
         this.artikelen = new ArrayList<Locatie>();
         this.route = new ArrayList<Locatie>();
+        this.lengte = 0;
         this.berekenTijd = 0;
         this.xVeldGrote = 0;
         this.yVeldGrote = 0;
@@ -32,8 +34,8 @@ public class Order {
 
     public void genereerArtikelen() {
         //Genereer de veld breedte en hoogte
-        this.xVeldGrote = randomWaarde(3, 100);
-        this.yVeldGrote = randomWaarde(3, 100);
+        this.xVeldGrote = randomWaarde(3, 25);
+        this.yVeldGrote = randomWaarde(3, 15);
         //De totaal aantal vakken in het magazijn
         int veldGrote = this.xVeldGrote * this.yVeldGrote;
         //Random artikelen maken
@@ -56,6 +58,7 @@ public class Order {
             simpel.berekenRoute();
             this.route = simpel.getRoute();
             this.berekenTijd = simpel.getBerekenTijd();
+            this.lengte = simpel.getLengte();
         } else if (index == 2) {
 
         }
@@ -64,6 +67,10 @@ public class Order {
 
     public int getBerekenTijd() {
         return this.berekenTijd;
+    }
+
+    public int getLengte() {
+        return this.lengte;
     }
 
     public int getxVeldGrote() {

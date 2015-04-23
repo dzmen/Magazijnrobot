@@ -123,11 +123,15 @@ public class Scherm extends JFrame implements ActionListener {
             tLog.append("hoogte van het veld: " + order.getyVeldGrote() + "\n");
             tLog.append("aantal artikelen: " + order.getArtikelen().size() + "\n");
             tLog.append("Genereren van order is voltooid. Start nu een algoritme.\n");
+            tLog.setCaretPosition(tLog.getDocument().getLength());
         }
         if (e.getSource().equals(bUitvoeren)) {
             order.genereerRoute(dAlgoritme.getSelectedIndex());
-            tLog.append("Generatietijd: " + order.getBerekenTijd());
+            tLog.append("Generatietijd: " + order.getBerekenTijd() + " nanoseconden\n");
+            tLog.append("Afstand: " + order.getLengte() + " schappen waar hij langs gaat\n");
             vel.repaint();
+            tLog.append("Algoritme met succes uitgevoerd! \n");
+            tLog.setCaretPosition(tLog.getDocument().getLength());
         }
     }
 }

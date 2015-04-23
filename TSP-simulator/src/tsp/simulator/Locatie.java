@@ -33,12 +33,10 @@ public class Locatie {
     }
 
     //Berekent de afstand tot de andere locatie met de stelling van pitagoras
-    public double afstandTot(Locatie loc) {
+    public int afstandTot(Locatie loc) {
         int xdiff = Math.abs(x - loc.getX());
         int ydiff = Math.abs(y - loc.getY());
         return xdiff + ydiff;
-
-        //return Math.sqrt(xdiff * xdiff + ydiff * ydiff);
     }
 
     //De standaard equals functie overschreven om de contains goed te laten verlopen

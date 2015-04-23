@@ -17,6 +17,7 @@ public class Simpel implements Algoritmes {
 
     private ArrayList<Locatie> posities;
     private ArrayList<Locatie> route;
+    private int lengte;
     private int maxY;
     private int berekenTijd;
 
@@ -28,35 +29,35 @@ public class Simpel implements Algoritmes {
 
     @Override
     public void berekenRoute() {
-        Long startT = System.currentTimeMillis();
+        Long startT = System.nanoTime();
         Locatie start = new Locatie(1, maxY);
         route.add(start);
         while (posities.size() > 0) {
             Locatie temploc = null;
             int tempafstand = 9999;
-            ArrayList<Integer> afstanden = new ArrayList<Integer>();
             for (Locatie loc : posities) {
-                int afstand = (int) start.afstandTot(loc);
+                int afstand = start.afstandTot(loc);
                 if (afstand < tempafstand) {
                     tempafstand = afstand;
                     temploc = loc;
                 }
             }
+            lengte += tempafstand;
             route.add(temploc);
             posities.remove(temploc);
             start = temploc;
         }
-        for (int i = 0; i < route.size(); i++) {
-            System.out.println("Artikel pos: " + route.get(i).toString());
-        }
-        Long eindT = System.currentTimeMillis();
-        System.out.println(eindT - startT);
-        this.berekenTijd = safeLongToInt(eindT - startT);
+        lengte += start.afstandTot(new Locatie(1, maxY)) + 1;
+        this.berekenTijd = safeLongToInt(System.nanoTime() - startT);
     }
 
     @Override
     public int getBerekenTijd() {
         return this.berekenTijd;
+    }
+
+    public int getLengte() {
+        return this.lengte;
     }
 
     @Override
