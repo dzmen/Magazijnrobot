@@ -20,16 +20,17 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-@XmlType(propOrder={"ordernummer", "klant", "datum", "artikelen", "XMLReader" })
-public class XMLReader{
-    int Ordernummer;
-    String Klant;
-    String Datum;
-     ArrayList [] Artikelen;
-    List <XMLReader>Bestelling;
-    private boolean compleet = false;
 
-    public XMLReader(File bestand) {
+public class XMLReader{
+       private ArrayList<Integer> Artikelen = new ArrayList<Integer>();
+       
+//    List <XMLReader>Bestelling;
+//    File bestand;
+    private boolean compleet = false;
+    
+    public XMLReader(File bestand, Scherm scherm) {
+
+    
         try {
 
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -40,23 +41,32 @@ public class XMLReader{
 
             NodeList nList = doc.getElementsByTagName("bestelling");
 
-            System.out.println("----------------------------");
 
             for (int temp = 0; temp < nList.getLength(); temp++) {
 
                 Node nNode = nList.item(temp);
 
-                System.out.println("\nCurrent Element :" + nNode.getNodeName());
-
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 
                     Element eElement = (Element) nNode;
+                    NodeList artikelNrs = eElement.getElementsByTagName("artikelnr");
+                    for(int i = 0; i < artikelNrs.getLength();){
+                        Artikelen.add(i , Integer.parseInt(artikelNrs.item(i).getTextContent()));
+                        i++;
+                    }
 
-                    System.out.println("Ordernummer: " + eElement.getAttribute("ordernummer"));
-                    System.out.println("klant : " + eElement.getElementsByTagName("klant").item(0).getTextContent());
-                    System.out.println("datum : " + eElement.getElementsByTagName("datum").item(0).getTextContent());
-                    System.out.println("artikelnr : " + eElement.getElementsByTagName("artikelnr").item(1).getTextContent());
-
+                    scherm.printOrder("\nOrdernummer: " + eElement.getElementsByTagName("ordernummer").item(0).getTextContent());
+                    scherm.printOrder("Naam : " + eElement.getElementsByTagName("voornaam").item(0).getTextContent()+ " " + eElement.getElementsByTagName("achternaam").item(0).getTextContent());
+                    scherm.printOrder("Adres: " + eElement.getElementsByTagName("adres").item(0).getTextContent());
+                    scherm.printOrder("Postcode: " + eElement.getElementsByTagName("postcode").item(0).getTextContent());
+                    scherm.printOrder("Plaats : " + eElement.getElementsByTagName("plaats").item(0).getTextContent());
+                    scherm.printOrder("Datum : " + eElement.getElementsByTagName("datum").item(0).getTextContent()+ "\n");
+                    scherm.printOrder("Artikelen:");
+                    for (int i = 0; i < Artikelen.size();){
+                        scherm.printOrder("artikelnr: " + Artikelen.get(i));
+                        i++;
+                    }
+                    compleet = true;
                 }
             }
         } catch (Exception e) {

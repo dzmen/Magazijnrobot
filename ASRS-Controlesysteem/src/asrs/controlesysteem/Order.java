@@ -10,11 +10,11 @@ import javax.xml.bind.annotation.*;
  *
  * @author Quinten
  */
-@XmlRootElement
+
 public class Order {
     XMLReader  Bestelling;
     
-        @XmlElement(name="bestelling")
+        
         public XMLReader  getBestelling(){
                 return Bestelling;
         }
