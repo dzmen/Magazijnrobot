@@ -5,7 +5,7 @@
  */
 package tsp.simulator;
 
-import algoritmes.Simpel;
+import tsp.simulator.algoritmes.Simpel;
 import java.util.ArrayList;
 
 /**

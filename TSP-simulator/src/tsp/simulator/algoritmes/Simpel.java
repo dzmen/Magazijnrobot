@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package algoritmes;
+package tsp.simulator.algoritmes;
 
 import java.util.ArrayList;
 import tsp.simulator.Locatie;
