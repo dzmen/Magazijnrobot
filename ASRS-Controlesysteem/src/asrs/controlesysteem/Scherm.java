@@ -42,9 +42,10 @@ public class Scherm extends JFrame implements ActionListener {
         //set components properties
         jTOrder.setEditable (false);
         jTStatus.setEditable (false);
-        jTOrder.setBorder( new TitledBorder ( new EtchedBorder (), "Bestelling" ) );;
-        tekenpanel.setBorder(new TitledBorder ( new EtchedBorder (), "Route" ) );;
-        jTStatus.setBorder( new TitledBorder ( new EtchedBorder (), "Status" ) );;
+        jTOrder.setBorder( new TitledBorder ( new EtchedBorder (), "Bestelling" ) );
+        tekenpanel.setBorder(new TitledBorder ( new EtchedBorder (), "Route" ) );
+        jTStatus.setBorder( new TitledBorder ( new EtchedBorder (), "Status" ) );
+        scOrder.setBorder(null);
         //adjust size and set layout
         setPreferredSize (new Dimension (980, 660));
         setLayout (null);
@@ -58,9 +59,9 @@ public class Scherm extends JFrame implements ActionListener {
         add (jBbestand);
         
         //set component bounds (only needed by Absolute Positioning)
-        jTStatus.setBounds (10, 315, 275, 275);
+        jTStatus.setBounds (10, 315, 325, 275);
         tekenpanel.setBounds (10, 10 , 910, 275);
-        scOrder.setBounds (300, 315, 275, 275);
+        scOrder.setBounds (350, 315, 325, 275);
         jBInvoeren.setBounds (720, 315, 200, 50);
         jBUitvoeren.setBounds (720, 535 , 200, 50);
         jBbestand.setBounds(720, 375, 200, 25);

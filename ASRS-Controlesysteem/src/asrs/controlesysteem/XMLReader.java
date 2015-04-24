@@ -9,10 +9,12 @@ package asrs.controlesysteem;
  *
  * @author Quinten
  */
-import java.util.List;
-import javax.xml.bind.annotation.*;
 import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Properties;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
@@ -22,10 +24,7 @@ import org.w3c.dom.NodeList;
 
 
 public class XMLReader{
-       private ArrayList<Integer> Artikelen = new ArrayList<Integer>();
-       
-//    List <XMLReader>Bestelling;
-//    File bestand;
+    private ArrayList<Integer> Artikelen = new ArrayList<Integer>();
     private boolean compleet = false;
     
     public XMLReader(File bestand, Scherm scherm) {
@@ -77,5 +76,28 @@ public class XMLReader{
     public boolean getCompleet() {
         return this.compleet;
     }
+//    public Connection getConnection() throws SQLException {
+//
+//    Connection conn = null;
+//    Properties connectionProps = new Properties();
+//    connectionProps.put("user", this.userName);
+//    connectionProps.put("password", this.password);
+//
+//    if (this.dbms.equals("mysql")) {
+//        conn = DriverManager.getConnection(
+//                   "jdbc:" + this.dbms + "://" +
+//                   this.serverName +
+//                   ":" + this.portNumber + "/",
+//                   connectionProps);
+//    } else if (this.dbms.equals("derby")) {
+//        conn = DriverManager.getConnection(
+//                   "jdbc:" + this.dbms + ":" +
+//                   this.dbName +
+//                   ";create=true",
+//                   connectionProps);
+//    }
+//    System.out.println("Connected to database");
+//    return conn;
+//}
 }
 
