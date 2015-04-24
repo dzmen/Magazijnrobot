@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package asrs.controlesysteem;
+package asrs.controlesysteem.GUI;
 
 import java.awt.Color;
 import java.awt.Graphics;

@@ -5,6 +5,8 @@
  */
 package asrs.controlesysteem;
 
+import asrs.controlesysteem.GUI.Scherm;
+
 /**
  *
  * @author Quinten

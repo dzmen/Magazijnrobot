@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package asrs.controlesysteem;
+package asrs.controlesysteem.GUI;
 
 
+import asrs.controlesysteem.XMLReader;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
