@@ -29,6 +29,19 @@ public class BruteForce implements Algoritmes {
         this.route = new ArrayList<Locatie>();
     }
 
+    
+    public int berekenAantPermutaties(int ArrayGrootte){
+        int j = 1;
+        for(int i = 1; i < ArrayGrootte; i ++){
+            j = i * j;
+        }
+        return j;
+    }
+    public ArrayList permute(ArrayList order){
+        
+        
+    }
+    
     @Override
     public void berekenRoute() {
         for (Locatie loc : posities) {
