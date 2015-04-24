@@ -7,6 +7,7 @@ package tsp.simulator;
 
 import tsp.simulator.algoritmes.Simpel;
 import java.util.ArrayList;
+import tsp.simulator.algoritmes.BruteForce;
 
 /**
  *
@@ -52,7 +53,8 @@ public class Order {
 
     public void genereerRoute(int index) {
         if (index == 0) {
-
+            BruteForce bruteforce = new BruteForce(this);
+            bruteforce.berekenRoute();
         } else if (index == 1) {
             Simpel simpel = new Simpel(this);
             simpel.berekenRoute();
