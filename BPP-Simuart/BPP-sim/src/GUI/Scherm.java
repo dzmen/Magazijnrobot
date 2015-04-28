@@ -61,7 +61,7 @@ public class Scherm extends JFrame implements ActionListener {
 
         //Logpanel dimension setup
         tekstpanel = new Logpanel();
-        tekstpanel.setText("Program started");
+        tekstpanel.setText("Programma gestart");
         tekstpanel.setFont(new Font("Arial", Font.PLAIN, ScreenHeight / 35));
         tekstpanel.setBounds(xbound + 5, ybound + boundheight + 5, boundwidth - 10, ScreenHeight - boundheight - 10);
         Scrollscherm = new JScrollPane(tekstpanel);
@@ -129,6 +129,7 @@ public class Scherm extends JFrame implements ActionListener {
                     gemiddelde.setEnabled(true);
                 }
             }
+               tekstpanel.append("\n Pakketten en dozen gegenereerd");
         }
         if (e.getSource() == uitvoeren) {
             long time = System.currentTimeMillis();
@@ -154,6 +155,7 @@ public class Scherm extends JFrame implements ActionListener {
                 Fill a = new Fill();
                 tekenscherm.getOrder().setDozen(a.runAlgorithm(tekenscherm.getOrder().getDozen(), tekenscherm.getOrder().getPakketten()));
             }
+               tekstpanel.append("\n Algoritme uitgevoerd");
             time = System.currentTimeMillis() - time;
             //algoritmes uitvoeren
             for(Doos ab: tekenscherm.getOrder().getDozen()){
