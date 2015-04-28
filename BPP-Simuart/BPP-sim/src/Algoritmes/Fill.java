@@ -16,7 +16,8 @@ import java.util.ArrayList;
 public class Fill extends Template {
 
     @Override
-    public ArrayList<Doos> runAlgorithm(ArrayList<Doos> dozen, ArrayList<Pakket> pakketten) {
+    public ArrayList<Doos> runAlgorithm(ArrayList<Doos> dozen, ArrayList<Pakket> pakket) {
+        ArrayList<Pakket> pakketten = new ArrayList<>(pakket);
         ArrayList<Pakket> fitable = new ArrayList<>();
         ArrayList<Pakket> nonfitable = new ArrayList<>();
         ArrayList<Pakket> newArray = new ArrayList<>();
@@ -39,18 +40,18 @@ public class Fill extends Template {
                     }
                 }
                 newArray.add(fitable.get(currentIndex));
-                content = content+ fitable.get(currentIndex).getSize();
+                content = content + fitable.get(currentIndex).getSize();
                 fitable.remove(currentIndex);
                 pakketten.clear();
                 for (Pakket ac : fitable) {
                     pakketten.add(ac);
                 }
-                for(Pakket af: nonfitable){
+                for (Pakket af : nonfitable) {
                     pakketten.add(af);
                 }
                 fitable.clear();
                 nonfitable.clear();
-             
+
             } else {
                 content = 0;
                 nonfitable.clear();

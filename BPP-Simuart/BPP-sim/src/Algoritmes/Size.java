@@ -16,7 +16,8 @@ import java.util.ArrayList;
 public class Size extends Template {
 
     @Override
-    public ArrayList<Doos> runAlgorithm(ArrayList<Doos> dozen, ArrayList<Pakket> pakketten) {
+    public ArrayList<Doos> runAlgorithm(ArrayList<Doos> dozen, ArrayList<Pakket> pakkett) {
+        ArrayList<Pakket> pakketten = new ArrayList<>(pakkett);
         ArrayList<Pakket> newpacks = new ArrayList<>();
         //sorteert de lijst van klein naar groot;
         while (pakketten.size() > 0) {

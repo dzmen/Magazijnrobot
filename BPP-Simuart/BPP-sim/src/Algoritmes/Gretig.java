@@ -16,7 +16,8 @@ import java.util.ArrayList;
 public class Gretig extends Template {
 
     @Override
-    public ArrayList<Doos> runAlgorithm(ArrayList<Doos> dozen, ArrayList<Pakket> pakketten) {
+    public ArrayList<Doos> runAlgorithm(ArrayList<Doos> dozen, ArrayList<Pakket> pakket) {
+        ArrayList<Pakket> pakketten = new ArrayList<>(pakket);
         this.fillboxes(dozen, pakketten);
         return dozen;
     }

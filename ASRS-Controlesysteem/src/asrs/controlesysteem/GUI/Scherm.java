@@ -59,7 +59,7 @@ public class Scherm extends JFrame implements ActionListener {
 
         //Zet de positie van de items
         jTStatus.setBounds(10, 315, 325, 275);
-        tekenpanel.setBounds(10, 10, 910, 275);
+        tekenpanel.setBounds(10, 10, 910, 270);
         scOrder.setBounds(350, 315, 325, 275);
         jBInvoeren.setBounds(720, 315, 200, 50);
         jBUitvoeren.setBounds(720, 535, 200, 50);
