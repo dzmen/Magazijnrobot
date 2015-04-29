@@ -27,7 +27,6 @@ public class Simpel implements Algoritmes {
         this.route = new ArrayList<Locatie>();
     }
 
-    @Override
     public void berekenRoute() {
         Long startT = System.nanoTime();
         Locatie start = new Locatie(1, maxY);
@@ -55,7 +54,7 @@ public class Simpel implements Algoritmes {
     public int getBerekenTijd() {
         return this.berekenTijd;
     }
-
+    @Override
     public int getLengte() {
         return this.lengte;
     }

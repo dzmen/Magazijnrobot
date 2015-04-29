@@ -14,8 +14,6 @@ import tsp.simulator.Locatie;
  */
 interface Algoritmes {
 
-    public abstract void berekenRoute();
-
     public ArrayList<Locatie> getRoute();
 
     public abstract int getBerekenTijd();

@@ -21,7 +21,6 @@ public class Order {
     private int lengte;
 
     private ArrayList<Locatie> artikelen;
-
     private ArrayList<Locatie> route;
 
     public Order() {
@@ -55,6 +54,9 @@ public class Order {
         if (index == 0) {
             BruteForce bruteforce = new BruteForce(this);
             bruteforce.berekenRoute();
+            this.route = bruteforce.getRoute();
+            this.berekenTijd = bruteforce.getBerekenTijd();
+            this.lengte = bruteforce.getLengte();
         } else if (index == 1) {
             Simpel simpel = new Simpel(this);
             simpel.berekenRoute();
