@@ -5,6 +5,7 @@
  */
 package asrs.controlesysteem.GUI;
 
+import asrs.controlesysteem.readers.SQLReader;
 import asrs.controlesysteem.readers.XMLReader;
 import java.awt.event.*;
 import javax.swing.*;
@@ -77,10 +78,12 @@ public class Scherm extends JFrame implements ActionListener {
             int resultaat = openFile.showOpenDialog(null);
             if (resultaat == openFile.APPROVE_OPTION) {
                 xmlreader = new XMLReader(openFile.getSelectedFile(), this);
-                jTStatus.append(xmlreader.getMelding() + "\n");
+                log(xmlreader.getMelding());
                 if (xmlreader.getCompleet()) {
                     jBbestand.setText("Bestand: " + openFile.getSelectedFile().getName());
                     printOrder(jTOrder);
+                    SQLReader sql = new SQLReader();
+                    log(sql.getMelding());
                 } else {
                     jBbestand.setText("Geen geldig bestand geselecteerd!");
                 }
@@ -103,5 +106,9 @@ public class Scherm extends JFrame implements ActionListener {
             jTOrder.append("artikelnr: " + xmlreader.getArtikelen().get(i) + "\n");
             i++;
         }
+    }
+
+    private void log(String melding) {
+        jTStatus.append(melding + "\n");
     }
 }

@@ -6,30 +6,31 @@
 package tsp.simulator.algoritmes;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import tsp.simulator.Locatie;
 import tsp.simulator.Order;
+import static tsp.simulator.algoritmes.Simpel.safeLongToInt;
 
 /**
  *
  * @author Danny
  */
 public class BruteForce implements Algoritmes {
-
-    private ArrayList<Locatie> posities;
-    private ArrayList<Locatie> route;
-    private int lengte;
+   private ArrayList<Locatie> posities;
+   private ArrayList<Locatie> route;
+   private int betereRoute;
+   private int lengte;
     private int maxY;
     private int berekenTijd;
-
     public BruteForce(Order order) {
         this.posities = new ArrayList<>(order.getArtikelen());
         this.maxY = order.getyVeldGrote();
-        this.route = new ArrayList<Locatie>();
+        this.route = new ArrayList();
     }
 
-    
+    int ArrayGrootte = posities.size();
     public int berekenAantPermutaties(int ArrayGrootte){
         int j = 1;
         for(int i = 1; i < ArrayGrootte; i ++){
@@ -37,31 +38,69 @@ public class BruteForce implements Algoritmes {
         }
         return j;
     }
-    public ArrayList permute(ArrayList order){
-        
-        
+    
+    public ArrayList<Locatie> permute(int n, ArrayList<Locatie> locaties){
+            if(n == 1){
+                return locaties;
+            } else {
+                for(int i = 0; i < n; i++){
+                    permute(n-1, locaties); 
+                    int huidigeRoute = berekenAfstand(locaties);
+                    if(huidigeRoute < betereRoute){
+                        huidigeRoute = betereRoute;
+                        this.route = locaties;
+                    }
+                    int j =0;
+                    if(n%2 == 0){
+                        j=i;
+                    }
+                    int o= n-1;
+                    Collections.swap(locaties, j, o);
+                }
+            }
+        return locaties;
     }
     
-    @Override
+    public int berekenAfstand(ArrayList<Locatie> locaties){
+        int lengte = new Locatie(1, maxY).afstandTot(locaties.get(0));
+        for (int i = 0; i  <locaties.size(); i++) {
+            Locatie start = locaties.get(i);
+            Locatie eind =  locaties.get(i + 1);
+            
+                lengte += start.afstandTot(eind);
+        } 
+        lengte += locaties.get(locaties.size() - 1).afstandTot( new Locatie(1, maxY));
+        return lengte;
+    }
     public void berekenRoute() {
-        for (Locatie loc : posities) {
-            ArrayList<Locatie> mogelijk = new ArrayList<Locatie>(posities);
-            mogelijk.remove(loc);
-            HashMap<Locatie, Integer> afstanden = new HashMap<Locatie, Integer>();
-            for (Locatie loca : mogelijk) {
-                int afstand = loc.afstandTot(loca);
-                afstanden.put(loc, afstand);
+        ArrayList<Locatie> besteRoute = new ArrayList<>(permute(posities.size(), posities));
+        Long startT = System.nanoTime();
+        Locatie start = new Locatie(1, maxY);
+        route.add(start);
+        while (besteRoute.size() > 0) {
+            Locatie temploc = null;
+            int tempafstand = 9999;
+            for (Locatie loc : besteRoute) {
+                int afstand = start.afstandTot(loc);
+                if (afstand < tempafstand) {
+                    tempafstand = afstand;
+                    temploc = loc;
+                }
             }
-            mogelijkheden.put(loc, afstanden);
+            lengte += tempafstand;
+            route.add(temploc);
+            besteRoute.remove(temploc);
+            start = temploc;
         }
-        Iterator iterator = mogelijkheden.entrySet().iterator();
+        lengte += start.afstandTot(new Locatie(1, maxY)) + 1;
+        this.berekenTijd = safeLongToInt(System.nanoTime() - startT);
     }
 
     @Override
     public int getBerekenTijd() {
         return this.berekenTijd;
     }
-
+    @Override
     public int getLengte() {
         return this.lengte;
     }
