@@ -1,11 +1,13 @@
 package asrs.controlesysteem.readers;
 
+import asrs.controlesysteem.Locatie;
 import java.net.MalformedURLException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Properties;
 
 public class SQLReader {
@@ -15,6 +17,11 @@ public class SQLReader {
 
     public SQLReader() {
         this.checkConnection();
+        try {
+            this.getArtikel(5);
+        } catch (Exception ex) {
+
+        }
     }
 
     public String getMelding() {
@@ -103,6 +110,24 @@ public class SQLReader {
             }
         }
         return null;
+    }
+
+    public ArrayList<Object> getArtikel(int nr) throws MalformedURLException, InstantiationException, IllegalAccessException, SQLException {
+        Connection connectionLocal = getConnection();
+        Statement statement = connectionLocal.createStatement();
+        ArrayList<Object> list = new ArrayList<>();
+        statement.setQueryTimeout(10);
+
+        ResultSet rs = statement.executeQuery("SELECT * FROM Artikelen WHERE nummer = " + nr);
+        while (rs.next()) {
+            list.add(rs.getInt("nummer"));//0
+            list.add(rs.getString("naam"));//1
+            list.add(new Locatie(rs.getInt("locx"), rs.getInt("locy")));//2
+            list.add(rs.getInt("grote"));//3
+            list.add(rs.getInt("aantal"));//4
+            System.out.println(list.get(0) + ";" + list.get(1) + ";" + list.get(2) + ";" + list.get(3));
+        }
+        return list;
     }
 
     public ResultSet sqlQuery(String query)

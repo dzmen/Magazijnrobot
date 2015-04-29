@@ -39,7 +39,8 @@ public class Order {
         //De totaal aantal vakken in het magazijn
         int veldGrote = this.xVeldGrote * this.yVeldGrote;
         //Random artikelen maken
-        int aantalArtikelen = randomWaarde(2, veldGrote - 5);
+        //int aantalArtikelen = randomWaarde(2, veldGrote - 5);
+        int aantalArtikelen = 9;
         for (int i = 0; i < aantalArtikelen; i++) {
             int x = randomWaarde(1, this.xVeldGrote);
             int y = randomWaarde(1, this.yVeldGrote);
