@@ -4,7 +4,7 @@
  * KBS major 2 2014/2015
  * Quinten Riphagen
  * Hugo Timmerman
- * Robbing Geerlings
+ * Robbin Geerlings
  * Danny Zwiggelaar
  */
 package bpp.sim;

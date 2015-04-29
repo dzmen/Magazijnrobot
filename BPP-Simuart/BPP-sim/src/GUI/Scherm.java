@@ -11,6 +11,7 @@ import Algoritmes.Numeriek;
 import Algoritmes.Size;
 import bpp.sim.Doos;
 import bpp.sim.Pakket;
+import bpp.sim.Resultaat;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -36,6 +37,8 @@ public class Scherm extends JFrame implements ActionListener {
     private JScrollPane Scrollscherm;
     private JButton genereerPakketten, uitvoeren, gemiddelde;
     private JComboBox selectAlgoritme;
+    private ArrayList<Resultaat> resultaten;
+    Resultaat nieuwste = null;
 
     public Scherm() {
         // width
@@ -60,7 +63,9 @@ public class Scherm extends JFrame implements ActionListener {
         tekenscherm.setBounds(xbound + 5, ybound + 5, boundwidth - 10, boundheight - 10);
 
         //Logpanel dimension setup
+        resultaten = new ArrayList<>();
         tekstpanel = new Logpanel();
+        tekstpanel.setEditable(false);
         tekstpanel.setText("Programma gestart");
         tekstpanel.setFont(new Font("Arial", Font.PLAIN, ScreenHeight / 35));
         tekstpanel.setBounds(xbound + 5, ybound + boundheight + 5, boundwidth - 10, ScreenHeight - boundheight - 10);
@@ -116,6 +121,7 @@ public class Scherm extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        
         if (e.getSource() == genereerPakketten) {
             aangeklikt++;
 
@@ -129,45 +135,85 @@ public class Scherm extends JFrame implements ActionListener {
                     gemiddelde.setEnabled(true);
                 }
             }
-               tekstpanel.append("\n Pakketten en dozen gegenereerd");
+            tekstpanel.append("\nPakketten en dozen zijn gegenereerd");
+            // statusbalk aantal gegenereerde pakketten
+            resultaten.add(new Resultaat(tekenscherm.getOrder().getPakketten()));
+            nieuwste = resultaten.get(resultaten.size() - 1);
+            for (Pakket lijstprint : tekenscherm.getOrder().getPakketten()) {
+             //j  tekstpanel.append("\n" + lijstprint.getSize());
+            }
+
         }
         if (e.getSource() == uitvoeren) {
             long time = System.currentTimeMillis();
+            int time2;
             tekenscherm.getOrder().emptyDozen();
-
+            tekstpanel.append("\nAlgoritme is uitgevoerd\n");
             if (selectAlgoritme.getSelectedIndex() == 0) {
                 //todo first pick algoritme
                 Gretig a = new Gretig();
                 tekenscherm.getOrder().setDozen(a.runAlgorithm(tekenscherm.getOrder().getDozen(), tekenscherm.getOrder().getPakketten()));
+                time2 = (int) (System.currentTimeMillis() - time);
+                tekstpanel.append(nieuwste.updateResult(0, "First Pick", time2, tekenscherm.getOrder().getDozen()));
             }
             if (selectAlgoritme.getSelectedIndex() == 1) {
                 Numeriek a = new Numeriek();
                 //todo numeriek algoritme
                 tekenscherm.getOrder().setDozen(a.runAlgorithm(tekenscherm.getOrder().getDozen(), tekenscherm.getOrder().getPakketten()));
+                time2 = (int) (System.currentTimeMillis() - time);
+                 tekstpanel.append(nieuwste.updateResult(1, "Numeriek", time2, tekenscherm.getOrder().getDozen()));
             }
             if (selectAlgoritme.getSelectedIndex() == 2) {
                 //todo size algoritme
                 Size a = new Size();
                 tekenscherm.getOrder().setDozen(a.runAlgorithm(tekenscherm.getOrder().getDozen(), tekenscherm.getOrder().getPakketten()));
+                time2 = (int) (System.currentTimeMillis() - time);
+                 tekstpanel.append(nieuwste.updateResult(2, "Size", time2, tekenscherm.getOrder().getDozen())) ;
             }
             if (selectAlgoritme.getSelectedIndex() == 3) {
                 //todo fill algoritme
                 Fill a = new Fill();
                 tekenscherm.getOrder().setDozen(a.runAlgorithm(tekenscherm.getOrder().getDozen(), tekenscherm.getOrder().getPakketten()));
+                time2 = (int) (System.currentTimeMillis() - time);
+                tekstpanel.append (nieuwste.updateResult(0, "Fill", time2, tekenscherm.getOrder().getDozen()));
             }
-               tekstpanel.append("\n Algoritme uitgevoerd");
+            
             time = System.currentTimeMillis() - time;
             //algoritmes uitvoeren
-            for(Doos ab: tekenscherm.getOrder().getDozen()){
+            for (Doos ab : tekenscherm.getOrder().getDozen()) {
                 System.out.println("\nDoos");
-                for(Pakket ac: ab.getPakketten()){
-                    System.out.println("- "+ac.getSize());
+                for (Pakket ac : ab.getPakketten()) {
+                    System.out.println("- " + ac.getSize());
                 }
             }
             tekenscherm.repaint();
         }
         if (e.getSource() == gemiddelde) {
-            //Todo getAverage
+            // gemiddelde berekenen
+            tekstpanel.append("\nGemiddelde:");
+            long time = System.currentTimeMillis();
+            int timeTot ;
+            timeTot = (int) (System.currentTimeMillis() + time);
+            int gemtime = 0;
+         //   gemtime = (timeTot + time) / 2;
+        
+             if (selectAlgoritme.getSelectedIndex() == 0) {
+            tekstpanel.append(nieuwste.updateResult(0, "First Pick", gemtime, tekenscherm.getOrder().getDozen()));
+             }
+              if (selectAlgoritme.getSelectedIndex() == 1) {
+            tekstpanel.append(nieuwste.updateResult(1, "Numeriek", gemtime, tekenscherm.getOrder().getDozen()));
+             }
+               if (selectAlgoritme.getSelectedIndex() == 2) {
+            tekstpanel.append(nieuwste.updateResult(2, "Size", gemtime, tekenscherm.getOrder().getDozen()));
+             }
+                if (selectAlgoritme.getSelectedIndex() == 3) {
+            tekstpanel.append(nieuwste.updateResult(3, "Fill", gemtime, tekenscherm.getOrder().getDozen()));
+             }
+            
+           // tijd = results[index][1]
+           // tijd =  tijd + nieuwe tijd / 2
+          
+            
         }
     }
 
