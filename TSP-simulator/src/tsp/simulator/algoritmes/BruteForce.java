@@ -30,7 +30,7 @@ public class BruteForce implements Algoritmes {
         this.route = new ArrayList();
     }
 
-    int ArrayGrootte = posities.size();
+
     public int berekenAantPermutaties(int ArrayGrootte){
         int j = 1;
         for(int i = 1; i < ArrayGrootte; i ++){
@@ -63,11 +63,10 @@ public class BruteForce implements Algoritmes {
     
     public int berekenAfstand(ArrayList<Locatie> locaties){
         int lengte = new Locatie(1, maxY).afstandTot(locaties.get(0));
-        for (int i = 0; i  <locaties.size(); i++) {
+        for (int i = 0; i  <locaties.size() - 1; i++) {
             Locatie start = locaties.get(i);
             Locatie eind =  locaties.get(i + 1);
-            
-                lengte += start.afstandTot(eind);
+            lengte += start.afstandTot(eind);
         } 
         lengte += locaties.get(locaties.size() - 1).afstandTot( new Locatie(1, maxY));
         return lengte;
