@@ -26,7 +26,7 @@ public class Tekenpanel extends JPanel {
         setBackground(Color.WHITE);
         //if (!(order == null)) {
         tekenSchappen(g);
-            //if (!order.getRoute().isEmpty()) {
+        //if (!order.getRoute().isEmpty()) {
         //    tekenRoute(g);
         //}
         //}
@@ -35,14 +35,14 @@ public class Tekenpanel extends JPanel {
     //Veldgrote is x 700 en y 200
     public void tekenSchappen(Graphics g) {
         //Bereken de breedte en hoogte van 1 vak
-        boxBreedte = (int) (900 / 5);
-        boxHoogte = (int) (260 / 5);
+        boxBreedte = (int) (905 / 5);
+        boxHoogte = (int) (265 / 5);
         //Tekenen de lijnen van de schappen
-        for (int i = 0; i < 705; i += boxBreedte) {
+        for (int i = 0; i < 907; i += boxBreedte) {
             g.setColor(Color.black);
             g.drawLine(i, 0, i, boxHoogte * 5);
         }
-        for (int i = 0; i < 205; i += boxHoogte) {
+        for (int i = 0; i < 267; i += boxHoogte) {
             g.setColor(Color.black);
             g.drawLine(0, i, boxBreedte * 5, i);
         }
