@@ -8,22 +8,24 @@ package tsp.simulator;
 import tsp.simulator.algoritmes.Simpel;
 import java.util.ArrayList;
 import tsp.simulator.algoritmes.BruteForce;
+import tsp.simulator.GUI.Scherm;
 
 /**
  *
  * @author Danny
  */
 public class Order {
-
+    private Scherm scherm;
     private int xVeldGrote;
     private int yVeldGrote;
-    private int berekenTijd;
+    private long berekenTijd;
     private int lengte;
 
     private ArrayList<Locatie> artikelen;
     private ArrayList<Locatie> route;
 
-    public Order() {
+    public Order(Scherm scherm) {
+        this.scherm= scherm;
         this.artikelen = new ArrayList<Locatie>();
         this.route = new ArrayList<Locatie>();
         this.lengte = 0;
@@ -39,8 +41,8 @@ public class Order {
         //De totaal aantal vakken in het magazijn
         int veldGrote = this.xVeldGrote * this.yVeldGrote;
         //Random artikelen maken
-        //int aantalArtikelen = randomWaarde(2, veldGrote - 5);
-        int aantalArtikelen = 9;
+        int aantalArtikelen = randomWaarde(2, veldGrote - 5);
+        //int aantalArtikelen = 9;
         for (int i = 0; i < aantalArtikelen; i++) {
             int x = randomWaarde(1, this.xVeldGrote);
             int y = randomWaarde(1, this.yVeldGrote);
@@ -53,7 +55,7 @@ public class Order {
 
     public void genereerRoute(int index) {
         if (index == 0) {
-            BruteForce bruteforce = new BruteForce(this);
+            BruteForce bruteforce = new BruteForce(this, scherm);
             bruteforce.berekenRoute();
             this.route = bruteforce.getRoute();
             this.berekenTijd = bruteforce.getBerekenTijd();
@@ -70,7 +72,7 @@ public class Order {
 
     }
 
-    public int getBerekenTijd() {
+    public long getBerekenTijd() {
         return this.berekenTijd;
     }
 

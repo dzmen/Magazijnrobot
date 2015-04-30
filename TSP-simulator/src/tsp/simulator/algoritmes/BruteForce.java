@@ -9,20 +9,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 import tsp.simulator.Locatie;
 import tsp.simulator.Order;
+import tsp.simulator.GUI.Scherm;
 
 /**
  *
  * @author Danny
  */
 public class BruteForce implements Algoritmes {
-
+    private Scherm scherm;
     private ArrayList<Locatie> posities;
     private ArrayList<Locatie> route;
     private int lengte = 999999999;
     private int maxY;
-    private int berekenTijd;
+    private long berekenTijd;
+    private long g = 0;
 
-    public BruteForce(Order order) {
+    public BruteForce(Order order, Scherm scherm) {
+        this.scherm = scherm;
         this.posities = new ArrayList<>(order.getArtikelen());
         this.maxY = order.getyVeldGrote();
         this.route = new ArrayList<>();
@@ -33,6 +36,7 @@ public class BruteForce implements Algoritmes {
             return route;
         } else {
             for (int i = 0; i < n; i++) {
+                g++;
                 ArrayList<Locatie> newRout = permutatie(n - 1, route);
                 ArrayList<Locatie> newRoute = new ArrayList<>();
                 newRoute.add(new Locatie(1, maxY));
@@ -44,6 +48,8 @@ public class BruteForce implements Algoritmes {
                 if (huidigeRoute < this.lengte) {
                     this.lengte = huidigeRoute;
                     this.route = newRoute;
+                    scherm.tLog.append("Huidige korste afstand: " + huidigeRoute + "\n");
+                    scherm.tLog.append(g + " mogelijkheden berekend. \n");
                 }
                 int j = 0;
                 if (n % 2 == 0) {
@@ -71,11 +77,11 @@ public class BruteForce implements Algoritmes {
     public void berekenRoute() {
         Long startT = System.nanoTime();
         permutatie(posities.size(), posities);
-        //this.berekenTijd = System.nanoTime() - startT);
+        this.berekenTijd = System.nanoTime() - startT;
     }
 
     @Override
-    public int getBerekenTijd() {
+    public long getBerekenTijd() {
         return this.berekenTijd;
     }
 

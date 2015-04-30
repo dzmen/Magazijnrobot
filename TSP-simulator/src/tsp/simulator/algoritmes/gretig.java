@@ -11,17 +11,17 @@ import tsp.simulator.Order;
 
 /**
  *
- * @author Danny
+ * @author Quinten
  */
-public class Simpel implements Algoritmes {
-
+public class gretig implements Algoritmes {
+    private ArrayList <Locatie> vakken;
     private ArrayList<Locatie> posities;
     private ArrayList<Locatie> route;
     private int lengte;
     private int maxY;
     private long berekenTijd;
 
-    public Simpel(Order order) {
+    public gretig(Order order) {
         this.posities = new ArrayList<>(order.getArtikelen());
         this.maxY = order.getyVeldGrote();
         this.route = new ArrayList<Locatie>();

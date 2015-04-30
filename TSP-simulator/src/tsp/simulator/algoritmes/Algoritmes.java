@@ -16,7 +16,7 @@ interface Algoritmes {
 
     public ArrayList<Locatie> getRoute();
 
-    public abstract int getBerekenTijd();
+    public abstract long getBerekenTijd();
 
     public abstract int getLengte();
 

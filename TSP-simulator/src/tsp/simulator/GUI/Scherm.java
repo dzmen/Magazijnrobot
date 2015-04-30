@@ -16,13 +16,13 @@ public class Scherm extends JFrame implements ActionListener {
     private JLabel lGemiddelde;
 
     private JComboBox dAlgoritme;
-    private JTextArea tLog;
+    public JTextArea tLog;
     private JLabel lAlgoritme, lResultaten, lVolledige, lGretig, lSimpel;
     private JLabel rVolledige, rGretig, rSimpel;
     private JLabel gVolledige, gSimpel, gGretig;
     private int iTVolledige = 0, iTSimpel = 0, iTGretig = 0, uVolledige = 0, uSimpel = 0, uGretig = 0, iLVolledige = 0, iLSimpel = 0, iLGretig = 0;
     private JButton bUitvoeren, bOrder;
-    private TekenPanel vel;
+    public TekenPanel vel;
     private String[] algoritmeItems = {"Volledige enumeratie", "Simpel Gretig algoritme", "Gretig algoritme"};
     private Order order;
 
@@ -111,7 +111,7 @@ public class Scherm extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(bOrder)) {
             //Maak een nieuwe order
-            this.order = new Order();
+            this.order = new Order(this);
             this.order.genereerArtikelen();
             //Geef order weer op veld
             vel.setOrder(order);
@@ -137,7 +137,7 @@ public class Scherm extends JFrame implements ActionListener {
         }
     }
 
-    private void setResultaat(int algoritme, int tijd, int lengte) {
+    private void setResultaat(int algoritme, long tijd, int lengte) {
         setGemiddelde(algoritme, tijd, lengte);
         //Zorgt ervoor dat de tijd in miniseconden wordt gerekenend (1.12 ms)
         double deTijd = Math.floor(tijd) / 1000000;
@@ -152,7 +152,7 @@ public class Scherm extends JFrame implements ActionListener {
         }
     }
 
-    private void setGemiddelde(int algoritme, int tijd, int lengte) {
+    private void setGemiddelde(int algoritme, long tijd, int lengte) {
         DecimalFormat df = new DecimalFormat("#.###");
         if (algoritme == 0) {
             this.uVolledige += 1;
