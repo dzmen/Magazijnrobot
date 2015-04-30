@@ -38,6 +38,8 @@ public class Scherm extends JFrame implements ActionListener {
     private JButton genereerPakketten, uitvoeren, gemiddelde;
     private JComboBox selectAlgoritme;
     private ArrayList<Resultaat> resultaten;
+    int Tottime = 0; 
+    int Totdozen = 0;
     Resultaat nieuwste = null;
 
     public Scherm() {
@@ -147,6 +149,9 @@ public class Scherm extends JFrame implements ActionListener {
         if (e.getSource() == uitvoeren) {
             long time = System.currentTimeMillis();
             int time2;
+            int dozen;
+            dozen = 0;
+          //  dozen = tekenscherm.getOrder().getDozen();
             tekenscherm.getOrder().emptyDozen();
             tekstpanel.append("\nAlgoritme is uitgevoerd\n");
             if (selectAlgoritme.getSelectedIndex() == 0) {
@@ -155,6 +160,10 @@ public class Scherm extends JFrame implements ActionListener {
                 tekenscherm.getOrder().setDozen(a.runAlgorithm(tekenscherm.getOrder().getDozen(), tekenscherm.getOrder().getPakketten()));
                 time2 = (int) (System.currentTimeMillis() - time);
                 tekstpanel.append(nieuwste.updateResult(0, "First Pick", time2, tekenscherm.getOrder().getDozen()));
+               
+                    Tottime = Tottime + time2;
+                    Totdozen = Totdozen + dozen;
+
             }
             if (selectAlgoritme.getSelectedIndex() == 1) {
                 Numeriek a = new Numeriek();
@@ -162,6 +171,9 @@ public class Scherm extends JFrame implements ActionListener {
                 tekenscherm.getOrder().setDozen(a.runAlgorithm(tekenscherm.getOrder().getDozen(), tekenscherm.getOrder().getPakketten()));
                 time2 = (int) (System.currentTimeMillis() - time);
                  tekstpanel.append(nieuwste.updateResult(1, "Numeriek", time2, tekenscherm.getOrder().getDozen()));
+                 
+                   Tottime = Tottime + time2;
+                   Totdozen = Totdozen + dozen;
             }
             if (selectAlgoritme.getSelectedIndex() == 2) {
                 //todo size algoritme
@@ -169,6 +181,9 @@ public class Scherm extends JFrame implements ActionListener {
                 tekenscherm.getOrder().setDozen(a.runAlgorithm(tekenscherm.getOrder().getDozen(), tekenscherm.getOrder().getPakketten()));
                 time2 = (int) (System.currentTimeMillis() - time);
                  tekstpanel.append(nieuwste.updateResult(2, "Size", time2, tekenscherm.getOrder().getDozen())) ;
+                 
+                   Tottime = Tottime + time2;
+                   Totdozen = Totdozen + dozen;
             }
             if (selectAlgoritme.getSelectedIndex() == 3) {
                 //todo fill algoritme
@@ -176,9 +191,14 @@ public class Scherm extends JFrame implements ActionListener {
                 tekenscherm.getOrder().setDozen(a.runAlgorithm(tekenscherm.getOrder().getDozen(), tekenscherm.getOrder().getPakketten()));
                 time2 = (int) (System.currentTimeMillis() - time);
                 tekstpanel.append (nieuwste.updateResult(0, "Fill", time2, tekenscherm.getOrder().getDozen()));
+                
+                  Tottime = Tottime + time2;
+                  Totdozen = Totdozen + dozen;
             }
             
             time = System.currentTimeMillis() - time;
+            
+     
             //algoritmes uitvoeren
             for (Doos ab : tekenscherm.getOrder().getDozen()) {
                 System.out.println("\nDoos");
@@ -190,24 +210,28 @@ public class Scherm extends JFrame implements ActionListener {
         }
         if (e.getSource() == gemiddelde) {
             // gemiddelde berekenen
-            tekstpanel.append("\nGemiddelde:");
-            long time = System.currentTimeMillis();
-            int timeTot ;
-            timeTot = (int) (System.currentTimeMillis() + time);
-            int gemtime = 0;
-         //   gemtime = (timeTot + time) / 2;
-        
+               tekstpanel.append("\n-------------\nGemiddelde:");
+               long time = System.currentTimeMillis();
+               int time2;
+               int dozen;
+               dozen = 0;
+               time2 = (int) (System.currentTimeMillis() - time);  
+               time2 = (Tottime + time2 ) / 2;
+               dozen = (Totdozen + dozen) / 2;
+               
+               
+                
              if (selectAlgoritme.getSelectedIndex() == 0) {
-            tekstpanel.append(nieuwste.updateResult(0, "First Pick", gemtime, tekenscherm.getOrder().getDozen()));
+            tekstpanel.append(nieuwste.updateResult(0, "First Pick", time2, tekenscherm.getOrder().getDozen()));
              }
               if (selectAlgoritme.getSelectedIndex() == 1) {
-            tekstpanel.append(nieuwste.updateResult(1, "Numeriek", gemtime, tekenscherm.getOrder().getDozen()));
+            tekstpanel.append(nieuwste.updateResult(1, "Numeriek", time2, tekenscherm.getOrder().getDozen()));
              }
                if (selectAlgoritme.getSelectedIndex() == 2) {
-            tekstpanel.append(nieuwste.updateResult(2, "Size", gemtime, tekenscherm.getOrder().getDozen()));
+            tekstpanel.append(nieuwste.updateResult(2, "Size", time2, tekenscherm.getOrder().getDozen()));
              }
                 if (selectAlgoritme.getSelectedIndex() == 3) {
-            tekstpanel.append(nieuwste.updateResult(3, "Fill", gemtime, tekenscherm.getOrder().getDozen()));
+            tekstpanel.append(nieuwste.updateResult(3, "Fill", time2, tekenscherm.getOrder().getDozen()));
              }
             
            // tijd = results[index][1]
