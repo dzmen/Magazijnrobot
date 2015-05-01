@@ -5,13 +5,13 @@
  */
 package asrs.controlesysteem.GUI;
 
+import asrs.controlesysteem.Order;
 import asrs.controlesysteem.readers.SQLReader;
 import asrs.controlesysteem.readers.XMLReader;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -24,7 +24,7 @@ public class Scherm extends JFrame implements ActionListener {
     private JTextArea jTOrder, jTStatus;
     private JButton jBInvoeren, jBUitvoeren;
     private JLabel jBbestand;
-    private XMLReader xmlreader;
+    private Order order;
 
     public Scherm() {
         //JFrame instellingen
@@ -72,27 +72,29 @@ public class Scherm extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jBInvoeren) {
-            JFileChooser openFile = new JFileChooser();
-            FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter("Order file (*.xml)", "xml");
-            openFile.setFileFilter(xmlFilter);
-            int resultaat = openFile.showOpenDialog(null);
-            if (resultaat == openFile.APPROVE_OPTION) {
-                xmlreader = new XMLReader(openFile.getSelectedFile(), this);
-                log(xmlreader.getMelding());
-                if (xmlreader.getCompleet()) {
-                    jBbestand.setText("Bestand: " + openFile.getSelectedFile().getName());
-                    printOrder(jTOrder);
-                    SQLReader sql = new SQLReader();
-                    log(sql.getMelding());
+            XMLReader xmlreader = new XMLReader();
+            log(xmlreader.getMelding());
+            if (xmlreader.getCompleet()) {
+                jBbestand.setText("Bestand: " + xmlreader.getBestandNaam());
+                printOrder(xmlreader, jTOrder);
+                SQLReader sqlreader = new SQLReader();
+                log(sqlreader.getMelding());
+                if (sqlreader.getWerkt()) {
+                    order = new Order(xmlreader, sqlreader);
                 } else {
-                    jBbestand.setText("Geen geldig bestand geselecteerd!");
+                    jTOrder.setText("");
+                    jBbestand.setText("Er zijn problemen met SQL!");
                 }
+            } else {
+                jTOrder.setText("");
+                jBbestand.setText("Geen geldig bestand geselecteerd!");
             }
         }
+
     }
 
-    //Print de order in een textarea
-    private void printOrder(JTextArea jTOrder) {
+//Print de order in een textarea
+    private void printOrder(XMLReader xmlreader, JTextArea jTOrder) {
         jTOrder.setText("");
         jTOrder.append("Ordernummer: " + xmlreader.getOrdernr() + "\n");
         jTOrder.append("Naam : " + xmlreader.getNaam() + "\n");
@@ -103,7 +105,7 @@ public class Scherm extends JFrame implements ActionListener {
 
         jTOrder.append("Artikelen:\n");
         for (int i = 0; i < xmlreader.getArtikelen().size();) {
-            jTOrder.append("artikelnr: " + xmlreader.getArtikelen().get(i) + "\n");
+            jTOrder.append("nr: " + xmlreader.getArtikelen().get(i) + "\n");
             i++;
         }
     }

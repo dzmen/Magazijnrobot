@@ -24,12 +24,12 @@ public class Tekenpanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         setBackground(Color.WHITE);
-        //if (!(order == null)) {
-        tekenSchappen(g);
-        //if (!order.getRoute().isEmpty()) {
-        //    tekenRoute(g);
-        //}
-        //}
+        if (!(order == null)) {
+            tekenSchappen(g);
+            if (!order.getRoute().isEmpty()) {
+                tekenRoute(g);
+            }
+        }
     }
 
     //Veldgrote is x 700 en y 200
@@ -56,33 +56,32 @@ public class Tekenpanel extends JPanel {
     }
 
     //Veldgrote is x 700 en y 200
-    /*
-     public void tekenRoute(Graphics g) {
-     Graphics2D g2d = (Graphics2D) g;
-     Locatie start;
-     Locatie einde;
-     int beginX = 0;
-     int beginY = 200;
-     int eindeX = 0;
-     int eindeY = 0;
-     for (int i = 0; i < order.getRoute().size() - 1; i++) {
-     if (i > 0) {
-     start = order.getRoute().get(i);
-     beginX = ((start.getX() - 1) * boxBreedte) + (boxBreedte / 2) - 5;
-     beginY = ((start.getY() - 1) * boxHoogte) + (boxHoogte / 2) - 5;
-     }
-     einde = order.getRoute().get(i + 1);
-     eindeX = ((einde.getX() - 1) * boxBreedte) + (boxBreedte / 2) + 5;
-     eindeY = ((einde.getY() - 1) * boxHoogte) + (boxHoogte / 2) + 5;
-     Point beginP = new Point(beginX, beginY);
-     Point eindeP = new Point(eindeX, eindeY);
-     tekenPijl(g2d, eindeP, beginP);
-     }
-     Point beginL = new Point(eindeX - 5, eindeY - 5);
-     Point eindeL = new Point(0, 200);
-     tekenPijl(g2d, eindeL, beginL);
-     }
-     */
+    public void tekenRoute(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        Locatie start;
+        Locatie einde;
+        int beginX = 0;
+        int beginY = 265;
+        int eindeX = 0;
+        int eindeY = 0;
+        for (int i = 0; i < order.getRoute().size() - 1; i++) {
+            if (i > 0) {
+                start = order.getRoute().get(i);
+                beginX = ((start.getX() - 1) * boxBreedte) + (boxBreedte / 2) - 5;
+                beginY = ((start.getY() - 1) * boxHoogte) + (boxHoogte / 2) - 5;
+            }
+            einde = order.getRoute().get(i + 1);
+            eindeX = ((einde.getX() - 1) * boxBreedte) + (boxBreedte / 2) + 5;
+            eindeY = ((einde.getY() - 1) * boxHoogte) + (boxHoogte / 2) + 5;
+            Point beginP = new Point(beginX, beginY);
+            Point eindeP = new Point(eindeX, eindeY);
+            tekenPijl(g2d, eindeP, beginP);
+        }
+        Point beginL = new Point(eindeX - 5, eindeY - 5);
+        Point eindeL = new Point(0, 200);
+        tekenPijl(g2d, eindeL, beginL);
+    }
+
     public void setOrder(Order order) {
         this.order = order;
     }

@@ -14,14 +14,14 @@ public class SQLReader {
 
     private Connection connection;
     private String melding;
+    private boolean werkt = false;
 
     public SQLReader() {
-        this.checkConnection();
-        try {
-            this.getArtikel(5);
-        } catch (Exception ex) {
+        werkt = this.checkConnection();
+    }
 
-        }
+    public boolean getWerkt() {
+        return this.werkt;
     }
 
     public String getMelding() {
@@ -31,10 +31,13 @@ public class SQLReader {
     private void openConnection()
             throws MalformedURLException, InstantiationException, IllegalAccessException {
         try {
+            //Pak de mysql driver
             Class.forName("com.mysql.jdbc.Driver");
+            //Genereer een virtual propertie bestand met username en password van database
             Properties properties = new Properties();
             properties.setProperty("user", "knf01");
             properties.setProperty("password", "P@ssword");
+            //Maak verbinding met de database
             this.connection = DriverManager.getConnection("jdbc:mysql://db4free.net/knf01", properties);
         } catch (ClassNotFoundException exception) {
             this.melding = "De Mysql driver onbreekt op de computer";
@@ -45,6 +48,7 @@ public class SQLReader {
         }
     }
 
+    //Controlleerd of de verbinding nog steeds werkt
     public boolean checkConnection() {
         if (this.connection == null) {
             try {
@@ -67,6 +71,7 @@ public class SQLReader {
         return false;
     }
 
+    //Sluit de verbinding
     public void closeConnection() {
         try {
             if (this.connection != null) {
@@ -77,6 +82,7 @@ public class SQLReader {
         }
     }
 
+    //Krijg een mysqlverbinding. Hij kijkt eerst of er nog een verbinding open is. Is dat niet het geval dan opent hij er één
     public Connection getConnection()
             throws MalformedURLException, InstantiationException, IllegalAccessException {
         if (this.connection == null) {
@@ -87,6 +93,7 @@ public class SQLReader {
             if (this.connection.isClosed()) {
                 openConnection();
             }
+            //Controle of de verbinding werkt
             Statement statement = this.connection.createStatement();
             statement.setQueryTimeout(5);
             ResultSet result = statement.executeQuery("SELECT 1");
@@ -96,6 +103,7 @@ public class SQLReader {
             openConnection();
             return this.connection;
         } catch (SQLException exception) {
+            //Nog een keer proberen ook al deed de verbinding het eerst niet
             try {
                 openConnection();
 
@@ -112,22 +120,49 @@ public class SQLReader {
         return null;
     }
 
-    public ArrayList<Object> getArtikel(int nr) throws MalformedURLException, InstantiationException, IllegalAccessException, SQLException {
-        Connection connectionLocal = getConnection();
-        Statement statement = connectionLocal.createStatement();
+    //Krijg een artikel uit een database
+    public ArrayList<Object> getArtikel(int nr) {
         ArrayList<Object> list = new ArrayList<>();
-        statement.setQueryTimeout(10);
-
-        ResultSet rs = statement.executeQuery("SELECT * FROM Artikelen WHERE nummer = " + nr);
-        while (rs.next()) {
-            list.add(rs.getInt("nummer"));//0
-            list.add(rs.getString("naam"));//1
-            list.add(new Locatie(rs.getInt("locx"), rs.getInt("locy")));//2
-            list.add(rs.getInt("grote"));//3
-            list.add(rs.getInt("aantal"));//4
-            System.out.println(list.get(0) + ";" + list.get(1) + ";" + list.get(2) + ";" + list.get(3));
+        try {
+            ResultSet rs = sqlQuery("SELECT * FROM Artikelen WHERE nummer = " + nr);
+            while (rs.next()) {
+                list.add(rs.getInt("nummer"));//0
+                list.add(rs.getString("naam"));//1
+                list.add(new Locatie(rs.getInt("locx"), rs.getInt("locy")));//2
+                list.add(rs.getInt("grote"));//3
+                list.add(rs.getInt("aantal"));//4
+            }
+            return list;
+        } catch (Exception ex) {
+            return null;
         }
-        return list;
+    }
+
+    //Krijg atributen uit een artikel array
+    public String getArtikelNaam(ArrayList<Object> artikel) {
+        return (String) artikel.get(1);
+    }
+
+    public Locatie getArtikelLocatie(ArrayList<Object> artikel) {
+        return (Locatie) artikel.get(2);
+    }
+
+    public int getArtikelGrote(ArrayList<Object> artikel) {
+        return (int) artikel.get(3);
+    }
+
+    public int getArtikelAantal(ArrayList<Object> artikel) {
+        return (int) artikel.get(4);
+    }
+
+    //Zorgt ervoor dat wanneer er een artikel uit het schap is gehaald, de database aantal wordt aangepast
+    public boolean updateArtikelAantal(int artikelnr) {
+        try {
+            updateQuery("UPDATE Artikelen set aantal = aantal - 1 where nummer = " + artikelnr);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     public ResultSet sqlQuery(String query)
@@ -137,9 +172,7 @@ public class SQLReader {
             return null;
         }
         Statement statement = connectionLocal.createStatement();
-
         statement.setQueryTimeout(10);
-
         return statement.executeQuery(query);
     }
 

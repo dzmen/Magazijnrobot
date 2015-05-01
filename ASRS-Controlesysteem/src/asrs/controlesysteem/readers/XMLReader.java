@@ -9,9 +9,10 @@ package asrs.controlesysteem.readers;
  *
  * @author Quinten
  */
-import asrs.controlesysteem.GUI.Scherm;
 import java.io.File;
 import java.util.ArrayList;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
@@ -21,10 +22,27 @@ import org.xml.sax.SAXParseException;
 public class XMLReader {
 
     private ArrayList<Integer> Artikelen = new ArrayList<Integer>();
+    private File bestand;
     private String ordernr, naam, adres, postcode, plaats, datum, melding;
     private boolean compleet = false;
 
-    public XMLReader(File bestand, Scherm scherm) {
+    public XMLReader() {
+        //Genereer een popup om een bestand te selecteren
+        JFileChooser openFile = new JFileChooser();
+        FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter("Order file (*.xml)", "xml");
+        //Zorgt ervoor dat alleen xml of * geselecteerd kan worden
+        openFile.setFileFilter(xmlFilter);
+        int resultaat = openFile.showOpenDialog(null);
+        //Kijkt of er een bestand is geopend of dat er op cancel gedrukt is
+        if (resultaat == openFile.APPROVE_OPTION) {
+            this.bestand = openFile.getSelectedFile();
+            read();
+        } else {
+            this.melding = "Geen bestand geselecteerd!";
+        }
+    }
+
+    private void read() {
         try {
             //Maakt een object van de xml file
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -92,5 +110,9 @@ public class XMLReader {
 
     public String getMelding() {
         return this.melding;
+    }
+
+    public String getBestandNaam() {
+        return this.bestand.getName();
     }
 }
