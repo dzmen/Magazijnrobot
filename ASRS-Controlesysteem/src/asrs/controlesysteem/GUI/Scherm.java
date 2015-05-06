@@ -5,7 +5,8 @@
  */
 package asrs.controlesysteem.GUI;
 
-import asrs.controlesysteem.Order;
+import asrs.controlesysteem.bestelling.Artikel;
+import asrs.controlesysteem.bestelling.Order;
 import asrs.controlesysteem.readers.SQLReader;
 import asrs.controlesysteem.readers.XMLReader;
 import java.awt.event.*;
@@ -22,6 +23,7 @@ public class Scherm extends JFrame implements ActionListener {
     private JScrollPane scOrder;
     private Tekenpanel tekenpanel;
     private JTextArea jTOrder, jTStatus;
+    private JScrollPane jSStatus;
     private JButton jBInvoeren, jBUitvoeren;
     private JLabel jBbestand;
     private Order order;
@@ -49,17 +51,18 @@ public class Scherm extends JFrame implements ActionListener {
         jTOrder.setBorder(new TitledBorder(new EtchedBorder(), "Bestelling"));
         jTStatus.setBorder(new TitledBorder(new EtchedBorder(), "Status"));
         scOrder.setBorder(null);
+        jSStatus = new JScrollPane(jTStatus);
 
         //Voeg items toe aan scherm
         add(scOrder);
         add(tekenpanel);
-        add(jTStatus);
+        add(jSStatus);
         add(jBInvoeren);
         add(jBUitvoeren);
         add(jBbestand);
 
         //Zet de positie van de items
-        jTStatus.setBounds(10, 315, 325, 275);
+        jSStatus.setBounds(10, 315, 325, 275);
         tekenpanel.setBounds(10, 10, 910, 270);
         scOrder.setBounds(350, 315, 325, 275);
         jBInvoeren.setBounds(720, 315, 200, 50);
@@ -73,6 +76,7 @@ public class Scherm extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jBInvoeren) {
             XMLReader xmlreader = new XMLReader();
+            log("=========================================");
             log(xmlreader.getMelding());
             if (xmlreader.getCompleet()) {
                 jBbestand.setText("Bestand: " + xmlreader.getBestandNaam());
@@ -81,6 +85,11 @@ public class Scherm extends JFrame implements ActionListener {
                 log(sqlreader.getMelding());
                 if (sqlreader.getWerkt()) {
                     order = new Order(xmlreader, sqlreader);
+                    if (order.getNietBeschikbaar().size() > 0) {
+                        log("Er zijn een aantal niet beschikbare artikelen in de order.\nDeze zullen niet opgehaald worden!");
+                    }
+                    tekenpanel.setOrder(order);
+                    tekenpanel.repaint();
                 } else {
                     jTOrder.setText("");
                     jBbestand.setText("Er zijn problemen met SQL!");
@@ -103,14 +112,19 @@ public class Scherm extends JFrame implements ActionListener {
         jTOrder.append("Plaats : " + xmlreader.getPlaats() + "\n");
         jTOrder.append("Datum : " + xmlreader.getDatum() + "\n\n");
 
-        jTOrder.append("Artikelen:\n");
-        for (int i = 0; i < xmlreader.getArtikelen().size();) {
-            jTOrder.append("nr: " + xmlreader.getArtikelen().get(i) + "\n");
-            i++;
+        jTOrder.append("Beschikbare artikelen:\n");
+        for (Artikel art : order.getArtikelen()) {
+            jTOrder.append("nr: " + art.getArtikelNr() + "\n");
+        }
+
+        jTOrder.append("\nNiet beschikbare artikelen:\n");
+        for (Artikel art : order.getNietBeschikbaar()) {
+            jTOrder.append("nr: " + art.getArtikelNr() + "\n");
         }
     }
 
     private void log(String melding) {
         jTStatus.append(melding + "\n");
+        jTStatus.setCaretPosition(jTStatus.getDocument().getLength());
     }
 }

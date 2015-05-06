@@ -1,7 +1,8 @@
 package asrs.controlesysteem.GUI;
 
-import asrs.controlesysteem.Locatie;
-import asrs.controlesysteem.Order;
+import asrs.controlesysteem.bestelling.Artikel;
+import asrs.controlesysteem.bestelling.Locatie;
+import asrs.controlesysteem.bestelling.Order;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -24,8 +25,9 @@ public class Tekenpanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         setBackground(Color.WHITE);
+        tekenSchappen(g);
         if (!(order == null)) {
-            tekenSchappen(g);
+            tekenArtikelen(g);
             if (!order.getRoute().isEmpty()) {
                 tekenRoute(g);
             }
@@ -35,24 +37,28 @@ public class Tekenpanel extends JPanel {
     //Veldgrote is x 700 en y 200
     public void tekenSchappen(Graphics g) {
         //Bereken de breedte en hoogte van 1 vak
-        boxBreedte = (int) (905 / 5);
-        boxHoogte = (int) (265 / 5);
+        boxBreedte = (int) (907 / 5);
+        boxHoogte = (int) (267 / 5);
         //Tekenen de lijnen van de schappen
-        for (int i = 0; i < 907; i += boxBreedte) {
+        for (int i = 0; i < 909; i += boxBreedte) {
             g.setColor(Color.black);
             g.drawLine(i, 0, i, boxHoogte * 5);
         }
-        for (int i = 0; i < 267; i += boxHoogte) {
+        for (int i = 0; i < 269; i += boxHoogte) {
             g.setColor(Color.black);
             g.drawLine(0, i, boxBreedte * 5, i);
         }
-        //Tekenen van de artikelen
-        //for (Locatie loc : order.getArtikelen()) {
-        //    int xStart = (loc.getX() - 1) * boxBreedte + 1;
-        //    int yStart = (loc.getY() - 1) * boxHoogte + 1;
-        //    g.setColor(Color.orange);
-        //    g.fillRect(xStart, yStart, boxBreedte - 1, boxHoogte - 1);
-        //}
+    }
+
+    //Tekenen van de artikelen
+    public void tekenArtikelen(Graphics g) {
+        for (Artikel artikel : order.getArtikelen()) {
+            Locatie loc = artikel.getLocatie();
+            int xStart = (loc.getX() - 1) * boxBreedte + 1;
+            int yStart = (loc.getY() - 1) * boxHoogte + 1;
+            g.setColor(Color.orange);
+            g.fillRect(xStart, yStart, boxBreedte - 1, boxHoogte - 1);
+        }
     }
 
     //Veldgrote is x 700 en y 200

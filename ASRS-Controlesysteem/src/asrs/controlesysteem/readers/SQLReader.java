@@ -1,6 +1,6 @@
 package asrs.controlesysteem.readers;
 
-import asrs.controlesysteem.Locatie;
+import asrs.controlesysteem.bestelling.Locatie;
 import java.net.MalformedURLException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -28,6 +28,7 @@ public class SQLReader {
         return this.melding;
     }
 
+    //Maak verbinding met de database
     private void openConnection()
             throws MalformedURLException, InstantiationException, IllegalAccessException {
         try {
@@ -126,7 +127,7 @@ public class SQLReader {
         try {
             ResultSet rs = sqlQuery("SELECT * FROM Artikelen WHERE nummer = " + nr);
             while (rs.next()) {
-                list.add(rs.getInt("nummer"));//0
+                list.add(nr);//0
                 list.add(rs.getString("naam"));//1
                 list.add(new Locatie(rs.getInt("locx"), rs.getInt("locy")));//2
                 list.add(rs.getInt("grote"));//3
@@ -136,23 +137,6 @@ public class SQLReader {
         } catch (Exception ex) {
             return null;
         }
-    }
-
-    //Krijg atributen uit een artikel array
-    public String getArtikelNaam(ArrayList<Object> artikel) {
-        return (String) artikel.get(1);
-    }
-
-    public Locatie getArtikelLocatie(ArrayList<Object> artikel) {
-        return (Locatie) artikel.get(2);
-    }
-
-    public int getArtikelGrote(ArrayList<Object> artikel) {
-        return (int) artikel.get(3);
-    }
-
-    public int getArtikelAantal(ArrayList<Object> artikel) {
-        return (int) artikel.get(4);
     }
 
     //Zorgt ervoor dat wanneer er een artikel uit het schap is gehaald, de database aantal wordt aangepast

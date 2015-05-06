@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package asrs.controlesysteem;
+package asrs.controlesysteem.bestelling;
 
 import asrs.controlesysteem.readers.SQLReader;
 import asrs.controlesysteem.readers.XMLReader;
@@ -16,30 +16,39 @@ import java.util.ArrayList;
 public class Order {
 
     private ArrayList<Integer> artikelnrs;
-    private ArrayList<Locatie> artikelen;
+    private ArrayList<Artikel> artikelen;
     private ArrayList<Locatie> route;
+    private ArrayList<Artikel> nietBeschikbaar;
 
     public Order(XMLReader xml, SQLReader sql) {
         this.artikelnrs = new ArrayList<>(xml.getArtikelen());
-        this.artikelen = new ArrayList<Locatie>();
-        this.route = new ArrayList<Locatie>();
-    }
-
-    public void genereerArtikelen() {
-        int aantalArtikelen = 9;
-        for (int i = 0; i < aantalArtikelen; i++) {
-            //if (!artikelen.contains(new Locatie(x, y))) {
-            //    artikelen.add(new Locatie(x, y));
-            //}
+        this.route = new ArrayList<>();
+        this.artikelen = new ArrayList<>();
+        this.nietBeschikbaar = new ArrayList<>();
+        for (int artikel : artikelnrs) {
+            Artikel art = new Artikel(sql, artikel);
+            if (!art.getNaam().isEmpty()) {
+                artikelen.add(art);
+            } else {
+                nietBeschikbaar.add(art);
+            }
         }
 
     }
 
-    public void genereerRoute(int index) {
+    public void genereerArtikelen() {
 
     }
 
-    public ArrayList<Locatie> getArtikelen() {
+    public ArrayList<Artikel> getNietBeschikbaar() {
+        return nietBeschikbaar;
+    }
+
+    public void genereerRoute() {
+
+    }
+
+    public ArrayList<Artikel> getArtikelen() {
         return artikelen;
     }
 
