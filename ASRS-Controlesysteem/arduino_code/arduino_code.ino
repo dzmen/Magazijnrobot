@@ -14,6 +14,7 @@ void serialEvent() {
     inputString += inChar;
     if (inChar == '\n') {
       stringComplete = true;
+      inputString = inputString.substring(0, inputString.length()-1);
     }
    Serial.flush();
     //end of while()
