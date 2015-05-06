@@ -5,7 +5,7 @@
  */
 package asrs.controlesysteem;
 
-import asrs.controlesysteem.GUI.Scherm;
+import asrs.controlesysteem.TSP.ArduinoTSPNew;
 
 /**
  *
@@ -16,9 +16,14 @@ public class ASRSControlesysteem {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         // TODO code application logic here
-        new Scherm();
+        //new Scherm();
+        ArduinoTSPNew myTest = new ArduinoTSPNew();  //creates an object of the class
+        myTest.initialize();
+        myTest.portConnect();
+        System.out.println("Started");
+        while (1 > 0);       //wait till any activity
     }
-    
+
 }

@@ -80,11 +80,12 @@ public class Scherm extends JFrame implements ActionListener {
             log(xmlreader.getMelding());
             if (xmlreader.getCompleet()) {
                 jBbestand.setText("Bestand: " + xmlreader.getBestandNaam());
-                printOrder(xmlreader, jTOrder);
+
                 SQLReader sqlreader = new SQLReader();
                 log(sqlreader.getMelding());
                 if (sqlreader.getWerkt()) {
                     order = new Order(xmlreader, sqlreader);
+                    printOrder(xmlreader, jTOrder);
                     if (order.getNietBeschikbaar().size() > 0) {
                         log("Er zijn een aantal niet beschikbare artikelen in de order.\nDeze zullen niet opgehaald worden!");
                     }
