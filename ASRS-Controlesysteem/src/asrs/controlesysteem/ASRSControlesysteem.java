@@ -5,7 +5,7 @@
  */
 package asrs.controlesysteem;
 
-import asrs.controlesysteem.TSP.ArduinoTSP;
+import asrs.controlesysteem.GUI.Scherm;
 
 /**
  *
@@ -18,10 +18,7 @@ public class ASRSControlesysteem {
      */
     public static void main(String[] args) throws InterruptedException {
         // TODO code application logic here
-        //new Scherm();
-        ArduinoTSP myTest = new ArduinoTSP();  //creates an object of the class
-        myTest.Connect();
-        System.out.println("Started");
+        new Scherm();
     }
 
 }

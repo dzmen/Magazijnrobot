@@ -28,7 +28,7 @@ public class Tekenpanel extends JPanel {
         tekenSchappen(g);
         if (!(order == null)) {
             tekenArtikelen(g);
-            if (!order.getRoute().isEmpty()) {
+            if (!order.getLocatie().isEmpty()) {
                 tekenRoute(g);
             }
         }
@@ -70,13 +70,13 @@ public class Tekenpanel extends JPanel {
         int beginY = 265;
         int eindeX = 0;
         int eindeY = 0;
-        for (int i = 0; i < order.getRoute().size() - 1; i++) {
+        for (int i = 0; i < order.getLocatie().size() - 1; i++) {
             if (i > 0) {
-                start = order.getRoute().get(i);
+                start = order.getLocatie().get(i);
                 beginX = ((start.getX() - 1) * boxBreedte) + (boxBreedte / 2) - 5;
                 beginY = ((start.getY() - 1) * boxHoogte) + (boxHoogte / 2) - 5;
             }
-            einde = order.getRoute().get(i + 1);
+            einde = order.getLocatie().get(i + 1);
             eindeX = ((einde.getX() - 1) * boxBreedte) + (boxBreedte / 2) + 5;
             eindeY = ((einde.getY() - 1) * boxHoogte) + (boxHoogte / 2) + 5;
             Point beginP = new Point(beginX, beginY);

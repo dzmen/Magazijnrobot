@@ -5,11 +5,14 @@
  */
 package asrs.controlesysteem.GUI;
 
+import asrs.controlesysteem.TSP.ArduinoTSP;
 import asrs.controlesysteem.bestelling.Artikel;
+import asrs.controlesysteem.bestelling.Locatie;
 import asrs.controlesysteem.bestelling.Order;
 import asrs.controlesysteem.readers.SQLReader;
 import asrs.controlesysteem.readers.XMLReader;
 import java.awt.event.*;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
@@ -27,6 +30,7 @@ public class Scherm extends JFrame implements ActionListener {
     private JButton jBInvoeren, jBUitvoeren;
     private JLabel jBbestand;
     private Order order;
+    private int locatie = 0;
 
     public Scherm() {
         //JFrame instellingen
@@ -69,6 +73,7 @@ public class Scherm extends JFrame implements ActionListener {
         jBUitvoeren.setBounds(720, 535, 200, 50);
         jBbestand.setBounds(720, 375, 200, 25);
         jBInvoeren.addActionListener(this);
+        jBUitvoeren.addActionListener(this);
         this.setVisible(true);
     }
 
@@ -91,6 +96,7 @@ public class Scherm extends JFrame implements ActionListener {
                     }
                     tekenpanel.setOrder(order);
                     tekenpanel.repaint();
+
                 } else {
                     jTOrder.setText("");
                     jBbestand.setText("Er zijn problemen met SQL!");
@@ -100,7 +106,30 @@ public class Scherm extends JFrame implements ActionListener {
                 jBbestand.setText("Geen geldig bestand geselecteerd!");
             }
         }
+        if (e.getSource() == jBUitvoeren && order != null) {
+            log("Start ophalen pakketen");
+            ArduinoTSP tsp = new ArduinoTSP(this);  //creates an object of the class
+            log(tsp.getMessage());
+            tsp.Connect();
+            log(tsp.getMessage());
+        }
+    }
 
+    public void nextLocation() {
+        //Dit zorgt ervoor dat de volgende pijl wordt getekend in het tekenscherm
+        ArrayList<Locatie> locaties = new ArrayList<>();
+        locatie++;
+        //Kijken of hij klaar is met tekenen
+        if (locatie <= order.getRoute().size()) {
+            for (int i = 0; i <= locatie; i++) {
+                locaties.add(order.getRoute().get(i));
+            }
+            order.setLocatie(locaties);
+            tekenpanel.repaint();
+        } else {
+            //Wanneer hij klaar is met zijn route moet hij bpp starten
+
+        }
     }
 
 //Print de order in een textarea

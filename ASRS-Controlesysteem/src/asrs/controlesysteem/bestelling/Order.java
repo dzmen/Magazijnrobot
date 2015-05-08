@@ -18,22 +18,34 @@ public class Order {
     private ArrayList<Integer> artikelnrs;
     private ArrayList<Artikel> artikelen;
     private ArrayList<Locatie> route;
+    private ArrayList<Locatie> locatie;
     private ArrayList<Artikel> nietBeschikbaar;
 
     public Order(XMLReader xml, SQLReader sql) {
         this.artikelnrs = new ArrayList<>(xml.getArtikelen());
         this.route = new ArrayList<>();
         this.artikelen = new ArrayList<>();
+        this.locatie = new ArrayList<>();
         this.nietBeschikbaar = new ArrayList<>();
         for (int artikel : artikelnrs) {
             Artikel art = new Artikel(sql, artikel);
             if (!art.getNaam().isEmpty()) {
                 artikelen.add(art);
+                //TEMP!!!!
+                route.add(art.getLocatie());
             } else {
                 nietBeschikbaar.add(art);
             }
         }
 
+    }
+
+    public ArrayList<Locatie> getLocatie() {
+        return locatie;
+    }
+
+    public void setLocatie(ArrayList<Locatie> locatie) {
+        this.locatie = locatie;
     }
 
     public void genereerArtikelen() {

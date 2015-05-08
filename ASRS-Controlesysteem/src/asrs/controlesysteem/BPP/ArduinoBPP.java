@@ -19,11 +19,11 @@ import gnu.io.PortInUseException;
 import gnu.io.UnsupportedCommOperationException;
 import java.io.IOException;
 
-public class ArduinoTSP implements SerialPortEventListener {
+public class ArduinoBPP implements SerialPortEventListener {
 
     private SerialPort serialPort;
     private CommPortIdentifier portId = null;
-    private String portName = "COM13";             //De poort waarmee de applicatie moet verbinden
+    private String portName = "COM1";             //De poort waarmee de applicatie moet verbinden
     private static final int TIME_OUT = 2000;    //time in milliseconds (De wachtijd hoelang het kan duren voor een antwoord)
     private static final int BAUD_RATE = 9600; //baud rate to 9600bps (de snelheid waarmee de applicatie communiseerd met de arduino)
     private BufferedReader input;
@@ -34,7 +34,7 @@ public class ArduinoTSP implements SerialPortEventListener {
     private Scherm scherm;
 
     //Zoek de poort
-    public ArduinoTSP(Scherm scherm) {
+    public ArduinoBPP(Scherm scherm) {
         this.scherm = scherm;
         //Hij kijkt of de poort bestaat waar we verbinding mee gaan maken
         CommPortIdentifier ports = null;
@@ -96,7 +96,7 @@ public class ArduinoTSP implements SerialPortEventListener {
                 String inputLine = input.readLine();
                 System.out.println(inputLine);
                 if (inputLine.equalsIgnoreCase("done")) {
-                    scherm.nextLocation();
+                    //scherm.nextPackage();
                 }
             } catch (Exception e) {
                 System.err.println(e.toString());
