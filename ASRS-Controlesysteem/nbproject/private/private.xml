@@ -8,8 +8,10 @@
             <file>file:/D:/Gebruikers/Danny/Documents/GitHub/Magazijnrobot/ASRS-Controlesysteem/src/asrs/controlesysteem/readers/SQLReader.java</file>
             <file>file:/D:/Gebruikers/Danny/Documents/GitHub/Magazijnrobot/ASRS-Controlesysteem/src/asrs/controlesysteem/readers/XMLReader.java</file>
             <file>file:/D:/Gebruikers/Danny/Documents/GitHub/Magazijnrobot/ASRS-Controlesysteem/src/asrs/controlesysteem/GUI/Tekenpanel.java</file>
+            <file>file:/D:/Gebruikers/Danny/Documents/GitHub/Magazijnrobot/ASRS-Controlesysteem/src/asrs/controlesysteem/BPP/ArduinoBPP.java</file>
             <file>file:/D:/Gebruikers/Danny/Documents/GitHub/Magazijnrobot/ASRS-Controlesysteem/src/asrs/controlesysteem/bestelling/Artikel.java</file>
             <file>file:/D:/Gebruikers/Danny/Documents/GitHub/Magazijnrobot/ASRS-Controlesysteem/src/asrs/controlesysteem/ASRSControlesysteem.java</file>
+            <file>file:/D:/Gebruikers/Danny/Documents/GitHub/Magazijnrobot/ASRS-Controlesysteem/src/asrs/controlesysteem/bestelling/Order.java</file>
         </group>
     </open-files>
 </project-private>
