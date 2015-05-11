@@ -6,6 +6,7 @@ void setup(){
     Serial.begin(9600);
     pinMode(led,OUTPUT);
     Serial.println("Hi, What's Your Name");
+    Links(2);
 }
 
 void serialEvent() {
