@@ -9,6 +9,7 @@ import tsp.simulator.algoritmes.Simpel;
 import java.util.ArrayList;
 import tsp.simulator.algoritmes.BruteForce;
 import tsp.simulator.GUI.Scherm;
+import tsp.simulator.algoritmes.Gretig;
 
 /**
  *
@@ -67,6 +68,11 @@ public class Order {
             this.berekenTijd = simpel.getBerekenTijd();
             this.lengte = simpel.getLengte();
         } else if (index == 2) {
+            Gretig gretig = new Gretig(this);
+            gretig.berekenRoute();
+            this.route = gretig.getRoute();
+            this.berekenTijd = gretig.getBerekenTijd();
+            this.lengte = gretig.getLengte();
 
         }
 

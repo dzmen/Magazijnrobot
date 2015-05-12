@@ -13,7 +13,7 @@ import tsp.simulator.Order;
  *
  * @author Quinten
  */
-public class gretig implements Algoritmes {
+public class Gretig implements Algoritmes {
     private ArrayList <Locatie> vakken;
     private ArrayList<Locatie> posities;
     private ArrayList<Locatie> route;
@@ -21,7 +21,7 @@ public class gretig implements Algoritmes {
     private int maxY;
     private long berekenTijd;
 
-    public gretig(Order order) {
+    public Gretig(Order order) {
         this.posities = new ArrayList<>(order.getArtikelen());
         this.maxY = order.getyVeldGrote();
         this.route = new ArrayList<Locatie>();
