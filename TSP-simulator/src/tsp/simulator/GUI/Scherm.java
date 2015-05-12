@@ -20,7 +20,7 @@ public class Scherm extends JFrame implements ActionListener {
     private JLabel lAlgoritme, lResultaten, lVolledige, lGretig, lSimpel;
     private JLabel rVolledige, rGretig, rSimpel;
     private JLabel gVolledige, gSimpel, gGretig;
-    private int iTVolledige = 0, iTSimpel = 0, iTGretig = 0, uVolledige = 0, uSimpel = 0, uGretig = 0, iLVolledige = 0, iLSimpel = 0, iLGretig = 0;
+    private double iTVolledige = 0, iTSimpel = 0, iTGretig = 0, iLVolledige = 0, iLSimpel = 0, iLGretig = 0;
     private JButton bUitvoeren, bOrder;
     public TekenPanel vel;
     private String[] algoritmeItems = {"Volledige enumeratie", "Simpel Gretig algoritme", "Gretig algoritme"};
@@ -155,26 +155,20 @@ public class Scherm extends JFrame implements ActionListener {
     private void setGemiddelde(int algoritme, long tijd, int lengte) {
         DecimalFormat df = new DecimalFormat("#.###");
         if (algoritme == 0) {
-            this.uVolledige += 1;
-            this.iTVolledige += tijd;
-            this.iLVolledige += lengte;
-            double deTijd = Math.floor((iTVolledige + tijd) / uVolledige) / 1000000;
-            String x = df.format(deTijd);
-            gVolledige.setText(x + " ms, " + iLVolledige / uVolledige + " stappen");
+            this.iLVolledige = (iLVolledige + lengte) / 2;
+            iTVolledige = Math.floor((iTVolledige + tijd) / 2) / 1000000;
+            String x = df.format(iTVolledige);
+            gVolledige.setText(x + " ms, " + iLVolledige + " stappen");
         } else if (algoritme == 1) {
-            this.uSimpel += 1;
-            this.iTSimpel += tijd;
-            this.iLSimpel += lengte;
-            double deTijd = Math.floor((iTSimpel + tijd) / uSimpel) / 1000000;
-            String x = df.format(deTijd);
-            this.gSimpel.setText(x + " ms, " + iLSimpel / uSimpel + " stappen");
+            this.iLSimpel = (iLSimpel + lengte) / 2;
+            iTSimpel = Math.floor((iTSimpel + tijd) / 2) / 1000000;
+            String x = df.format(iTSimpel);
+            this.gSimpel.setText(x + " ms, " + iLSimpel + " stappen");
         } else if (algoritme == 2) {
-            this.uGretig += 1;
-            this.iTGretig += tijd;
-            this.iLGretig += lengte;
-            double deTijd = Math.floor((iTGretig + tijd) / uGretig) / 1000000;
-            String x = df.format(deTijd);
-            this.gGretig.setText(x + " ms, " + iLGretig / uGretig + " stappen");
+            this.iLGretig = (iLGretig + lengte) / 2;
+            iTGretig = Math.floor((iTGretig + tijd) / 2) / 1000000;
+            String x = df.format(iTGretig);
+            this.gGretig.setText(x + " ms, " + iLGretig + " stappen");
         }
     }
 }
