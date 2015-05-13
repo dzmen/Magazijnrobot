@@ -6,6 +6,7 @@
 package tsp.simulator.algoritmes;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import tsp.simulator.Locatie;
 import tsp.simulator.Order;
 
@@ -47,34 +48,20 @@ public class Simpel implements Algoritmes {
             start = temploc;
         }
         // Route opnieuw doorlopen
-
-        for (int currentloc = 1; currentloc < route.size() - 2; currentloc++) {
-            ArrayList<Locatie> seconditeration = route;
-            seconditeration.remove(currentloc);
-            seconditeration.remove(currentloc - 1);
-            int routeY = route.get(currentloc).getY();
-            int routeX = route.get(currentloc).getX();
-            int routeY2 = route.get(currentloc - 1).getY();
-            int routeX2 = route.get(currentloc - 1).getX();
-            double a1 = (routeY - routeY2) / (routeX - routeX2);
-            double b1 = (routeY - a1 * routeX);
-            //pijl 1: y = a1*x+b1;
-            for (int secondit = 1; secondit < seconditeration.size() - 2; secondit++) {
-                int a2 = (seconditeration.get(secondit).getY() - seconditeration.get(secondit - 1).getY()) / (seconditeration.get(secondit).getX() - seconditeration.get(secondit - 1).getX());
-                int b2 = (seconditeration.get(secondit).getY() - a2 * seconditeration.get(secondit).getX());
-                /*a1*x+b1=a2*x+b2
-                 (a2*x+b2-a1*x-b1)=0;
-                 (a2-a1)*x+b2-b1 =0;
-                 (a2-a1)*x=b1-b2;
-                 x= (b1-b2)/(a2-a1);
-                 */
-                double xKruising = (b1 - b2) / (a2 - a1);
-                double yKruising = a1 * xKruising + b1;
-                if (xkruising > route.get(currentloc.)) {
-
+        Pijl pijl1;
+        Pijl pijl2;
+        for(int pos1 = 1; pos1 < route.size()-1;pos1++){
+            pijl1 = new Pijl(route.get(pos1-1),route.get(pos1));
+            ArrayList<Locatie> route2 = new ArrayList<>(route);
+            for(int pos2=1;pos2<route2.size()-1;pos2++){
+                pijl2 = new Pijl(route2.get(pos2-1),route2.get(pos2));
+                if(pijl1.doesIntersect(pijl2)){
+                    Collections.swap(route, pos1, pos2);
                 }
             }
         }
+
+        
         //vergelijk eerste functie met een t
         lengte += start.afstandTot(new Locatie(1, maxY)) + 1;
         this.berekenTijd = safeLongToInt(System.nanoTime() - startT);
@@ -87,82 +74,131 @@ public class Simpel implements Algoritmes {
         int y1;
         int x2;
         int y2;
+        int a;
+        int b;
+        boolean isVert = false;
+        boolean isHor = false;
 
         public Pijl(Locatie start, Locatie eind) {
             x1 = start.getX();
             y1 = start.getY();
             x2 = eind.getX();
             y2 = eind.getY();
+            // get a and b voor de formule y=ax+b;
+            if(x1 != x2&&y1!=y2){
+              if(getMax(x1,x2)==x1){
+                  a =(y1-y2)/(x1-x2);
+              } else{
+                  a =(y2-y1)/(x2-x1);
+              }
+              b=y1-a*x1;
+
+            } else{
+                if(x1==x2){
+                    isVert = true;
+                } else{
+                    isVert = false;
+                }
+                if(y1==y2){
+                    isHor = true;
+                } else{
+                    isHor = false;
+                }
+            }
         }
 
         public boolean doesIntersect(Pijl pijl2) {
+            Intersection kruising;
+            if(this.isHor){
+                if(pijl2.isHor){
+                    return false;
+                } else{
+                    if(pijl2.isVert){
+                        kruising =HorizontaalVerticaal(pijl2.x1,this.y1);
+                    } else{
+                        kruising =HorizontaalDiagonaal(pijl2, this.y1);
+                    }
+                }
+            } else{
+                if(this.isVert){
+                    if(pijl2.isVert){
+                        return false;
+                    } else{
+                        if(pijl2.isHor){
+                            kruising = HorizontaalVerticaal(this.x1,pijl2.y1);
+                        } else{
+                            kruising = VerticaalDiagonaal(pijl2,this.x1);
+                        }
+                    }
+                } else{
+                    if(pijl2.a==this.a){
+                        return false;
+                    } else{
+                        if(pijl2.isHor){
+                            kruising =HorizontaalDiagonaal(this,pijl2.y1);
+                        } else{
+                            if(pijl2.isVert){
+                                kruising = VerticaalDiagonaal(this,pijl2.x1);
+                            } else{
+                                kruising = DiagonaalDiagonaal(pijl2);
+                            }
+                        }
+                    }
+                }
+                int boundxmin = getMax(getMin(this.x1,this.x2),getMin(pijl2.x1,pijl2.x2));
+                int boundxmax= getMin(getMax(this.x1,this.x2),getMax(pijl2.x1,pijl2.x2));
+                int boundymin = getMax(getMin(this.y1,this.y2),getMin(pijl2.y1,pijl2.y2));
+                int boundymax= getMin(getMax(this.y1,this.y2),getMax(pijl2.y1,pijl2.y2));
+                if(kruising.x>boundxmin&&kruising.x<boundxmax&&kruising.y>boundymin&&kruising.y<boundymax){
+                    return true;
+                } else{
+                    return false;
+                }
+            }
             // create a box where the lines should overlap if possible
-            int boundxMin = Math.abs(pijl2.xMin() - this.xMin());
-            int boundxMax = Math.abs(pijl2.xMax() - this.xMax());
-            int boundyMin = Math.abs(pijl2.yMin() - this.yMin());
-            int boundyMax = Math.abs(pijl2.yMax() - this.yMax());
-
             return false;
 
         }
         class Intersection{
             double x;
             double y;
-            public intersect(double x,double y){
+            public Intersection(double x,double y){
                this.x = x;
                this.y = y;
             }
         }
 
-        public Intersect intersection(Pijl pijl2) {
-            int a1;
-            if (this.xMax() == x1) {
-                a1 = ((this.y1-this.y2) / (this.xMax() - this.xMin()));
+        public Intersection HorizontaalVerticaal (int x,int y) {
+            return new Intersection(x,y);
+        }
+        public Intersection HorizontaalDiagonaal(Pijl diagonaal,int y){
+            double x   = (diagonaal.b-y)/(diagonaal.a);
+            return new Intersection(x,y);
+        }
+        public Intersection VerticaalDiagonaal(Pijl diagonaal,int x){
+            double y = diagonaal.a*x+diagonaal.b;
+            return new Intersection(x,y);
+        }
+        public Intersection DiagonaalDiagonaal(Pijl p2){
+            double x = (p2.b-this.b)/(this.a-p2.a);
+            double y = this.a*x+this.b;
+            return new Intersection(x,y);
+        }
+        public int getMax(int a, int b){
+            if(a>b){
+                return a;
+            }else{
+                return b;
+            }
+        }
+        public int getMin(int a,int b){
+            if(a<b){
+                return a;
             } else{
-                a1 =((this.y2-this.y1)/(this.xMax() - this.xMin()));
-            }
-            int b1 = y1-a1*x1;
-            int a2;
-            if(pijl2.xMax()== pijl2.x1){
-                a2 = ((pijl2.y1-pijl2.y2)/(pijl2.xMax()-pijl2.xMin()));
-            } else{
-                a2 = ((pijl2.y2-pijl2.y1)/(pijl2.xMax()-pijl2.xMin()));
-            }
-            int b2 = pijl2.y1-a2*pijl2.x1;
-            double intloc
-        }
-
-        public int xMax() {
-            if (x1 > x2) {
-                return x1;
-            } else {
-                return x2;
+                return b;
             }
         }
 
-        public int xMin() {
-            if (x1 < x2) {
-                return x1;
-            } else {
-                return x2;
-            }
-        }
-
-        public int yMax() {
-            if (y1 > y2) {
-                return y1;
-            } else {
-                return y2;
-            }
-        }
-
-        public int yMin() {
-            if (y1 < y2) {
-                return y1;
-            } else {
-                return y2;
-            }
-        }
     }
 
     @Override
