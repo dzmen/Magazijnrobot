@@ -1,6 +1,3 @@
-//Op en neer hebben een waarde van 100
-//
-
 //MOTORFUNCTIES:
 // Links: Draait de motor linksom
 // Rechts: Draait de motor rechtsom

@@ -31,7 +31,6 @@ public class Scherm extends JFrame implements ActionListener {
     private JLabel jBbestand;
     private Order order;
     private int locatie = 0;
-    private ArduinoTSP tsp;
 
     public Scherm() {
         //JFrame instellingen
@@ -108,11 +107,8 @@ public class Scherm extends JFrame implements ActionListener {
             }
         }
         if (e.getSource() == jBUitvoeren && order != null) {
-            log("Start genereren route");
-            order.genereerRoute();
-            log("Genereren route voltooid!");
             log("Start ophalen pakketen");
-            tsp = new ArduinoTSP(this);  //creates an object of the class
+            ArduinoTSP tsp = new ArduinoTSP(this);  //creates an object of the class
             log(tsp.getMessage());
             tsp.Connect();
             log(tsp.getMessage());
@@ -131,6 +127,7 @@ public class Scherm extends JFrame implements ActionListener {
             order.setLocatie(locaties);
             tekenpanel.repaint();
         } else {
+            //Wanneer hij klaar is met zijn route moet hij bpp starten
 
         }
     }

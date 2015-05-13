@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package asrs.controlesysteem.TSP;
+package asrs.controlesysteem.GUI;
 
 /**
  *
  * @author Danny
  */
-public class Algoritme {
+public class ArduinoTSP {
 
 }

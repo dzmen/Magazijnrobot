@@ -5,7 +5,6 @@
  */
 package asrs.controlesysteem.bestelling;
 
-import asrs.controlesysteem.TSP.Algoritme;
 import asrs.controlesysteem.readers.SQLReader;
 import asrs.controlesysteem.readers.XMLReader;
 import java.util.ArrayList;
@@ -32,6 +31,8 @@ public class Order {
             Artikel art = new Artikel(sql, artikel);
             if (!art.getNaam().isEmpty()) {
                 artikelen.add(art);
+                //TEMP!!!!
+                route.add(art.getLocatie());
             } else {
                 nietBeschikbaar.add(art);
             }
@@ -47,14 +48,16 @@ public class Order {
         this.locatie = locatie;
     }
 
+    public void genereerArtikelen() {
+
+    }
+
     public ArrayList<Artikel> getNietBeschikbaar() {
         return nietBeschikbaar;
     }
 
     public void genereerRoute() {
-        Algoritme simpel = new Algoritme(this);
-        simpel.berekenRoute();
-        this.route = simpel.getRoute();
+
     }
 
     public ArrayList<Artikel> getArtikelen() {
