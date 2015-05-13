@@ -16,7 +16,7 @@ public class ASRSControlesysteem {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         // TODO code application logic here
         new Scherm();
     }
