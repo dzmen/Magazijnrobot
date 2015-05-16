@@ -10,14 +10,10 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 /TSP-simulator/nbproject/private/
-/ARR-controller/nbproject/private/
-/ASRS-controller/nbproject/private/
-<<<<<<< HEAD
-/BPP-Simuart/BPPsimulator/build/
-=======
 /TSP-simulator/build/
->>>>>>> origin/master
-/BPP-Simuart/BPP-simulatorV2/nbproject/private/
-/BPP-Simuart/BPP-simulatorV2/build/
-/BPP-Simuart/BPP-simulatorV2/dist/
-TSP-simulator/src/tsp/simulator/algoritmes/Simpel.java
+/BPP-Simuart/BPP-sim/nbproject/private/
+/BPP-Simuart/BPP-sim/build/
+/BPP-Simuart/BPP-sim/dist/
+/ASRS-Controlesysteem/nbproject/private/
+/ASRS-Controlesysteem/build/
+/ASRS-Controlesysteem/dist/

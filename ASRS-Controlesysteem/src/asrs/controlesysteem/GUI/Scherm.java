@@ -5,14 +5,15 @@
  */
 package asrs.controlesysteem.GUI;
 
-import asrs.controlesysteem.TSP.ArduinoTSP;
 import asrs.controlesysteem.bestelling.Artikel;
+import asrs.controlesysteem.bestelling.Locatie;
 import asrs.controlesysteem.bestelling.Order;
 import asrs.controlesysteem.connector.KiesScherm;
 import asrs.controlesysteem.connector.Zender;
 import asrs.controlesysteem.readers.SQLReader;
 import asrs.controlesysteem.readers.XMLReader;
 import java.awt.event.*;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
@@ -31,7 +32,8 @@ public class Scherm extends JFrame implements ActionListener {
     private JButton jBInvoeren, jBUitvoeren;
     private JLabel jBbestand;
     private Order order;
-    private ArduinoTSP tsp;
+    //private ArduinoTSP tsp;
+    Zender send;
 
     public Scherm() {
         //JFrame instellingen
@@ -76,9 +78,13 @@ public class Scherm extends JFrame implements ActionListener {
         jBInvoeren.addActionListener(this);
         jBUitvoeren.addActionListener(this);
         this.setVisible(true);
-        Zender send = new Zender("m");
+
+        //Genereerd 2 dialogen waar je de usb aansluitingen voor de arduinos kan selecteren
+        send = new Zender(this);
         Link magazijnLink = send.getMagazijnLink();
         new KiesScherm(this, magazijnLink).setVisible(true);
+        Link inpakLink = send.getInpakLink();
+        new KiesScherm(this, inpakLink).setVisible(true);
     }
 
     @Override
@@ -115,17 +121,18 @@ public class Scherm extends JFrame implements ActionListener {
             order.genereerRoute();
             log("Genereren route voltooid!");
             log("Start ophalen pakketen");
-            tsp = new ArduinoTSP(this);  //creates an object of the class
-            log(tsp.getMessage());
-            tsp.Connect();
-            log(tsp.getMessage());
-            if (tsp.getConnected()) {
-                log("De pakketen zullen nu worden opgehaald door de robot!");
-                jBUitvoeren.setEnabled(false);
-            } else {
-                log("Er is een verbindings probleem!");
-                log("De pakketten zullen niet worden opgehaald!");
-            }
+            send.startListeners();
+            //tsp = new ArduinoTSP(this);  //creates an object of the class
+            //log(tsp.getMessage());
+            //tsp.Connect();
+            //log(tsp.getMessage());
+            //if (tsp.getConnected()) {
+            //    log("De pakketen zullen nu worden opgehaald door de robot!");
+            //    jBUitvoeren.setEnabled(false);
+            //} else {
+            //    log("Er is een verbindings probleem!");
+            //    log("De pakketten zullen niet worden opgehaald!");
+            //}
         }
     }
 
@@ -162,4 +169,22 @@ public class Scherm extends JFrame implements ActionListener {
     public Order getOrder() {
         return order;
     }
+
+    public boolean nextLocation(int loc) {
+        //Dit zorgt ervoor dat de volgende pijl wordt getekend in het tekenscherm
+        ArrayList<Locatie> locaties = new ArrayList<>();
+        //Kijken of hij klaar is met tekenen
+        if (loc < order.getRoute().size()) {
+            for (int i = 0; i <= loc; i++) {
+                locaties.add(order.getRoute().get(i));
+            }
+            order.setLocatie(locaties);
+            tekenpanel.repaint();
+            return true;
+        } else {
+            //Wanneer hij klaar is met zijn route moet hij bpp starten
+            return false;
+        }
+    }
+
 }
