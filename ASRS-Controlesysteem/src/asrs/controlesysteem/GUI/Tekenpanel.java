@@ -83,9 +83,12 @@ public class Tekenpanel extends JPanel {
             Point eindeP = new Point(eindeX, eindeY);
             tekenPijl(g2d, eindeP, beginP);
         }
-        Point beginL = new Point(eindeX - 5, eindeY - 5);
-        Point eindeL = new Point(0, 200);
-        tekenPijl(g2d, eindeL, beginL);
+        if (order.getLocatie().size() == order.getRoute().size()) {
+            Point beginL = new Point(eindeX - 5, eindeY - 5);
+            Point eindeL = new Point(0, 265);
+            tekenPijl(g2d, eindeL, beginL);
+        }
+
     }
 
     public void setOrder(Order order) {
