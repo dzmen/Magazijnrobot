@@ -1,14 +1,17 @@
 //Positie
 int x = 1;
 int y = 1;
-//Ontvangen positie
-int ox = 0;
-int oy - y;
 //Pinnen
+//motor
 int m1s = 5;
-int m1d = 4;
+int m1d = 4; //ON up, OFF down
 int m2s = 7;
-int m2d = 6;
+int m2d = 6; //ON forward, OFF backward
+//Meters
+int ldrO = 2;
+int ldrV = 2;
+int ledO = 12;
+int ledV = 13;
 //Motor speed
 int m1speed = 90;
 int m2speed = 90;
@@ -42,6 +45,9 @@ void serialEvent() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
+     if(stringComplete){
+         int x = getValue(inputString, ':', 0);
+         int y = getValue(inputString, ':', 1);
+         stringComplete = false;
+    }
 }

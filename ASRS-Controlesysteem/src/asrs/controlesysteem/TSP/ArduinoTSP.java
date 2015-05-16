@@ -18,14 +18,16 @@ import gnu.io.SerialPortEventListener;
 import gnu.io.PortInUseException;
 import gnu.io.UnsupportedCommOperationException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ArduinoTSP implements SerialPortEventListener {
 
     private SerialPort serialPort;
     private CommPortIdentifier portId = null;
-    private String portName = "COM3";             //De poort waarmee de applicatie moet verbinden
+    private String portName = "COM13";             //De poort waarmee de applicatie moet verbinden
     private static final int TIME_OUT = 2000;    //time in milliseconds (De wachtijd hoelang het kan duren voor een antwoord)
     private static final int BAUD_RATE = 9600; //baud rate to 9600bps (de snelheid waarmee de applicatie communiseerd met de arduino)
+    private int locatie = 0;
     private BufferedReader input;
     private OutputStream output;
     private String message;
@@ -43,13 +45,18 @@ public class ArduinoTSP implements SerialPortEventListener {
         } catch (NoSuchPortException ex) {
             message = portName + " is niet gevonden!";
         }
-        //following line checks whether there is the port i am looking for and whether it is serial
-        if (ports.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-            message = portName + " is gevonden!";
-            portId = ports;
+        if (ports != null) {
+            //following line checks whether there is the port i am looking for and whether it is serial
+            if (ports.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+                message = portName + " is gevonden!";
+                portId = ports;
+            } else {
+                message = portName + " wel gevonden maar niet serial!";
+            }
         } else {
-            message = portName + " wel gevonden maar niet serial!";
+            message = "Kan geen verbinding maken met usb";
         }
+
     }
 
     //Hiermee verbind je de applicatie met de arduino
@@ -82,8 +89,6 @@ public class ArduinoTSP implements SerialPortEventListener {
             } catch (Exception e) {
                 System.out.println(e.toString());
             }
-        } else {
-            message = "Kan geen verbinding maken met usb";
         }
     }
     //end of portConncet method
@@ -91,16 +96,32 @@ public class ArduinoTSP implements SerialPortEventListener {
     //readWrite serial port. Dit event gaat automatisch in een loop wanneer de port open wordt gezet en wordt verbonden met deze class
     @Override
     public void serialEvent(SerialPortEvent evt) {
-        if (evt.getEventType() == SerialPortEvent.DATA_AVAILABLE) { //if data available on serial port
+        if (evt.getEventType() == SerialPortEvent.DATA_AVAILABLE && evt.getSource() == serialPort) { //if data available on serial port
             try {
                 String inputLine = input.readLine();
                 System.out.println(inputLine);
                 if (inputLine.equalsIgnoreCase("done")) {
-                    scherm.nextLocation();
+                    nextLocation();
                 }
             } catch (Exception e) {
                 System.err.println(e.toString());
             }
+        }
+    }
+
+    public void nextLocation() {
+        //Dit zorgt ervoor dat de volgende pijl wordt getekend in het tekenscherm
+        ArrayList<Locatie> locaties = new ArrayList<>();
+        locatie++;
+        //Kijken of hij klaar is met tekenen
+        if (locatie < scherm.getOrder().getRoute().size()) {
+            for (int i = 0; i <= locatie; i++) {
+                locaties.add(scherm.getOrder().getRoute().get(i));
+            }
+            scherm.getOrder().setLocatie(locaties);
+            scherm.getTekenpanel().repaint();
+        } else {
+
         }
     }
 
@@ -126,5 +147,9 @@ public class ArduinoTSP implements SerialPortEventListener {
         }
         input = null;        //close input and output streams
         output = null;
+    }
+
+    public boolean getConnected() {
+        return connected;
     }
 }

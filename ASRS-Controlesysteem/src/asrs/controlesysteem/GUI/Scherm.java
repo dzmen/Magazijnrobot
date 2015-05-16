@@ -7,15 +7,16 @@ package asrs.controlesysteem.GUI;
 
 import asrs.controlesysteem.TSP.ArduinoTSP;
 import asrs.controlesysteem.bestelling.Artikel;
-import asrs.controlesysteem.bestelling.Locatie;
 import asrs.controlesysteem.bestelling.Order;
+import asrs.controlesysteem.connector.KiesScherm;
+import asrs.controlesysteem.connector.Zender;
 import asrs.controlesysteem.readers.SQLReader;
 import asrs.controlesysteem.readers.XMLReader;
 import java.awt.event.*;
-import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import org.zu.ardulink.Link;
 
 /**
  *
@@ -30,7 +31,6 @@ public class Scherm extends JFrame implements ActionListener {
     private JButton jBInvoeren, jBUitvoeren;
     private JLabel jBbestand;
     private Order order;
-    private int locatie = 0;
     private ArduinoTSP tsp;
 
     public Scherm() {
@@ -76,6 +76,9 @@ public class Scherm extends JFrame implements ActionListener {
         jBInvoeren.addActionListener(this);
         jBUitvoeren.addActionListener(this);
         this.setVisible(true);
+        Zender send = new Zender("m");
+        Link magazijnLink = send.getMagazijnLink();
+        new KiesScherm(this, magazijnLink).setVisible(true);
     }
 
     @Override
@@ -116,22 +119,13 @@ public class Scherm extends JFrame implements ActionListener {
             log(tsp.getMessage());
             tsp.Connect();
             log(tsp.getMessage());
-        }
-    }
-
-    public void nextLocation() {
-        //Dit zorgt ervoor dat de volgende pijl wordt getekend in het tekenscherm
-        ArrayList<Locatie> locaties = new ArrayList<>();
-        locatie++;
-        //Kijken of hij klaar is met tekenen
-        if (locatie <= order.getRoute().size()) {
-            for (int i = 0; i <= locatie; i++) {
-                locaties.add(order.getRoute().get(i));
+            if (tsp.getConnected()) {
+                log("De pakketen zullen nu worden opgehaald door de robot!");
+                jBUitvoeren.setEnabled(false);
+            } else {
+                log("Er is een verbindings probleem!");
+                log("De pakketten zullen niet worden opgehaald!");
             }
-            order.setLocatie(locaties);
-            tekenpanel.repaint();
-        } else {
-
         }
     }
 
@@ -159,5 +153,13 @@ public class Scherm extends JFrame implements ActionListener {
     private void log(String melding) {
         jTStatus.append(melding + "\n");
         jTStatus.setCaretPosition(jTStatus.getDocument().getLength());
+    }
+
+    public Tekenpanel getTekenpanel() {
+        return tekenpanel;
+    }
+
+    public Order getOrder() {
+        return order;
     }
 }
