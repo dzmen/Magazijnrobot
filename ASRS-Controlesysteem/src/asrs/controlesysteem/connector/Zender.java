@@ -19,12 +19,12 @@ public class Zender implements AnalogReadChangeListener {
     private Link lMagazijn;
     private Link lInpak;
     //Pinnen voor X en Y as
-    private int pinXdir = 4;
-    private int pinXpwm = 5;
-    private int xSpeed = 90;
+    private int pinXdir = 4; //M1 direction
+    private int pinXpwm = 5; //M1 speed
+    private int xSpeed = 250;
     //Pinnen voor Voor, Achter en Verpakings robot
-    private int pinYdir = 7;
-    private int pinYpwm = 6;
+    private int pinYdir = 7; //M2
+    private int pinYpwm = 6; //M2
     private int ySpeed = 90;
     //Pin ldr
     private int pinLDR = 0;
@@ -32,15 +32,17 @@ public class Zender implements AnalogReadChangeListener {
     private int huidigeX = 0;
     private int huidigeY = 0;
     //De ldr waarde. Eronder is in gat met led, erboven is in het donker
-    private int stapWaarde = 650;
+    private int stapWaarde = 400;
     //De hoogtes van elke vak in stippen
     private int[] vakkenY = new int[]{0, 12, 4, 6, 5};
     //De breedte van de vakken in stippen
     private int[] vakkenX = new int[]{0, 3, 7, 6, 5};
     //kijken of hij naar de ldr moet luisteren
-    private boolean luisteren = true;
-    private boolean wachten = false;
+    private boolean luisteren = false;
+    private boolean wachten = true;
+    //Dit zorgt voor de positie movement
     private int counter = 0;
+    private int counterN = 0;
     //Het scherm om een visuale weergave te kunnen doen
     private Scherm scherm;
 
@@ -69,15 +71,22 @@ public class Zender implements AnalogReadChangeListener {
     }
 
     public void stuurtX(int a) {
-        if (a < 0) {
-            a = Math.abs(a);
+        int stappen = 0;
+        if (a + huidigeX > 5) {
+            for (int i = huidigeX - 1; i > a; i--) {
+                stappen += vakkenX[i];
+            }
             lInpak.sendPowerPinIntensity(pinXdir, IProtocol.POWER_HIGH);
             lInpak.sendPowerPinIntensity(pinXpwm, xSpeed);
         } else {
+            for (int i = huidigeX + 1; i < a; i++) {
+                stappen += vakkenX[i];
+            }
             lInpak.sendPowerPinIntensity(pinXdir, IProtocol.POWER_LOW);
             lInpak.sendPowerPinIntensity(pinXpwm, xSpeed);
         }
-        luisteren = false;
+        counterN = stappen;
+        luisteren = true;
     }
 
     public void stuurCommandoMagazijn(int command) {
@@ -117,11 +126,17 @@ public class Zender implements AnalogReadChangeListener {
             wachten = true;
             counter++;
             System.out.println("het licht gezien: " + counter);
-            scherm.nextLocation(1);
+            if (counter == counterN) {
+                luisteren = false;
+                counter = 0;
+                counterN = 0;
+                lInpak.sendPowerPinIntensity(pinXpwm, IProtocol.POWER_LOW);
+            }
         } else if (e.getValue() > stapWaarde && wachten) {
             wachten = false;
             System.out.println("het donker gezien");
         }
+        //System.out.println("Waarde: " + e.getValue());
     }
 
     @Override
@@ -137,4 +152,5 @@ public class Zender implements AnalogReadChangeListener {
             e.printStackTrace();
         }
     }
+
 }

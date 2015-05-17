@@ -95,7 +95,6 @@ public class Scherm extends JFrame implements ActionListener {
             log(xmlreader.getMelding());
             if (xmlreader.getCompleet()) {
                 jBbestand.setText("Bestand: " + xmlreader.getBestandNaam());
-
                 SQLReader sqlreader = new SQLReader();
                 log(sqlreader.getMelding());
                 if (sqlreader.getWerkt()) {
@@ -122,6 +121,7 @@ public class Scherm extends JFrame implements ActionListener {
             log("Genereren route voltooid!");
             log("Start ophalen pakketen");
             send.startListeners();
+            send.stuurtX(5);
             //tsp = new ArduinoTSP(this);  //creates an object of the class
             //log(tsp.getMessage());
             //tsp.Connect();
