@@ -56,6 +56,7 @@ public class Simpel implements Algoritmes {
                 if (one.IntersectWithinBounds(two)) {
                     Collections.swap(route, a, b);
                     a = 1;
+                    break;
                 }
             }
         }
@@ -93,6 +94,7 @@ public class Simpel implements Algoritmes {
                 //bereken a, vervolgens b.
                 a = (ystart - yeind) / (xstart - xeind);
                 b = ystart - a * xstart;
+                System.out.println("X1: "+xstart+" X2: "+xeind+" Y1: "+ystart+" Y2: "+yeind+" A: "+a+" B: "+b);
             }
         }
 
