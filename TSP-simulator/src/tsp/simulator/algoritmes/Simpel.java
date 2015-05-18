@@ -47,22 +47,16 @@ public class Simpel implements Algoritmes {
             posities.remove(temploc);
             start = temploc;
         }
-        // Route opnieuw doorlopen
-        Pijl pijl1;
-        Pijl pijl2;
-        ArrayList<Locatie> secondroute;
-        for (int currentloc = 1; currentloc < route.size() - 2; currentloc++) {
-            pijl1 = new Pijl(route.get(currentloc - 1), route.get(currentloc));
-            secondroute = new ArrayList<>(route);
-            secondroute.remove(currentloc - 1);
-            secondroute.remove(currentloc);
-            for (int currentloc2 = 1; currentloc2 < secondroute.size() - 2; currentloc2++) {
-                pijl2 = new Pijl(secondroute.get(currentloc2 - 1), secondroute.get(currentloc2));
-                if (pijl1.doesIntersect(pijl2)==true) {
-                    Collections.swap(route, currentloc, currentloc2);
-                   
+        Pijl one;
+        Pijl two;
+        for (int a = 1; a < route.size(); a++) {
+            one = new Pijl(route.get(a - 1), route.get(a));
+            for (int b = 1; b < route.size(); b++) {
+                two = new Pijl(route.get(b - 1), route.get(b));
+                if (one.IntersectWithinBounds(two)) {
+                    Collections.swap(route, a, b);
+                    a = 1;
                 }
-
             }
         }
         //vergelijk eerste functie met een t
@@ -70,101 +64,60 @@ public class Simpel implements Algoritmes {
         this.berekenTijd = safeLongToInt(System.nanoTime() - startT);
     }
 
-    // pijl is een classe met een bepaalde grafiek en locaties
-    private class Pijl {
+    // De klasse pijl is een pijl die wordt weergeven
+    public class Pijl {
 
-        int x1;
-        int y1;
-        int x2;
-        int y2;
-        double a1;
-        double b1;
-        boolean isHorizontaal = false;
-        boolean isVerticaal = false;
+        //startlocatie pijl
+        int xstart;
+        int ystart;
+        //eindlocatie pijl
+        int xeind;
+        int yeind;
+        /*
+         elke pijl heeft de functie: y = ax+b (lineaire functie);
+         */
+        double a;
+        double b;
+        //als de pijl verticaal is.
+        boolean isverticaal = false;
 
-        public Pijl(Locatie start, Locatie eind) {
-            x1 = start.getX();
-            y1 = start.getY();
-            x2 = eind.getX();
-            y2 = eind.getY();
-            if (x1 != x2 && y1 != y2) {
-                if (this.xMax(x1,x2) == x1) {
-                    a1 = ((this.y1 - this.y2) / (this.xMax(x1,x2) - this.xMin(x1,x2)));
-                } else {
-                    a1 = ((this.y2 - this.y1) / (this.xMax(x1,x2) - this.xMin(x1,x2)));
-                }
-                double b1 = y1 - a1 * x1;
+        public Pijl(Locatie begin, Locatie Eind) {
+            xstart = begin.getX();
+            ystart = begin.getY();
+            xeind = Eind.getX();
+            yeind = Eind.getY();
+            // controleer of de pijl verticaal is
+            if (xstart == xeind) {
+                isverticaal = true;
             } else {
-                if (x1 == x2) {
-                    isVerticaal = true;
-                }
-                if (y1 == y2) {
-                    isHorizontaal = true;
-                }
+                //bereken a, vervolgens b.
+                a = (ystart - yeind) / (xstart - xeind);
+                b = ystart - a * xstart;
             }
         }
 
-        //functie die weergeeft 
-        public boolean doesIntersect(Pijl pijl2) {
-            Intersection kruising;
-            //ALS pijl1 verticaal is
-            if (this.isVerticaal) {
-                //EN Pijl2 verticaal is
-                if (pijl2.isVerticaal) {
-                    //DAN kruizen ze niet
+        public boolean IntersectWithinBounds(Pijl p2) {
+            double xmax = (double) min(max(this.xstart, this.xeind), max(p2.xstart, p2.xeind));
+            double xmin = (double) max(min(this.xstart, this.xeind), min(p2.xstart, p2.xeind));
+            double ymax = (double) min(max(this.ystart, this.yeind), max(p2.ystart, p2.yeind));
+            double ymin = (double) max(min(this.ystart, this.yeind), min(p2.ystart, p2.yeind));
+            if (this.doesIntersect(p2)) {
+                Intersection kruizing = getIntersect(p2);
+                double x = kruizing.x;
+                double y = kruizing.y;
+                if (x > xmin && x < xmax && y > ymin && y < ymax) {
+                    return true;
+                } else {
                     return false;
-                } else {
-                    //ANDER kunnen ze kruizen
-                    //Als pijl2 horizontaal is
-                    if (pijl2.isHorizontaal) {
-                        kruising = horizontaalverticaal(pijl2, this);
-
-                    } else {
-                        //OF als pijl 2 diagonaal is;
-                        kruising = diagonaalverticaal(pijl2, this.x1);
-                    }
                 }
-            } else {
-                //ALS pijl 1 horizontaal is
-                if (this.isHorizontaal) {
-                    // EN pijl2 is horizontaal
-                    if (pijl2.isHorizontaal) {
-                        //DAN kruizen ze niet
-                        return false;
-                    } else {
-                        if (pijl2.isVerticaal) {
-                            kruising = horizontaalverticaal(this, pijl2);
-                        } else {
-                            kruising = diagonaalhorizontaal(pijl2, this.y1);
-                        }
-                    }
-                } else {
-                    if (pijl2.isHorizontaal) {
-                        kruising = diagonaalhorizontaal(this, pijl2.y1);
-                    } else {
-                        if (pijl2.isVerticaal) {
-                            kruising = diagonaalverticaal(this, pijl2.x1);
-                        } else {
-                            kruising = diagonaaldiagonaal(pijl2);
-                        }
-                    }
-                }
-            }
-            //box waarin de kruising moet plaatsvinden
-            int boundxmin = xMax(xMin(this.x1, this.x2), xMin(pijl2.x1, pijl2.x2));
-            int boundxmax = xMin(xMax(this.x1, this.x2), xMax(pijl2.x1, pijl2.x2));
-            int boundymin = yMax(yMin(this.y1, this.y2), yMin(pijl2.y1, pijl2.y2));
-            int boundymax = yMin(xMax(this.y1, this.y2), yMax(pijl2.y1, pijl2.y2));
-            if (kruising.x > boundxmin && kruising.x < boundxmax && kruising.y > boundymin && kruising.y < boundymax) {
-                return true;
             } else {
                 return false;
             }
 
         }
 
-        //kruispunt van de twee grafieken
-        class Intersection {
+        // kruising van twee functies(zie getIntersect);
+        public class Intersection {
 
             double x;
             double y;
@@ -173,64 +126,60 @@ public class Simpel implements Algoritmes {
                 this.x = x;
                 this.y = y;
             }
-        }
-
-        // geeft het kruispunt tussen een horizontale en een verticale pijl
-        public Intersection horizontaalverticaal(Pijl horizontaal, Pijl verticaal) {
-            return new Intersection(verticaal.x1, horizontaal.y1);
-        }
-
-        // geeft het kruispunt tussen een diagonale en een verticale pijl
-        public Intersection diagonaalverticaal(Pijl diagonaal, int verticaal) {
-            return new Intersection(verticaal, diagonaal.a1 * verticaal + diagonaal.b1);
-        }
-
-        public Intersection diagonaalhorizontaal(Pijl diagonaal, int horizontaal) {
-            return new Intersection((horizontaal - diagonaal.b1) / diagonaal.a1, horizontaal);
-        }
-
-        public Intersection diagonaaldiagonaal(Pijl pijl2) {
-
-            double xCross = pijl2.b1 - b1 / (a1 - pijl2.a1);
-            double yCross = a1 * xCross + b1;
-            return new Intersection(xCross, yCross);
 
         }
 
-        public int xMax(int x1, int x2) {
-            if (x1 > x2) {
-                return x1;
+        // Checkt of er een kruising kan plaatsvinden
+        public boolean doesIntersect(Pijl p2) {
+            if (this.isverticaal && p2.isverticaal || p2.a == this.a) {
+                return false;
             } else {
-                return x2;
+                return true;
             }
         }
 
-        public int xMin(int x1, int x2) {
-            if (x1 < x2) {
-                return x1;
+        // haal kruispunt op;
+        public Intersection getIntersect(Pijl p2) {
+            double x;
+            double y;
+            /*
+             this.a*x +this.b = p2.a*x +p2.b 
+             (this.a-p2.a)x = p2.b-this.b;
+            
+             */
+            if (this.isverticaal) {
+                x = this.xeind;
+                y = (double) p2.a * x + this.b;
             } else {
-                return x2;
+                if (p2.isverticaal) {
+                    x = p2.xeind;
+                    y = (double) this.a * x + this.b;
+                } else {
+                    x = (double) (p2.b - this.b) / (this.a - p2.a);
+                    y = (double) this.a * x + this.b;
+                }
+            }
+            return new Intersection(x, y);
+        }
+
+        public int max(int a, int b) {
+            if (a > b) {
+                return a;
+            } else {
+                return b;
             }
         }
 
-        public int yMin(int y1, int y2) {
-            if (y1 < y2) {
-                return y1;
+        public int min(int a, int b) {
+            if (a < b) {
+                return a;
             } else {
-                return y2;
+                return b;
             }
         }
-
-        public int yMax(int y1, int y2) {
-            if (y1 > y2) {
-                return y1;
-            } else {
-                return y2;
-            }
-        }
-
     }
 
+    // pijl is een classe met een bepaalde grafiek en locaties
     @Override
     public long getBerekenTijd() {
         return this.berekenTijd;
