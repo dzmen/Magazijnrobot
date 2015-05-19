@@ -115,13 +115,14 @@ public class Scherm extends JFrame implements ActionListener {
                 jBbestand.setText("Geen geldig bestand geselecteerd!");
             }
         }
-        if (e.getSource() == jBUitvoeren && order != null) {
+        //if (e.getSource() == jBUitvoeren && order != null) {
+        if (e.getSource() == jBUitvoeren) {
             log("Start genereren route");
-            order.genereerRoute();
+            //order.genereerRoute();
             log("Genereren route voltooid!");
             log("Start ophalen pakketen");
-            send.startListeners();
-            send.stuurtX(5);
+            send.startYListener();
+            send.stuurtY(5);
             //tsp = new ArduinoTSP(this);  //creates an object of the class
             //log(tsp.getMessage());
             //tsp.Connect();

@@ -10,33 +10,35 @@ import org.zu.ardulink.Link;
 import org.zu.ardulink.event.AnalogReadChangeEvent;
 import org.zu.ardulink.event.AnalogReadChangeListener;
 import org.zu.ardulink.protocol.IProtocol;
-import org.zu.ardulink.protocol.MessageInfo;
 
-public class Zender implements AnalogReadChangeListener {
+public class Zender {
 
     private static final long serialVersionUID = -8011033975724290405L;
     //De communicatie lijnen met de arduino
     private Link lMagazijn;
     private Link lInpak;
     //Pinnen voor X en Y as
-    private int pinXdir = 4; //M1 direction
-    private int pinXpwm = 5; //M1 speed
-    private int xSpeed = 250;
+    private int pinXdir = 6; //M1 direction
+    private int pinXpwm = 7; //M1 speed
+    private int xSpeed = 90;
+    private int pinXLed = 13;
     //Pinnen voor Voor, Achter en Verpakings robot
-    private int pinYdir = 7; //M2
-    private int pinYpwm = 6; //M2
-    private int ySpeed = 90;
+    private int pinYdir = 4; //M2
+    private int pinYpwm = 5; //M2
+    private int ySpeed = 110;
+    private int pinYLed = 13;
     //Pin ldr
-    private int pinLDR = 0;
+    private int pinYLDR = 0;
+    private int pinZLDR = 1;
     //Overige gegevens
     private int huidigeX = 0;
     private int huidigeY = 0;
     //De ldr waarde. Eronder is in gat met led, erboven is in het donker
-    private int stapWaarde = 400;
+    private int stapWaarde = 170;
     //De hoogtes van elke vak in stippen
-    private int[] vakkenY = new int[]{0, 12, 4, 6, 5};
+    private int[] vakkenY = new int[]{0, 6, 7, 7, 5, 7};
     //De breedte van de vakken in stippen
-    private int[] vakkenX = new int[]{0, 3, 7, 6, 5};
+    private int[] vakkenX = new int[]{0, 5, 7, 6, 5, 5};
     //kijken of hij naar de ldr moet luisteren
     private boolean luisteren = false;
     private boolean wachten = true;
@@ -66,49 +68,114 @@ public class Zender implements AnalogReadChangeListener {
 
     //Deze functie is gemaakt om dat er pas geluisterd kan woorden na dat hij weet welke usb poorten hij heeft
     public void startListeners() {
-        lMagazijn.addAnalogReadChangeListener(this);
+        //lMagazijn.addAnalogReadChangeListener(this);
         //lInpak.addAnalogReadChangeListener(this);
+    }
+
+    public void startZListener() {
+        lMagazijn.addAnalogReadChangeListener(new AnalogReadChangeListener() {
+            //Dit luisterd naar de LDR weizigingen
+            @Override
+            public void stateChanged(AnalogReadChangeEvent e) {
+                if (luisteren && e.getValue() < stapWaarde && !wachten) {
+                    wachten = true;
+                    counter++;
+                    System.out.println("het licht gezien: " + counter);
+                    if (counter == counterN) {
+                        luisteren = false;
+                        counter = 0;
+                        counterN = 0;
+                        lMagazijn.sendPowerPinIntensity(pinYpwm, IProtocol.POWER_LOW);
+                        lMagazijn.sendPowerPinSwitch(pinYLed, IProtocol.POWER_LOW);
+
+                    }
+                } else if (e.getValue() > stapWaarde && wachten) {
+                    wachten = false;
+                    System.out.println("het donker gezien");
+                }
+                //System.out.println("Waarde: " + e.getValue());
+            }
+
+            @Override
+            public int getPinListening() {
+                return pinZLDR;
+            }
+        }
+        );
+    }
+
+    public void startYListener() {
+        lMagazijn.addAnalogReadChangeListener(new AnalogReadChangeListener() {
+            //Dit luisterd naar de LDR weizigingen
+            @Override
+            public void stateChanged(AnalogReadChangeEvent e) {
+                if (luisteren && e.getValue() < stapWaarde && !wachten) {
+                    wachten = true;
+                    counter++;
+                    System.out.println("het licht gezien: " + counter);
+                    if (counter == counterN) {
+                        luisteren = false;
+                        counter = 0;
+                        counterN = 0;
+                        lMagazijn.sendPowerPinIntensity(pinYpwm, IProtocol.POWER_LOW);
+                        lMagazijn.sendPowerPinSwitch(pinYLed, IProtocol.POWER_LOW);
+
+                    }
+                } else if (e.getValue() > stapWaarde && wachten) {
+                    wachten = false;
+                    System.out.println("het donker gezien");
+                }
+                //System.out.println("Waarde: " + e.getValue());
+            }
+
+            @Override
+            public int getPinListening() {
+                return pinYLDR;
+            }
+        }
+        );
     }
 
     public void stuurtX(int a) {
         int stappen = 0;
+        lInpak.sendPowerPinSwitch(pinXLed, IProtocol.POWER_HIGH);
         if (a + huidigeX > 5) {
-            for (int i = huidigeX - 1; i > a; i--) {
+            for (int i = huidigeX; i >= a; i--) {
                 stappen += vakkenX[i];
             }
-            lInpak.sendPowerPinIntensity(pinXdir, IProtocol.POWER_HIGH);
+            lInpak.sendPowerPinSwitch(pinXdir, IProtocol.POWER_HIGH);
             lInpak.sendPowerPinIntensity(pinXpwm, xSpeed);
         } else {
-            for (int i = huidigeX + 1; i < a; i++) {
+            for (int i = huidigeX; i <= a; i++) {
                 stappen += vakkenX[i];
             }
-            lInpak.sendPowerPinIntensity(pinXdir, IProtocol.POWER_LOW);
+            lInpak.sendPowerPinSwitch(pinXdir, IProtocol.POWER_LOW);
             lInpak.sendPowerPinIntensity(pinXpwm, xSpeed);
         }
         counterN = stappen;
+        huidigeX = a;
         luisteren = true;
     }
 
-    public void stuurCommandoMagazijn(int command) {
-        MessageInfo info = new MessageInfo();
-        try {
-            switch (command) {
-                case 0:
-                    //Command: X pos+
-                    lMagazijn.sendPowerPinIntensity(pinXdir, IProtocol.POWER_LOW);
-                    lMagazijn.sendPowerPinIntensity(pinXpwm, IProtocol.POWER_HIGH);
-                    break;
-                case 1:
-                    //Command: X pos-
-                    lMagazijn.sendPowerPinIntensity(pinXdir, 254);
-                    lMagazijn.sendPowerPinIntensity(pinXpwm, 254);
-                    break;
+    public void stuurtY(int a) {
+        int stappen = 0;
+        lMagazijn.sendPowerPinSwitch(pinYLed, IProtocol.POWER_HIGH);
+        if (a + huidigeY > 5) {
+            for (int i = huidigeY; i >= a; i--) {
+                stappen += vakkenY[i];
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            System.out.println(info.getMessageReceived());
+            lMagazijn.sendPowerPinSwitch(pinYdir, IProtocol.POWER_HIGH);
+            lMagazijn.sendPowerPinIntensity(pinYpwm, ySpeed);
+        } else {
+            for (int i = huidigeY; i <= a; i++) {
+                stappen += vakkenY[i];
+            }
+            lMagazijn.sendPowerPinSwitch(pinYdir, IProtocol.POWER_LOW);
+            lMagazijn.sendPowerPinIntensity(pinYpwm, ySpeed);
         }
+        counterN = stappen;
+        huidigeY = a;
+        luisteren = true;
     }
 
     public Link getMagazijnLink() {
@@ -119,29 +186,8 @@ public class Zender implements AnalogReadChangeListener {
         return lInpak;
     }
 
-    //Dit luisterd naar de LDR weizigingen
-    @Override
-    public void stateChanged(AnalogReadChangeEvent e) {
-        if (luisteren && e.getValue() < stapWaarde && !wachten) {
-            wachten = true;
-            counter++;
-            System.out.println("het licht gezien: " + counter);
-            if (counter == counterN) {
-                luisteren = false;
-                counter = 0;
-                counterN = 0;
-                lInpak.sendPowerPinIntensity(pinXpwm, IProtocol.POWER_LOW);
-            }
-        } else if (e.getValue() > stapWaarde && wachten) {
-            wachten = false;
-            System.out.println("het donker gezien");
-        }
-        //System.out.println("Waarde: " + e.getValue());
-    }
+    private void pakPakket() {
 
-    @Override
-    public int getPinListening() {
-        return this.pinLDR;
     }
 
     //De delay van arduino maar dan in java code
