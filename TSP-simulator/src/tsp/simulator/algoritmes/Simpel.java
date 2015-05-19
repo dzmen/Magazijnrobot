@@ -49,13 +49,14 @@ public class Simpel implements Algoritmes {
         }
         Pijl one;
         Pijl two;
-        for (int a = 1; a < route.size(); a++) {
-            one = new Pijl(route.get(a - 1), route.get(a));
-            for (int b = 1; b < route.size(); b++) {
-                two = new Pijl(route.get(b - 1), route.get(b));
-                if (one.IntersectWithinBounds(two)) {
+        
+        for(int a=1;a<route.size();a++){
+            one = new Pijl(route.get(a-1),route.get(a));
+            for(int b=1;b<route.size();b++){
+                two = new Pijl(route.get(b-1),route.get(b));
+                if(one.checklines(two)){
                     Collections.swap(route, a, b);
-                    a = 1;
+                    a=1;
                     break;
                 }
             }
@@ -68,118 +69,115 @@ public class Simpel implements Algoritmes {
     // De klasse pijl is een pijl die wordt weergeven
     public class Pijl {
 
-        //startlocatie pijl
-        int xstart;
-        int ystart;
-        //eindlocatie pijl
-        int xeind;
-        int yeind;
-        /*
-         elke pijl heeft de functie: y = ax+b (lineaire functie);
-         */
+        double xa;
+        double xb;
+        double xm;
+        double xM;
+        double ya;
+        double yb;
+        double ym;
+        double yM;
         double a;
         double b;
-        //als de pijl verticaal is.
-        boolean isverticaal = false;
+        boolean vert = false;
 
-        public Pijl(Locatie begin, Locatie Eind) {
-            xstart = begin.getX();
-            ystart = begin.getY();
-            xeind = Eind.getX();
-            yeind = Eind.getY();
-            // controleer of de pijl verticaal is
-            if (xstart == xeind) {
-                isverticaal = true;
+        public Pijl(Locatie start, Locatie eind) {
+            xa = start.getX();
+            ya = start.getY();
+            xb = eind.getX();
+            yb = eind.getY();
+            xm = Math.min(xa, xb);
+            xM = Math.max(xa, xb);
+            ym = Math.min(ya, yb);
+            yM = Math.max(ya, yb);
+            if (xa == xb) {
+                vert = true;
             } else {
-                //bereken a, vervolgens b.
-                a = (ystart - yeind) / (xstart - xeind);
-                b = ystart - a * xstart;
-                System.out.println("X1: "+xstart+" X2: "+xeind+" Y1: "+ystart+" Y2: "+yeind+" A: "+a+" B: "+b);
+                a = (ya - yb) / (ya - yb);
+                b = ya - a * xa;
+            }
+        }// Einde public Pijl
+
+        public boolean withinbounds(double x, double a, double b) {
+            if (x > Math.min(a, b) && x < Math.max(a, b)) {
+                return true;
+            } else {
+                return false;
             }
         }
 
-        public boolean IntersectWithinBounds(Pijl p2) {
-            double xmax = (double) min(max(this.xstart, this.xeind), max(p2.xstart, p2.xeind));
-            double xmin = (double) max(min(this.xstart, this.xeind), min(p2.xstart, p2.xeind));
-            double ymax = (double) min(max(this.ystart, this.yeind), max(p2.ystart, p2.yeind));
-            double ymin = (double) max(min(this.ystart, this.yeind), min(p2.ystart, p2.yeind));
-            if (this.doesIntersect(p2)) {
-                Intersection kruizing = getIntersect(p2);
-                double x = kruizing.x;
-                double y = kruizing.y;
-                if (x > xmin && x < xmax && y > ymin && y < ymax) {
+        public boolean withinbounds(double x, double a, double b, double y, double c, double d) {
+            if (x > Math.min(a, b) && x < Math.max(a, b) && y > Math.min(c, d) && y < Math.max(c, d)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        public boolean checklines(Pijl p2){
+            if(isParrallel(p2)){
+                if(doesOverlap(p2)){
                     return true;
-                } else {
+                } else{
                     return false;
                 }
-            } else {
-                return false;
-            }
-
-        }
-
-        // kruising van twee functies(zie getIntersect);
-        public class Intersection {
-
-            double x;
-            double y;
-
-            public Intersection(double x, double y) {
-                this.x = x;
-                this.y = y;
-            }
-
-        }
-
-        // Checkt of er een kruising kan plaatsvinden
-        public boolean doesIntersect(Pijl p2) {
-            if (this.isverticaal && p2.isverticaal || p2.a == this.a) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-
-        // haal kruispunt op;
-        public Intersection getIntersect(Pijl p2) {
-            double x;
-            double y;
-            /*
-             this.a*x +this.b = p2.a*x +p2.b 
-             (this.a-p2.a)x = p2.b-this.b;
-            
-             */
-            if (this.isverticaal) {
-                x = this.xeind;
-                y = (double) p2.a * x + this.b;
-            } else {
-                if (p2.isverticaal) {
-                    x = p2.xeind;
-                    y = (double) this.a * x + this.b;
-                } else {
-                    x = (double) (p2.b - this.b) / (this.a - p2.a);
-                    y = (double) this.a * x + this.b;
+            } else{
+                if(doesIntersect(p2)){
+                    return true;
+                } else{
+                    return false;
                 }
             }
-            return new Intersection(x, y);
         }
-
-        public int max(int a, int b) {
-            if (a > b) {
-                return a;
+        //check of twee parrallelen elkaar overlappen
+        public boolean doesOverlap(Pijl p2) {
+            boolean overlap = false;
+            if (isParrallel(p2) && p2.xa == xa) {
+                for (double u = Math.min(ym, p2.ym); u < Math.max(yM, p2.yM); u++) {
+                    if (withinbounds(u, ya, yb) && withinbounds(u, p2.ya, p2.yb)) {
+                        overlap = true;
+                    }
+                }
             } else {
-                return b;
+                if (isParrallel(p2) && b == p2.b) {
+                    for (double u = Math.min(xm, p2.xm); u < Math.max(xM, p2.xM); u++) {
+                        if (withinbounds(u, xa, xb) && withinbounds(u, p2.xa, p2.xb)) {
+                            overlap = true;
+                        }
+                    }
+                }
+            }
+            return overlap;
+        }
+        public boolean doesIntersect(Pijl p2){
+            double x;
+            double y;
+            if(vert){
+                x=xa;
+                y=p2.a*x+p2.b;
+            } else{
+                if(p2.vert){
+                    x=p2.xa;
+                } else{
+                    x=(p2.b-b)/(a-p2.a);
+                }
+                y = a*x+b;
+            }
+            if(withinbounds(x,xm,xM,y,ym,yM)&&withinbounds(x,p2.xm,p2.xM,y,p2.ym,p2.yM)){
+                return true;
+            } else{
+                return false;
             }
         }
 
-        public int min(int a, int b) {
-            if (a < b) {
-                return a;
+        public boolean isParrallel(Pijl p2) {
+            if (p2.vert && vert || a == p2.a) {
+                return true;
             } else {
-                return b;
+                return false;
             }
         }
-    }
+
+    }// Einde public class Pijl
 
     // pijl is een classe met een bepaalde grafiek en locaties
     @Override
