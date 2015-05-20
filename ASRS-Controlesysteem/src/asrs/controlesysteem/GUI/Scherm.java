@@ -85,6 +85,13 @@ public class Scherm extends JFrame implements ActionListener {
         new KiesScherm(this, magazijnLink).setVisible(true);
         Link inpakLink = send.getInpakLink();
         new KiesScherm(this, inpakLink).setVisible(true);
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                //send.getInpakLink().disconnect();
+                send.getMagazijnLink().disconnect();
+            }
+        });
     }
 
     @Override
@@ -121,8 +128,13 @@ public class Scherm extends JFrame implements ActionListener {
             //order.genereerRoute();
             log("Genereren route voltooid!");
             log("Start ophalen pakketen");
+            send.startXListener();
             send.startYListener();
-            send.stuurtY(5);
+            send.startZListener();
+            ArrayList<Locatie> test = new ArrayList<Locatie>();
+            test.add(new Locatie(2, 2));
+            test.add(new Locatie(2, 1));
+            send.stuurPakketten(test);
             //tsp = new ArduinoTSP(this);  //creates an object of the class
             //log(tsp.getMessage());
             //tsp.Connect();
