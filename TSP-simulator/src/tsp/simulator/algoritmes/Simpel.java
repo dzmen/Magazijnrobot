@@ -51,12 +51,14 @@ public class Simpel implements Algoritmes {
 
         ArrayList<Locatie> Tr = new ArrayList<>();
         Tr.add(new Locatie(0, 0));
-        Tr.add(new Locatie(1, 1));
-        Tr.add(new Locatie(3, 1));
         Tr.add(new Locatie(2, 1));
-        Tr.add(new Locatie(3, 4));
-        Tr.add(new Locatie(1, 4));
-        Tr.add(new Locatie(4, 1));
+        Tr.add(new Locatie(5, 2));
+        Tr.add(new Locatie(5, 7));
+        Tr.add(new Locatie(7, 3));
+        Tr.add(new Locatie(2, 3));
+        Tr.add(new Locatie(8, 5));
+        Tr.add(new Locatie(8, 1));
+        Tr.add(new Locatie(8, 4));
         Tr.add(new Locatie(0, 0));
         Pijl p1;
         Pijl p2;
@@ -75,13 +77,6 @@ public class Simpel implements Algoritmes {
                         System.out.println("   Kruist Pijl " + b + ": A: " + p2.a + " B: " + p2.b);
                     }
                 }
-                for(double uu = Math.min(p1.xm, p2.xm); uu <=Math.max(p1.xM, p2.xM);uu =uu+0.1){
-                    if(p1.withinbounds(uu,p1.xa,p1.xb)&&p1.withinbounds(uu,p2.xa,p2.xb)){
-                        System.out.print("[]");
-                    }
-                }
-                
-
             }
 
             System.out.println("");
@@ -89,15 +84,19 @@ public class Simpel implements Algoritmes {
 
 //        Pijl p1;
 //        Pijl p2;
-//        for(int a=1; a<route.size();a++){
+//        int a =1;
+//        int b;
+//        while(a<route.size()){
 //            p1 = new Pijl(route.get(a-1),route.get(a));
-//            for(int b=1; b<route.size();b++){
+//            b =a+1;
+//            while(b<route.size()){
 //                p2 = new Pijl(route.get(b-1),route.get(b));
 //                if(p1.checklines(p2)){
 //                    Collections.swap(route, a, b);
-//                    a = 1;
-//                    break;
+//                    b=0;
 //                }
+//                b++;
+//                
 //            }
 //        }
         //vergelijk eerste functie met een t
@@ -133,6 +132,7 @@ public class Simpel implements Algoritmes {
             yM = Math.max(ya, yb);
             if (xa == xb) {
                 vert = true;
+
             } else {
                 a = (ya - yb) / (xa - xb);
                 b = ya - a * xa;
@@ -149,6 +149,14 @@ public class Simpel implements Algoritmes {
 
         public boolean withinbounds(double x, double a, double b, double y, double c, double d) {
             if (x > Math.min(a, b) && x < Math.max(a, b) && y > Math.min(c, d) && y < Math.max(c, d)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public boolean horver(double x, double a, double b, double y, double c, double d) {
+            if (x >= Math.min(a, b) && x <= Math.max(a, b) && y >= Math.min(c, d) && y <= Math.max(c, d)) {
                 return true;
             } else {
                 return false;
@@ -174,7 +182,7 @@ public class Simpel implements Algoritmes {
         //check of twee parrallelen elkaar overlappen
         public boolean doesOverlap(Pijl p2) {
             boolean overlap = false;
-            if (isParrallel(p2) && p2.xa == xa) {
+            if (isParrallel(p2) && p2.a == a) {
                 for (double u = Math.min(ym, p2.ym); u < Math.max(yM, p2.yM); u = u + 0.2) {
                     if (withinbounds(u, ya, yb) && withinbounds(u, p2.ya, p2.yb)) {
                         overlap = true;
@@ -196,29 +204,92 @@ public class Simpel implements Algoritmes {
             double x;
             double y;
             if (vert) {
-                x = xa;
-                y = p2.a * x + p2.b;
-            } else {
                 if (p2.vert) {
-                    x = p2.xa;
+                    return false;
                 } else {
-                    x = (p2.b - b) / (a - p2.a);
+                    if (p2.a == 0) {
+                        if (withinbounds(this.xa, p2.xm, p2.xM, p2.ya, ym, yM)) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        y = p2.a * this.xa + p2.b;
+                        if (withinbounds(y, ym, yM) && withinbounds(xm, p2.xm, p2.xM, y, p2.ym, p2.yM)) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
                 }
-                y = a * x + b;
-            }
-            if (withinbounds(x, xm, xM, y, ym, yM) && withinbounds(x, p2.xm, p2.xM, y, p2.ym, p2.yM)) {
-                return true;
             } else {
-                return false;
+                if (a == 0) {
+                    if (p2.vert) {
+                        if (withinbounds(p2.xa, xm, xM) && withinbounds(ya, p2.ym, p2.yM)) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+
+                    } else {
+                        if (p2.a == 0) {
+                            return false;
+                        } else {
+                            x = (ya - p2.b) / p2.a;
+                            if (withinbounds(x, xm, xM) && withinbounds(x, p2.xm, p2.xM, ym, p2.ym, p2.yM)) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    }
+                } else {
+                    if (p2.a == a) {
+                        return false;
+                    } else {
+                        if (p2.vert) {
+                            y = a * p2.xm + b;
+                            if (withinbounds(y, p2.ym, p2.yM) && withinbounds(p2.xm, xm, xM, y, ym, yM)) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+
+                        } else {
+                            if (p2.a == 0) {
+                                x = (p2.ya - b) / a;
+                                if (withinbounds(x, p2.xm, p2.xM) && withinbounds(x, xm, xM, p2.ym, ym, yM)) {
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+
+                            } else {
+                                x = (p2.b - b) / (a - p2.a);
+                                y = a * x + b;
+                                if (withinbounds(x, xm, xM, y, ym, yM) && withinbounds(x, p2.xm, p2.xM, y, p2.ym, p2.yM)) {
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
             }
+
         }
 
         // Checked: Functional
         public boolean isParrallel(Pijl p2) {
-            if (p2.vert && vert || a == p2.a) {
+            if (p2.vert && vert) {
                 return true;
             } else {
-                return false;
+                if (a == p2.a && !p2.vert && !vert) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
 
