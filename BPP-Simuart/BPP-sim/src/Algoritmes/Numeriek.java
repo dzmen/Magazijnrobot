@@ -25,9 +25,11 @@ public class Numeriek extends Template {
         ArrayList<Pakket> kleinstecombinatie = new ArrayList<>();
         int min = dozen.size();
         for (ArrayList<Pakket> aa : pakkettenlijst) {
+            System.out.println(" A ");
             int aantaldozen = 1;
             double inhoud = 0;
             for (Pakket ab : aa) {
+                System.out.print("   E  ");
                 if (ab.getSize() + inhoud > 1) {
                     aantaldozen++;
                     inhoud = 0;
@@ -37,6 +39,7 @@ public class Numeriek extends Template {
             }
             if (aantaldozen < min) {
                 kleinstecombinatie = aa;
+                min = aantaldozen;
             }
 
         }

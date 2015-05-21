@@ -49,56 +49,115 @@ public class Simpel implements Algoritmes {
         }
         // TESTFUNCTIE
 
-        ArrayList<Locatie> Tr = new ArrayList<>();
-        Tr.add(new Locatie(0, 0));
-        Tr.add(new Locatie(2, 1));
-        Tr.add(new Locatie(5, 2));
-        Tr.add(new Locatie(5, 7));
-        Tr.add(new Locatie(7, 3));
-        Tr.add(new Locatie(2, 3));
-        Tr.add(new Locatie(8, 5));
-        Tr.add(new Locatie(8, 1));
-        Tr.add(new Locatie(8, 4));
-        Tr.add(new Locatie(0, 0));
-        Pijl p1;
-        Pijl p2;
-        for (int a = 1; a < Tr.size() - 1; a++) {
-            p1 = new Pijl(Tr.get(a - 1), Tr.get(a));
-            System.out.println("Pijl " + a + ": A: " + p1.a + " B: " + p1.b);
-            for (int b = 1; b < Tr.size(); b++) {
-                p2 = new Pijl(Tr.get(b - 1), Tr.get(b));
-                if (p1.isParrallel(p2)) {
-                    System.out.println("   Parrallel Pijl " + b + ": A: " + p2.a + " B: " + p2.b);
-                    if (p1.doesOverlap(p2)) {
-                        System.out.print("  OVERLAPT!\n");
-                    }
-                } else {
-                    if (p1.doesIntersect(p2)) {
-                        System.out.println("   Kruist Pijl " + b + ": A: " + p2.a + " B: " + p2.b);
-                    }
-                }
-            }
-
-            System.out.println("");
-        }
-
+//        ArrayList<Locatie> Tr = new ArrayList<>();
+//        Tr.add(new Locatie(0, 0));
+//        Tr.add(new Locatie(2, 1));
+//        Tr.add(new Locatie(5, 2));
+//        Tr.add(new Locatie(5, 7));
+//        Tr.add(new Locatie(7, 3));
+//        Tr.add(new Locatie(2, 3));
+//        Tr.add(new Locatie(8, 5));
+//        Tr.add(new Locatie(8, 1));
+//        Tr.add(new Locatie(8, 4));
+//        Tr.add(new Locatie(0, 0));
 //        Pijl p1;
 //        Pijl p2;
-//        int a =1;
-//        int b;
-//        while(a<route.size()){
-//            p1 = new Pijl(route.get(a-1),route.get(a));
-//            b =a+1;
-//            while(b<route.size()){
-//                p2 = new Pijl(route.get(b-1),route.get(b));
-//                if(p1.checklines(p2)){
-//                    Collections.swap(route, a, b);
-//                    b=0;
+//        for (int a = 2; a < Tr.size() - 1; a++) {
+//            p1 = new Pijl(Tr.get(a - 1), Tr.get(a));
+//            System.out.println("Pijl " + a + ": A: " + p1.a + " B: " + p1.b+"("+p1.xa+","+p1.ya+")("+p1.xb+","+p1.yb+")");
+//            for (int b = 2; b < Tr.size()-1; b++) {
+//                p2 = new Pijl(Tr.get(b - 1), Tr.get(b));
+//                if (p1.isParrallel(p2)) {
+//                    System.out.println("   Parrallel Pijl " + b + ": A: " + p2.a + " B: " + p2.b);
+//                    if (p1.doesOverlap(p2)) {
+//                        System.out.print("  OVERLAPT!\n");
+//                    }
+//                } else {
+//                    if (p1.doesIntersect(p2)) {
+//                        System.out.println("   Kruist Pijl " + b + ": A: " + p2.a + " B: " + p2.b);
+//                    }
 //                }
-//                b++;
-//
 //            }
+//
+//            System.out.println("");
 //        }
+//        int c=2;
+//        int d;
+//        while(c<Tr.size()-1){
+//             p1 = new Pijl(Tr.get(c - 1), Tr.get(c));
+//             d=c+1;
+//             while(d<Tr.size()-1){
+//                 p2 = new Pijl(Tr.get(d - 1), Tr.get(d));
+//                 if(p1.isParrallel(p2)){
+//                     if(p1.doesOverlap(p2)){
+//                         Collections.swap(Tr, c, d);
+//                         d=c;
+//                         break;
+//                     }
+//                 } else{
+//                     if(p1.doesIntersect(p2)){
+//                         Collections.swap(Tr, c, d);
+//                         d=c;
+//                         break;
+//                     }
+//                 }
+//                 d++;
+//             }
+//             c++;
+//        }
+//        for (int a = 1; a < Tr.size(); a++) {
+//            p1 = new Pijl(Tr.get(a - 1), Tr.get(a));
+//            System.out.println("Pijl " + a + ": A: " + p1.a + " B: " + p1.b+"("+p1.xa+","+p1.ya+")("+p1.xb+","+p1.yb+")");
+//            for (int b = 1; b < Tr.size(); b++) {
+//                p2 = new Pijl(Tr.get(b - 1), Tr.get(b));
+//                if (p1.isParrallel(p2)) {
+//                    System.out.println("   Parrallel Pijl " + b + ": A: " + p2.a + " B: " + p2.b);
+//                    if (p1.doesOverlap(p2)) {
+//                        System.out.print("  OVERLAPT!\n");
+//                    }
+//                } else {
+//                    if (p1.doesIntersect(p2)) {
+//                        System.out.println("   Kruist Pijl " + b + ": A: " + p2.a + " B: " + p2.b);
+//                    }
+//                }
+//            }
+//
+//            System.out.println("");
+//        }
+        Pijl p1;
+        Pijl p2;
+        int a = 2;
+        int b =2;
+        while (a < route.size()) {
+            p1 = new Pijl(route.get(a - 1), route.get(a));
+            boolean doescross =false;
+            while (b < route.size()) {
+                p2 = new Pijl(route.get(b - 1), route.get(b));
+                if (p1.equals(p2)) {
+                    b++;
+                } else {
+                    if (p1.isParrallel(p2)) {
+                        if (p1.doesOverlap(p2)) {
+                            Collections.swap(route, a, b);
+                           doescross = true;
+                           
+
+                        }
+                    } else {
+                        if (p1.doesIntersect(p2)) {
+                            Collections.swap(route, a, b);
+                            doescross=true;
+                            break;
+
+                        }
+                    }
+                }
+                b++;
+
+            }
+              a++;  
+            
+        }
         //vergelijk eerste functie met een t
         lengte += start.afstandTot(new Locatie(1, maxY)) + 1;
 

@@ -128,7 +128,7 @@ public class Scherm extends JFrame implements ActionListener {
             aangeklikt++;
 
             //pakketten genereren
-            tekenscherm.getOrder().genPackets(20, 50);
+            tekenscherm.getOrder().genPackets(9, 10);
             tekenscherm.repaint();
             if (aangeklikt > 0) {
                 selectAlgoritme.setEnabled(true);

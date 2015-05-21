@@ -72,12 +72,12 @@ public class TekenPanel extends JPanel {
         for (int i = 0; i < order.getRoute().size() - 1; i++) {
             if (i > 0) {
                 start = order.getRoute().get(i);
-                beginX = ((start.getX() - 1) * boxBreedte) + (boxBreedte / 2) - 5;
-                beginY = ((start.getY() - 1) * boxHoogte) + (boxHoogte / 2) - 5;
+                beginX = ((start.getX()-1) * boxBreedte) + (boxBreedte / 2);
+                beginY = ((start.getY()-1) * boxHoogte) + (boxHoogte / 2);
             }
             einde = order.getRoute().get(i + 1);
-            eindeX = ((einde.getX() - 1) * boxBreedte) + (boxBreedte / 2) + 5;
-            eindeY = ((einde.getY() - 1) * boxHoogte) + (boxHoogte / 2) + 5;
+            eindeX = ((einde.getX()-1) * boxBreedte) + (boxBreedte / 2);
+            eindeY = ((einde.getY()-1) * boxHoogte) + (boxHoogte / 2);
             Point beginP = new Point(beginX, beginY);
             Point eindeP = new Point(eindeX, eindeY);
             tekenPijl(g2d, eindeP, beginP);
@@ -93,7 +93,7 @@ public class TekenPanel extends JPanel {
 
     private void tekenPijl(Graphics2D g2, Point boven, Point onder) {
         double phi = Math.toRadians(20);
-        int barb = 15;
+        int barb = Math.min(boxBreedte, boxHoogte)/2;
         //Zet de kleur van de pijl
         g2.setPaint(Color.black);
         //Dit zorgt voor een mooie soepele lijn
