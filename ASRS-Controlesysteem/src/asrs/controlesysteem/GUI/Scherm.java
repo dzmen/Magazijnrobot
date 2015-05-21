@@ -9,21 +9,20 @@ import asrs.controlesysteem.bestelling.Artikel;
 import asrs.controlesysteem.bestelling.Locatie;
 import asrs.controlesysteem.bestelling.Order;
 import asrs.controlesysteem.connector.DeVerbinder;
-import asrs.controlesysteem.connector.KiesScherm;
-import asrs.controlesysteem.connector.Zender;
+/*NODIG WANNEER WE GEBRUIK MAKEN VAN ARDULINK
+ import asrs.controlesysteem.connector.KiesScherm;
+ import asrs.controlesysteem.connector.Zender;
+ import org.zu.ardulink.Link;
+ */
 import asrs.controlesysteem.readers.SQLReader;
 import asrs.controlesysteem.readers.XMLReader;
 import java.awt.event.*;
+import java.awt.print.PrinterException;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
-import org.zu.ardulink.Link;
 
-/**
- *
- * @author Quinten
- */
 public class Scherm extends JFrame implements ActionListener {
 
     private final JScrollPane scOrder;
@@ -33,7 +32,9 @@ public class Scherm extends JFrame implements ActionListener {
     private final JButton jBInvoeren, jBUitvoeren;
     private final JLabel jBbestand;
     private Order order;
+    private XMLReader xmlreader;
     private DeVerbinder arduino;
+    //NODIG WANNEER WE GEBRUIK MAKEN VAN ARDULINK
     //Zender send;
 
     public Scherm() {
@@ -80,12 +81,14 @@ public class Scherm extends JFrame implements ActionListener {
         jBUitvoeren.addActionListener(this);
         this.setVisible(true);
 
-        //Genereerd 2 dialogen waar je de usb aansluitingen voor de arduinos kan selecteren
-        //send = new Zender(this);
-        //Link magazijnLink = send.getMagazijnLink();
-        //new KiesScherm(this, magazijnLink).setVisible(true);
-        //Link inpakLink = send.getInpakLink();
-        //new KiesScherm(this, inpakLink).setVisible(true);
+        /* NODIG WANNEER WE GEBRUIK MAKEN VAN ARDULINK
+         //Genereerd 2 dialogen waar je de usb aansluitingen voor de arduinos kan selecteren
+         send = new Zender(this);
+         Link magazijnLink = send.getMagazijnLink();
+         new KiesScherm(this, magazijnLink).setVisible(true);
+         Link inpakLink = send.getInpakLink();
+         new KiesScherm(this, inpakLink).setVisible(true);
+         */
         arduino = new DeVerbinder(this);
         arduino.VerbindTSP();
     }
@@ -93,7 +96,7 @@ public class Scherm extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jBInvoeren) {
-            XMLReader xmlreader = new XMLReader();
+            xmlreader = new XMLReader();
             log("=========================================");
             log(xmlreader.getMelding());
             if (xmlreader.getCompleet()) {
@@ -131,8 +134,21 @@ public class Scherm extends JFrame implements ActionListener {
             test.add(new Locatie(2, 5));
             test.add(new Locatie(2, 3));
             arduino.stuurPakketten(test);
-            //send.startListeners();
-            //send.stuurPakketten(test);
+
+            /* NODIG WANNEER WE GEBRUIK MAKEN VAN ARDULINK
+             send.startListeners();
+             send.stuurPakketten(test);
+             */
+            //De bon kunnen we op het einde laten uitprinten
+            /*
+             JTextArea printtest = new JTextArea();
+             printOrder(xmlreader, printtest);
+             try {
+             printtest.print();
+             } catch (PrinterException ex) {
+             //Er ging iets mis
+             }
+             */
         }
     }
 
