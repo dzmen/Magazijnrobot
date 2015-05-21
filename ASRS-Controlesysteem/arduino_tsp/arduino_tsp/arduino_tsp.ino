@@ -1,6 +1,6 @@
 //Positie
-int x = 1;
-int y = 1;
+int huidigeX = 0;
+int huidigeY = 0;
 //Pinnen
 //motor
 int m1s = 5;
@@ -8,13 +8,13 @@ int m1d = 4; //ON up, OFF down
 int m2s = 7;
 int m2d = 6; //ON forward, OFF backward
 //Meters
-int ldrO = 2;
-int ldrV = 2;
-int ledO = 12;
-int ledV = 13;
+int ldrO = 0;
+int ldrV = 1;
+int ledO = 13;
+int ledV = 12;
 //Motor speed
-int m1speed = 90;
-int m2speed = 90;
+int m1speed = 110;
+int m2speed = 110;
 //Serial read
 boolean stringComplete = false;
 String inputString = "";
@@ -25,6 +25,8 @@ void setup() {
   pinMode(m2s, OUTPUT);
   pinMode(m1d, OUTPUT);
   pinMode(m2d, OUTPUT);
+  pinMode(ldrO, INPUT);
+  pinMode(ldrV, INPUT);
 }
 
 void serialEvent() {
@@ -35,7 +37,7 @@ void serialEvent() {
     inputString += inChar;
     //Wanneer hij \n ontvangt stop die
     if (inChar == '\n') {
-      stringComplete = true;
+      stringComplete = true
       //Hij haalt \n eraf zodat je de juiste string krijgt
       inputString = inputString.substring(0, inputString.length()-1);
     }
@@ -46,8 +48,12 @@ void serialEvent() {
 
 void loop() {
      if(stringComplete){
-         int x = getValue(inputString, ':', 0);
-         int y = getValue(inputString, ':', 1);
-         stringComplete = false;
+        int splitter = inputString.indexOf(':', 11 );
+        String verzending = inputString.substring(0, splitter);
+        int waarde = inputString.substring(splitter + 1).toInt;
+        if(verzending == "yas"){
+          stuurY(waarde);
+        }
+        stringComplete = false;
     }
 }

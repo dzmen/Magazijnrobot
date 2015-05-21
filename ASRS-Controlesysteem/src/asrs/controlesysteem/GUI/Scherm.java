@@ -121,14 +121,13 @@ public class Scherm extends JFrame implements ActionListener {
             //order.genereerRoute();
             log("Genereren route voltooid!");
             log("Start ophalen pakketen");
-            send.startXListener();
-            send.startYListener();
-            send.startZListener();
+            send.startListeners();
             ArrayList<Locatie> test = new ArrayList<Locatie>();
             test.add(new Locatie(2, 2));
-            test.add(new Locatie(2, 3));
             test.add(new Locatie(2, 1));
-            send.stuurPakketten(test);
+            test.add(new Locatie(2, 5));
+            test.add(new Locatie(2, 3));
+            //send.stuurPakketten(test);
             //tsp = new ArduinoTSP(this);  //creates an object of the class
             //log(tsp.getMessage());
             //tsp.Connect();
@@ -164,7 +163,7 @@ public class Scherm extends JFrame implements ActionListener {
         }
     }
 
-    private void log(String melding) {
+    public void log(String melding) {
         jTStatus.append(melding + "\n");
         jTStatus.setCaretPosition(jTStatus.getDocument().getLength());
     }
