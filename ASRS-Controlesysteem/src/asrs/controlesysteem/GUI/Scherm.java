@@ -8,6 +8,7 @@ package asrs.controlesysteem.GUI;
 import asrs.controlesysteem.bestelling.Artikel;
 import asrs.controlesysteem.bestelling.Locatie;
 import asrs.controlesysteem.bestelling.Order;
+import asrs.controlesysteem.connector.DeVerbinder;
 import asrs.controlesysteem.connector.KiesScherm;
 import asrs.controlesysteem.connector.Zender;
 import asrs.controlesysteem.readers.SQLReader;
@@ -25,15 +26,15 @@ import org.zu.ardulink.Link;
  */
 public class Scherm extends JFrame implements ActionListener {
 
-    private JScrollPane scOrder;
-    private Tekenpanel tekenpanel;
-    private JTextArea jTOrder, jTStatus;
-    private JScrollPane jSStatus;
-    private JButton jBInvoeren, jBUitvoeren;
-    private JLabel jBbestand;
+    private final JScrollPane scOrder;
+    private final Tekenpanel tekenpanel;
+    private final JTextArea jTOrder, jTStatus;
+    private final JScrollPane jSStatus;
+    private final JButton jBInvoeren, jBUitvoeren;
+    private final JLabel jBbestand;
     private Order order;
-    //private ArduinoTSP tsp;
-    Zender send;
+    private DeVerbinder arduino;
+    //Zender send;
 
     public Scherm() {
         //JFrame instellingen
@@ -80,11 +81,13 @@ public class Scherm extends JFrame implements ActionListener {
         this.setVisible(true);
 
         //Genereerd 2 dialogen waar je de usb aansluitingen voor de arduinos kan selecteren
-        send = new Zender(this);
-        Link magazijnLink = send.getMagazijnLink();
-        new KiesScherm(this, magazijnLink).setVisible(true);
-        Link inpakLink = send.getInpakLink();
-        new KiesScherm(this, inpakLink).setVisible(true);
+        //send = new Zender(this);
+        //Link magazijnLink = send.getMagazijnLink();
+        //new KiesScherm(this, magazijnLink).setVisible(true);
+        //Link inpakLink = send.getInpakLink();
+        //new KiesScherm(this, inpakLink).setVisible(true);
+        arduino = new DeVerbinder(this);
+        arduino.VerbindTSP();
     }
 
     @Override
@@ -121,24 +124,15 @@ public class Scherm extends JFrame implements ActionListener {
             //order.genereerRoute();
             log("Genereren route voltooid!");
             log("Start ophalen pakketen");
-            send.startListeners();
+            //Dit is een test array om de robot te testen
             ArrayList<Locatie> test = new ArrayList<Locatie>();
             test.add(new Locatie(2, 2));
             test.add(new Locatie(2, 1));
             test.add(new Locatie(2, 5));
             test.add(new Locatie(2, 3));
+            arduino.stuurPakketten(test);
+            //send.startListeners();
             //send.stuurPakketten(test);
-            //tsp = new ArduinoTSP(this);  //creates an object of the class
-            //log(tsp.getMessage());
-            //tsp.Connect();
-            //log(tsp.getMessage());
-            //if (tsp.getConnected()) {
-            //    log("De pakketen zullen nu worden opgehaald door de robot!");
-            //    jBUitvoeren.setEnabled(false);
-            //} else {
-            //    log("Er is een verbindings probleem!");
-            //    log("De pakketten zullen niet worden opgehaald!");
-            //}
         }
     }
 

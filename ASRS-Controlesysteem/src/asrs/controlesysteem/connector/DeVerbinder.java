@@ -43,7 +43,7 @@ public class DeVerbinder implements SerialPortEventListener {
     }
 
     //Hiermee verbind je de applicatie met de arduino
-    public void VerbindTSP() {
+    public boolean VerbindTSP() {
         //Hij kijkt of de poort bestaat waar we verbinding mee gaan maken
         CommPortIdentifier poort = null;
         try {
@@ -62,6 +62,7 @@ public class DeVerbinder implements SerialPortEventListener {
 
                     //set serial port parameters
                     TSPVerbinding.setSerialPortParams(BAUD_RATE, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+                    return true;
                 } catch (PortInUseException e) {
                     scherm.log(portTSP + " is al in gebruik door een andere applicatie!");
                 } catch (NullPointerException e2) {
@@ -87,11 +88,12 @@ public class DeVerbinder implements SerialPortEventListener {
         } else {
             scherm.log("Kan geen verbinding maken met usb");
         }
+        return false;
     }
     //end of portConncet method
 
     //Hiermee verbind je de applicatie met de arduino
-    public void VerbindBPP() {
+    public boolean VerbindBPP() {
         //Hij kijkt of de poort bestaat waar we verbinding mee gaan maken
         CommPortIdentifier poort = null;
         try {
@@ -110,6 +112,7 @@ public class DeVerbinder implements SerialPortEventListener {
 
                     //set serial port parameters
                     BPPVerbinding.setSerialPortParams(BAUD_RATE, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+                    return true;
                 } catch (PortInUseException e) {
                     scherm.log(portBPP + " is al in gebruik door een andere applicatie!");
                 } catch (NullPointerException e2) {
@@ -135,6 +138,7 @@ public class DeVerbinder implements SerialPortEventListener {
         } else {
             scherm.log("Kan geen verbinding maken met usb");
         }
+        return false;
     }
     //end of portConncet method
 
@@ -195,8 +199,11 @@ public class DeVerbinder implements SerialPortEventListener {
         } else {
             loc = route.get(huidigePakket - 1);
             try {
-                String send = "xas:" + loc.getX();
-                BPPOutput.write(send.getBytes());
+                //DIT MOET AANGEPAST WORDEN WANNEER X AS WERKT!!!!
+                //String send = "xas:" + loc.getX();
+                //BPPOutput.write(send.getBytes());
+                String send = "yas:" + loc.getY();
+                TSPOutput.write(send.getBytes());
             } catch (Exception e) {
                 System.err.println(e.toString());
             }
