@@ -96,7 +96,7 @@ public class Simpel implements Algoritmes {
 //                    b=0;
 //                }
 //                b++;
-//                
+//
 //            }
 //        }
         //vergelijk eerste functie met een t
@@ -182,7 +182,7 @@ public class Simpel implements Algoritmes {
         //check of twee parrallelen elkaar overlappen
         public boolean doesOverlap(Pijl p2) {
             boolean overlap = false;
-            if (isParrallel(p2) && p2.a == a) {
+            if (isParrallel(p2) && p2.xa == xb) {
                 for (double u = Math.min(ym, p2.ym); u < Math.max(yM, p2.yM); u = u + 0.2) {
                     if (withinbounds(u, ya, yb) && withinbounds(u, p2.ya, p2.yb)) {
                         overlap = true;

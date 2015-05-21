@@ -50,7 +50,7 @@ public class Zender {
     //De breedte van de vakken in stippen
     private int[] vakkenX = new int[]{0, 5, 7, 6, 5, 5};
     //De diepte van de vakken in stippen
-    private int[] vakkenZ = new int[]{0, 7, 4, 2, 1};
+    private int[] vakkenZ = new int[]{0, 7, 5, 3, 1};
     //Het scherm om een visuale weergave te kunnen doen
     private Scherm scherm;
     //De artikelen
@@ -63,6 +63,8 @@ public class Zender {
     private int huidigePakket = 0;
     //Dit zorgt voor de positie movement
     private int counterN = 0;
+    //Wait time
+    private int waittime = 5;
 
     public Zender(Scherm scherm) {
         this.scherm = scherm;
@@ -98,14 +100,14 @@ public class Zender {
                 stappen += vakkenX[i];
             }
             lInpak.sendPowerPinSwitch(pinXdir, IProtocol.POWER_HIGH);
-            sleep(10);
+            sleep(waittime);
             lInpak.sendPowerPinIntensity(pinXpwm, xSpeed);
         } else {
             for (int i = huidigeX; i <= loc.getX(); i++) {
                 stappen += vakkenX[i];
             }
             lInpak.sendPowerPinSwitch(pinXdir, IProtocol.POWER_LOW);
-            sleep(10);
+            sleep(waittime);
             lInpak.sendPowerPinIntensity(pinXpwm, xSpeed);
         }
         counterN = stappen;
@@ -115,14 +117,14 @@ public class Zender {
     private void stuurY() {
         int stappen = 0;
         lMagazijn.sendPowerPinSwitch(pinYLed, IProtocol.POWER_HIGH);
-        if (huidigeX - loc.getX() < 0) {
+        if (loc.getY() - huidigeY < 0) {
             //Deze code werkt
-            for (int i = huidigeY; i >= loc.getY(); i--) {
+            for (int i = huidigeY - 1; i >= loc.getY(); i--) {
                 stappen += vakkenY[i];
             }
             System.out.println("Aantal Y 1 stappen: " + stappen);
-            lMagazijn.sendPowerPinSwitch(pinYdir, IProtocol.POWER_HIGH);
-            sleep(10);
+            lMagazijn.sendPowerPinSwitch(pinYdir, IProtocol.POWER_LOW);
+            sleep(waittime);
             lMagazijn.sendPowerPinIntensity(pinYpwm, ySpeed);
         } else {
             //Deze code werkt
@@ -131,7 +133,7 @@ public class Zender {
             }
             System.out.println("Aantal 2 stappen: " + stappen);
             lMagazijn.sendPowerPinSwitch(pinYdir, IProtocol.POWER_HIGH);
-            sleep(10);
+            sleep(waittime);
             lMagazijn.sendPowerPinIntensity(pinYpwm, ySpeed);
         }
         counterN = stappen;
@@ -143,15 +145,15 @@ public class Zender {
             this.stap = 3;
             counterN = vakkenZ[huidigePakket];
             lMagazijn.sendPowerPinSwitch(pinZLed, IProtocol.POWER_HIGH);
-            sleep(10);
+            sleep(waittime);
             lMagazijn.sendPowerPinSwitch(pinZdir, IProtocol.POWER_HIGH);
             lMagazijn.sendPowerPinIntensity(pinZpwm, zSpeed);
         }
         if (stap == 2) {
             this.stap = 4;
-            counterN = 2;
+            counterN = 3;
             lMagazijn.sendPowerPinSwitch(pinYLed, IProtocol.POWER_HIGH);
-            sleep(10);
+            sleep(waittime);
             lMagazijn.sendPowerPinSwitch(pinYdir, IProtocol.POWER_HIGH);
             lMagazijn.sendPowerPinIntensity(pinYpwm, ySpeed);
         }
@@ -159,15 +161,15 @@ public class Zender {
             this.stap = 5;
             counterN = vakkenZ[huidigePakket];
             lMagazijn.sendPowerPinSwitch(pinZLed, IProtocol.POWER_HIGH);
-            sleep(10);
+            sleep(waittime);
             lMagazijn.sendPowerPinSwitch(pinZdir, IProtocol.POWER_LOW);
             lMagazijn.sendPowerPinIntensity(pinZpwm, zSpeed);
         }
         if (stap == 4) {
             this.stap = 6;
-            counterN = 2;
+            counterN = 3;
             lMagazijn.sendPowerPinSwitch(pinYLed, IProtocol.POWER_HIGH);
-            sleep(10);
+            sleep(waittime);
             lMagazijn.sendPowerPinSwitch(pinYdir, IProtocol.POWER_LOW);
             lMagazijn.sendPowerPinIntensity(pinYpwm, ySpeed);
         } else if (stap == 5) {
@@ -210,7 +212,7 @@ public class Zender {
                         counter = 0;
                         counterN = 0;
                         lInpak.sendPowerPinIntensity(pinXpwm, IProtocol.POWER_LOW);
-                        sleep(10);
+                        sleep(waittime);
                         lInpak.sendPowerPinSwitch(pinXLed, IProtocol.POWER_LOW);
                         stap = 2;
                         stuurY();
@@ -249,7 +251,7 @@ public class Zender {
                             counter = 0;
                             counterN = 0;
                             lMagazijn.sendPowerPinIntensity(pinYpwm, IProtocol.POWER_LOW);
-                            sleep(10);
+                            sleep(waittime);
                             lMagazijn.sendPowerPinSwitch(pinYLed, IProtocol.POWER_LOW);
                             if (stap == 2) {
                                 pakPakket(1);
@@ -294,7 +296,7 @@ public class Zender {
                             counter = 0;
                             counterN = 0;
                             lMagazijn.sendPowerPinIntensity(pinZpwm, IProtocol.POWER_LOW);
-                            sleep(10);
+                            sleep(waittime);
                             lMagazijn.sendPowerPinSwitch(pinZLed, IProtocol.POWER_LOW);
                             if (stap == 3) {
                                 pakPakket(2);
