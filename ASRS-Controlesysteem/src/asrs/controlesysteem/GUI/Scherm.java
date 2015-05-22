@@ -133,7 +133,7 @@ public class Scherm extends JFrame implements ActionListener {
             //test.add(new Locatie(2, 1));
             //test.add(new Locatie(2, 5));
             //test.add(new Locatie(2, 4));
-            //arduino.stuurPakketten(test);
+            arduino.stuurPakketten(test);
 
             /* NODIG WANNEER WE GEBRUIK MAKEN VAN ARDULINK
              send.startListeners();

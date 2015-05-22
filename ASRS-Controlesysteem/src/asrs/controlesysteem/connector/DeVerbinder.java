@@ -182,6 +182,8 @@ public class DeVerbinder implements SerialPortEventListener {
     private void stuurPakketten() {
         huidigePakket++;
         if (huidigePakket > route.size()) {
+            scherm.log("Pakketten zullen nu naar de bakken gebracht worden!");
+            sendBPP("xas:0");
             dropPakketten();
         } else {
             loc = route.get(huidigePakket - 1).getLocatie();
@@ -201,7 +203,6 @@ public class DeVerbinder implements SerialPortEventListener {
             //Uitvoeren
             try {
                 sendBPP("zetdoos:" + huidigePakket);
-                sendBPP("xas:0");
             } catch (Exception e) {
                 System.err.println(e.toString());
             }

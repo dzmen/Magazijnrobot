@@ -25,6 +25,7 @@ public class AlgoritmeTSP {
 
     public void berekenRoute() {
         Artikel start = new Artikel(1, 1, 1, "temp", new Locatie(1, 1));
+        route.add(start);
         while (posities.size() > 0) {
             Artikel temploc = null;
             int tempafstand = 9999;
