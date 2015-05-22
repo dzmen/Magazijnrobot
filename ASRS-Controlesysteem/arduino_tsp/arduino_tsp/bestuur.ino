@@ -1,8 +1,8 @@
 //Positie
 int huidigeY = 0;
 //De stippen per vak
-int vakkenY[] = {0, 6, 7, 6, 5, 6};
-int vakkenZ[] = {0, 9, 7, 5, 1, 5};
+int vakkenY[] = {0, 8, 6, 6, 7, 6};
+int vakkenZ[] = {0, 8, 5, 4, 2};
 //Motor speed
 int ySpeed = 110;
 int zSpeed = 110;
@@ -12,29 +12,50 @@ boolean tellenZ = false;
 int tetellen = 0;
 int getelt = 0;
 //LDR waardes
-int ldrYwaarde = 170;
-int ldrZwaarde = 450;
+int ldrYwaarde = 190;
+int ldrZwaarde = 550;
 //Om een count loop te voorkomen
 boolean wachtenY = false;
 boolean wachtenZ = false;
 
 //Deze functie telt de gaatjes van de Y as die hij voorbij gaat
-void tellenYas(){
-  if(tellenY && digitalRead(ldrY) > ldrYwaarde && wachtenY == false){
+boolean tellenYas(){
+  if(tellenY && analogRead(ldrY) > ldrYwaarde && wachtenY == false){
+    //Serial.println("Y as: ");
+    //Serial.println(getelt);
     getelt++;
     wachtenY = true;
-  }else if(tellenY && digitalRead(ldrY) < ldrYwaarde && wachtenY == true){
+  }else if(tellenY && analogRead(ldrY) < ldrYwaarde && wachtenY == true){
     wachtenY = false;
+  }
+  if(getelt < tetellen){
+    return false;
+  }else{
+    //De counters weer resetten wanneer hij klaar is
+    tellenY = false;
+    resetTeller();
+    return true;
   }
 }
 
 //Deze functie telt de gaatjes van de Z as die hij voorbij gaat
-void tellenZas(){
-  if(tellenZ && digitalRead(ldrZ) > ldrZwaarde && wachtenZ == false){
+boolean tellenZas(){
+  if(tellenZ && analogRead(ldrZ) > ldrZwaarde && wachtenZ == false){
+    //Serial.println("Z as: ");
+   //Serial.println(getelt);
     getelt++;
     wachtenZ = true;
-  }else if(tellenZ && digitalRead(ldrZ) < ldrZwaarde && wachtenZ == true){
+  }else if(tellenZ && analogRead(ldrZ) < ldrZwaarde && wachtenZ == true){
     wachtenZ = false;
+  }
+  if(getelt < tetellen){
+    return false;
+  }else{
+    //De counters weer resetten wanneer hij klaar is
+    tellenZ = false;
+    resetTeller();
+    delay(800);
+    return true;
   }
 }
 
@@ -48,13 +69,14 @@ void stuurY(int yas){
     for (int i = huidigeY; i > yas; i--) {
        stappen += vakkenY[i];
     }
+    //Serial.println(stappen);
     tellenY = true;
     tetellen = stappen;
     digitalWrite(pinYdir, LOW);
-    analogWrite(pinYpwm, ySpeed);
+    analogWrite(pinYpwm, ySpeed - 30);
   //Dit is naar boven
   }else if(yas - huidigeY > 0){
-    for (int i = huidigeY; i <= yas; i++) {
+    for (int i = huidigeY + 1; i <= yas; i++) {
        stappen += vakkenY[i];
     }
     tellenY = true;
@@ -62,15 +84,17 @@ void stuurY(int yas){
     digitalWrite(pinYdir, HIGH);
     analogWrite(pinYpwm, ySpeed);
   }
+  Serial.println("Geteld: ");
+  Serial.println(getelt);
+  Serial.println("Tetellen: ");
+  Serial.println(tetellen);
   //Wachten tot hij op de juiste positie staat
-  while(getelt <= tetellen);
+  while(!tellenYas());
   //Schakel de motor en lampje van Y as uit
   analogWrite(pinYpwm, 0);
   digitalWrite(ledY, LOW);
   //De counters weer resetten wanneer hij klaar is
   huidigeY = yas;
-  tellenY = false;
-  resetTeller();
   Serial.println("ydone");
 }
 
@@ -84,29 +108,24 @@ void pakPakket(int pakket){
   digitalWrite(pinZdir, HIGH);
   analogWrite(pinZpwm, zSpeed);
   //Wachten tot die op positie is
-  while(getelt <= tetellen);
+  while(!tellenZas()); 
     //Schakel de motor en lampje van Y as uit
   analogWrite(pinZpwm, 0);
   //De counters weer resetten wanneer hij klaar is
-  tellenZ = false;
-  resetTeller();
   //Einde Z as naar voren
-  
   
   //Begin Y as omhoog
   //Start de counter
   digitalWrite(ledY, HIGH);
-  tellenZ = true;
+  tellenY = true;
   //Start de motor
   digitalWrite(pinYdir, HIGH);
   analogWrite(pinYpwm, ySpeed);
   //Wachten tot die op positie is
-  while(getelt <= 2);
+  tetellen = 2;
+  while(!tellenYas());
   //Schakel de motor en lampje van Y as uit
   analogWrite(pinYpwm, 0);
-  //De counters weer resetten wanneer hij klaar is
-  tellenY = false;
-  resetTeller();
   //Einde Y as omhoog
   
   
@@ -116,31 +135,29 @@ void pakPakket(int pakket){
   tellenZ = true;
   //Start de motor
   digitalWrite(pinZdir, LOW);
-  analogWrite(pinZpwm, zSpeed);
+  analogWrite(pinZpwm, zSpeed + 30);
   //Wachten tot die op positie is
-  while(getelt <= tetellen);
+  Serial.println("Tetellen:");
+  Serial.println(tetellen);
+  while(!tellenZas());
   //Schakel de motor en lampje van Y as uit
   analogWrite(pinZpwm, 0);
   //De counters weer resetten wanneer hij klaar is
-  tellenZ = false;
   digitalWrite(ledZ, LOW);
-  resetTeller();
   //Einde Z as naar achter
   
   //Begin Y as omlaag
   //Start de counter
-  tellenZ = true;
+  tellenY = true;
   //Start de motor
   digitalWrite(pinYdir, LOW);
-  analogWrite(pinYpwm, ySpeed);
+  analogWrite(pinYpwm, ySpeed - 20);
   //Wachten tot die op positie is
-  while(getelt <= 2);
+  tetellen = 2;
+  while(!tellenYas());
   //Schakel de motor en lampje van Y as uit
   analogWrite(pinYpwm, 0);
-  //De counters weer resetten wanneer hij klaar is
-  tellenY = false;
   digitalWrite(ledY, LOW);
-  resetTeller();
   //Einde Y as omlaag
   Serial.println("pakketdone");
   //JAJA, hij is eindelijk klaar :D

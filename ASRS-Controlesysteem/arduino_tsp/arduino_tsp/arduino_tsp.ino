@@ -2,8 +2,8 @@
 //motor
 int pinYpwm = 5;
 int pinYdir = 4; //ON up, OFF down
-int pinZpwm = 7;
-int pinZdir = 6; //ON forward, OFF backward
+int pinZpwm = 6;
+int pinZdir = 7; //ON forward, OFF backward
 //Meters
 int ldrY = 0;
 int ldrZ = 1;
@@ -44,14 +44,20 @@ void serialEvent() {
 
 void loop() {
      if(stringComplete){
-        int splitter = inputString.indexOf(':', 11 );
+        Serial.println("String received");
+        int splitter = inputString.indexOf(':');
         String verzending = inputString.substring(0, splitter);
         int waarde = inputString.substring(splitter + 1).toInt();
+        Serial.println(inputString);
         if(verzending == "yas"){
+          Serial.println("We gaan de y sturen");
           stuurY(waarde);
-        }else if(verzending == "getpakket"){
+        }
+        if(verzending == "getpakket"){
+          Serial.println("We gaan het pakket ophalen");
           pakPakket(waarde);
         }
+        inputString = "";
         stringComplete = false;
     }
     tellenYas();

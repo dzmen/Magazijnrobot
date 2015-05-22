@@ -17,13 +17,16 @@ import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 import gnu.io.PortInUseException;
 import gnu.io.UnsupportedCommOperationException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DeVerbinder implements SerialPortEventListener {
 
     private SerialPort TSPVerbinding, BPPVerbinding;
-    private String portTSP = "COM13";             //De poort waarmee de applicatie moet verbinden
-    private String portBPP = "COM12";             //De poort waarmee de applicatie moet verbinden
+    private final String portTSP = "COM4";             //De poort waarmee de applicatie moet verbinden
+    private final String portBPP = "COM12";             //De poort waarmee de applicatie moet verbinden
     private static final int TIME_OUT = 2000;    //time in milliseconds (De wachtijd hoelang het kan duren voor een antwoord)
     private static final int BAUD_RATE = 9600; //baud rate to 9600bps (de snelheid waarmee de applicatie communiseerd met de arduino)
     private BufferedReader BPPInput, TSPInput;
@@ -62,7 +65,6 @@ public class DeVerbinder implements SerialPortEventListener {
 
                     //set serial port parameters
                     TSPVerbinding.setSerialPortParams(BAUD_RATE, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
-                    return true;
                 } catch (PortInUseException e) {
                     scherm.log(portTSP + " is al in gebruik door een andere applicatie!");
                 } catch (NullPointerException e2) {
@@ -79,6 +81,7 @@ public class DeVerbinder implements SerialPortEventListener {
                     TSPVerbinding.addEventListener(this);
                     TSPVerbinding.notifyOnDataAvailable(true);
                     TSPVerbinding.notifyOnOutputEmpty(true);
+                    return true;
                 } catch (Exception e) {
                     System.out.println(e.toString());
                 }
@@ -150,10 +153,10 @@ public class DeVerbinder implements SerialPortEventListener {
                 String inputLine = TSPInput.readLine();
                 System.out.println(inputLine);
                 if (inputLine.equalsIgnoreCase("ydone")) {
-                    String send = "getpakket:" + huidigePakket;
-                    TSPOutput.write(send.getBytes());
+                    sendTSP("getpakket:" + huidigePakket);
                     //todo
-                } else if (inputLine.equalsIgnoreCase("pakketdone")) {
+                }
+                if (inputLine.equalsIgnoreCase("pakketdone")) {
                     stuurPakketten();
                 }
             } catch (Exception e) {
@@ -161,7 +164,7 @@ public class DeVerbinder implements SerialPortEventListener {
             }
         } else if (evt.getEventType() == SerialPortEvent.DATA_AVAILABLE && evt.getSource() == BPPVerbinding) { //if data available on serial port
             try {
-                String inputLine = TSPInput.readLine();
+                String inputLine = BPPInput.readLine();
                 System.out.println(inputLine);
                 if (inputLine.equalsIgnoreCase("xdone")) {
                     String send = "yas:" + loc.getY();
@@ -202,11 +205,19 @@ public class DeVerbinder implements SerialPortEventListener {
                 //DIT MOET AANGEPAST WORDEN WANNEER X AS WERKT!!!!
                 //String send = "xas:" + loc.getX();
                 //BPPOutput.write(send.getBytes());
-                String send = "yas:" + loc.getY();
-                TSPOutput.write(send.getBytes());
+                sendTSP("yas:" + loc.getY());
             } catch (Exception e) {
                 System.err.println(e.toString());
             }
+        }
+    }
+
+    private void sendTSP(String data) {
+        data = data + '\n';
+        try {
+            TSPOutput.write(data.getBytes());
+        } catch (IOException ex) {
+            System.out.println("TSP data niet verzonden");
         }
     }
 }

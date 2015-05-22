@@ -128,11 +128,11 @@ public class Scherm extends JFrame implements ActionListener {
             log("Genereren route voltooid!");
             log("Start ophalen pakketen");
             //Dit is een test array om de robot te testen
-            ArrayList<Locatie> test = new ArrayList<Locatie>();
+            ArrayList<Locatie> test = new ArrayList<>();
             test.add(new Locatie(2, 2));
             test.add(new Locatie(2, 1));
             test.add(new Locatie(2, 5));
-            test.add(new Locatie(2, 3));
+            test.add(new Locatie(2, 4));
             arduino.stuurPakketten(test);
 
             /* NODIG WANNEER WE GEBRUIK MAKEN VAN ARDULINK
