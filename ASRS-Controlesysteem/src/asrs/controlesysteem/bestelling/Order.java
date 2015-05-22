@@ -5,7 +5,8 @@
  */
 package asrs.controlesysteem.bestelling;
 
-import asrs.controlesysteem.TSP.Algoritme;
+import asrs.controlesysteem.BPP.AlgoritmeBPP;
+import asrs.controlesysteem.TSP.AlgoritmeTSP;
 import asrs.controlesysteem.readers.SQLReader;
 import asrs.controlesysteem.readers.XMLReader;
 import java.util.ArrayList;
@@ -17,8 +18,7 @@ import java.util.ArrayList;
 public class Order {
 
     private ArrayList<Integer> artikelnrs;
-    private ArrayList<Artikel> artikelen;
-    private ArrayList<Locatie> route;
+    private ArrayList<Artikel> artikelen, doos1, doos2, route;
     private ArrayList<Locatie> locatie;
     private ArrayList<Artikel> nietBeschikbaar;
 
@@ -52,16 +52,23 @@ public class Order {
     }
 
     public void genereerRoute() {
-        Algoritme simpel = new Algoritme(this);
+        AlgoritmeTSP simpel = new AlgoritmeTSP(this);
         simpel.berekenRoute();
         this.route = simpel.getRoute();
+    }
+
+    public void genereerDozen() {
+        AlgoritmeBPP fill = new AlgoritmeBPP(this);
+        fill.runAlgorithm();
+        doos1 = fill.getDoos1();
+        doos2 = fill.getDoos2();
     }
 
     public ArrayList<Artikel> getArtikelen() {
         return artikelen;
     }
 
-    public ArrayList<Locatie> getRoute() {
+    public ArrayList<Artikel> getRoute() {
         return route;
     }
 }

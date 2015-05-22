@@ -124,16 +124,16 @@ public class Scherm extends JFrame implements ActionListener {
         //if (e.getSource() == jBUitvoeren && order != null) {
         if (e.getSource() == jBUitvoeren) {
             log("Start genereren route");
-            //order.genereerRoute();
+            order.genereerRoute();
             log("Genereren route voltooid!");
             log("Start ophalen pakketen");
             //Dit is een test array om de robot te testen
-            ArrayList<Locatie> test = new ArrayList<>();
-            test.add(new Locatie(2, 2));
-            test.add(new Locatie(2, 1));
-            test.add(new Locatie(2, 5));
-            test.add(new Locatie(2, 4));
-            arduino.stuurPakketten(test);
+            ArrayList<Artikel> test = new ArrayList<>();
+            test.add(new Artikel(1, 1, 1, "temp", new Locatie(2, 2)));
+            //test.add(new Locatie(2, 1));
+            //test.add(new Locatie(2, 5));
+            //test.add(new Locatie(2, 4));
+            //arduino.stuurPakketten(test);
 
             /* NODIG WANNEER WE GEBRUIK MAKEN VAN ARDULINK
              send.startListeners();
@@ -192,7 +192,7 @@ public class Scherm extends JFrame implements ActionListener {
         //Kijken of hij klaar is met tekenen
         if (loc < order.getRoute().size()) {
             for (int i = 0; i <= loc; i++) {
-                locaties.add(order.getRoute().get(i));
+                locaties.add(order.getRoute().get(i).getLocatie());
             }
             order.setLocatie(locaties);
             tekenpanel.repaint();

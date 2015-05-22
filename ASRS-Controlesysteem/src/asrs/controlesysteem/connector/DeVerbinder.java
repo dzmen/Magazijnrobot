@@ -6,6 +6,7 @@
 package asrs.controlesysteem.connector;
 
 import asrs.controlesysteem.GUI.Scherm;
+import asrs.controlesysteem.bestelling.Artikel;
 import asrs.controlesysteem.bestelling.Locatie;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -19,8 +20,6 @@ import gnu.io.PortInUseException;
 import gnu.io.UnsupportedCommOperationException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class DeVerbinder implements SerialPortEventListener {
 
@@ -32,9 +31,9 @@ public class DeVerbinder implements SerialPortEventListener {
     private BufferedReader BPPInput, TSPInput;
     private OutputStream BPPOutput, TSPOutput;
     //Variable voor de route
-    private Scherm scherm;
+    private final Scherm scherm;
     //De artikelen
-    private ArrayList<Locatie> route;
+    private ArrayList<Artikel> route;
     //De locatie van de op te halen artikel
     private Locatie loc;
     //Huidige pakket
@@ -153,7 +152,7 @@ public class DeVerbinder implements SerialPortEventListener {
                 String inputLine = TSPInput.readLine();
                 System.out.println(inputLine);
                 if (inputLine.equalsIgnoreCase("ydone")) {
-                    sendTSP("getpakket:" + huidigePakket);
+                    sendTSP("krijgpakket:" + huidigePakket);
                     //todo
                 }
                 if (inputLine.equalsIgnoreCase("pakketdone")) {
@@ -167,8 +166,7 @@ public class DeVerbinder implements SerialPortEventListener {
                 String inputLine = BPPInput.readLine();
                 System.out.println(inputLine);
                 if (inputLine.equalsIgnoreCase("xdone")) {
-                    String send = "yas:" + loc.getY();
-                    TSPOutput.write(send.getBytes());
+                    sendTSP("yas:" + loc.getY());
                 }
             } catch (Exception e) {
                 System.err.println(e.toString());
@@ -176,21 +174,7 @@ public class DeVerbinder implements SerialPortEventListener {
         }
     }
 
-    //closePort method
-    public void close() {
-        if (TSPVerbinding != null) {
-            TSPVerbinding.close(); //close serial port
-            TSPInput = null;        //close input and output streams
-            TSPOutput = null;
-        }
-        if (BPPVerbinding != null) {
-            BPPVerbinding.close(); //close serial port
-            BPPInput = null;        //close input and output streams
-            BPPOutput = null;
-        }
-    }
-
-    public void stuurPakketten(ArrayList<Locatie> route) {
+    public void stuurPakketten(ArrayList<Artikel> route) {
         this.route = new ArrayList<>(route);
         stuurPakketten();
     }
@@ -198,17 +182,31 @@ public class DeVerbinder implements SerialPortEventListener {
     private void stuurPakketten() {
         huidigePakket++;
         if (huidigePakket > route.size()) {
-            //Done met pakken
+            dropPakketten();
         } else {
-            loc = route.get(huidigePakket - 1);
+            loc = route.get(huidigePakket - 1).getLocatie();
             try {
                 //DIT MOET AANGEPAST WORDEN WANNEER X AS WERKT!!!!
-                //String send = "xas:" + loc.getX();
-                //BPPOutput.write(send.getBytes());
+                //sendBPP("xas:" + loc.getX());
                 sendTSP("yas:" + loc.getY());
             } catch (Exception e) {
                 System.err.println(e.toString());
             }
+        }
+    }
+
+    private void dropPakketten() {
+        huidigePakket--;
+        if (huidigePakket > 0) {
+            //Uitvoeren
+            try {
+                sendBPP("zetdoos:" + huidigePakket);
+                sendBPP("xas:0");
+            } catch (Exception e) {
+                System.err.println(e.toString());
+            }
+        } else {
+            //Helemaal klaar
         }
     }
 
@@ -218,6 +216,15 @@ public class DeVerbinder implements SerialPortEventListener {
             TSPOutput.write(data.getBytes());
         } catch (IOException ex) {
             System.out.println("TSP data niet verzonden");
+        }
+    }
+
+    private void sendBPP(String data) {
+        data = data + '\n';
+        try {
+            BPPOutput.write(data.getBytes());
+        } catch (IOException ex) {
+            System.out.println("BPP data niet verzonden");
         }
     }
 }

@@ -18,6 +18,15 @@ public class Artikel {
     private String naam;
     private Locatie loc;
 
+    public Artikel(int artikelNr, int grote, int aantal, String naam, Locatie loc) {
+        this.aantal = aantal;
+        this.artikelNr = artikelNr;
+        this.grote = grote;
+        this.aantal = aantal;
+        this.naam = naam;
+        this.loc = loc;
+    }
+
     public Artikel(SQLReader sql, int nr) {
         ArrayList<Object> artikel = sql.getArtikel(nr);
         this.artikelNr = nr;

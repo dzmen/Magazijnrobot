@@ -14,30 +14,25 @@ import asrs.controlesysteem.bestelling.Order;
  *
  * @author Danny
  */
-public class Algoritme {
+public class AlgoritmeTSP {
 
-    private ArrayList<Locatie> posities;
-    private ArrayList<Locatie> route;
+    private final ArrayList<Artikel> posities, route;
 
-    public Algoritme(Order order) {
-        this.posities = new ArrayList<>();
-        for (Artikel art : order.getArtikelen()) {
-            this.posities.add(art.getLocatie());
-        }
+    public AlgoritmeTSP(Order order) {
+        this.posities = new ArrayList<>(order.getArtikelen());
         this.route = new ArrayList<>();
     }
 
     public void berekenRoute() {
-        Locatie start = new Locatie(1, 5);
-        route.add(start);
+        Artikel start = new Artikel(1, 1, 1, "temp", new Locatie(1, 1));
         while (posities.size() > 0) {
-            Locatie temploc = null;
+            Artikel temploc = null;
             int tempafstand = 9999;
-            for (Locatie loc : posities) {
-                int afstand = start.afstandTot(loc);
+            for (Artikel art : posities) {
+                int afstand = start.getLocatie().afstandTot(art.getLocatie());
                 if (afstand < tempafstand) {
                     tempafstand = afstand;
-                    temploc = loc;
+                    temploc = art;
                 }
             }
             route.add(temploc);
@@ -46,7 +41,7 @@ public class Algoritme {
         }
     }
 
-    public ArrayList<Locatie> getRoute() {
+    public ArrayList<Artikel> getRoute() {
         return this.route;
     }
 }
