@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class Gretig extends Template {
 
     @Override
+    // de pakketten worden van voor naar achter gewoon in de dozen geplaatst.
     public ArrayList<Doos> runAlgorithm(ArrayList<Doos> dozen, ArrayList<Pakket> pakket) {
         ArrayList<Pakket> pakketten = new ArrayList<>(pakket);
         this.fillboxes(dozen, pakketten);

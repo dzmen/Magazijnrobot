@@ -31,17 +31,22 @@ import javax.swing.ScrollPaneConstants;
  * @author Hugo
  */
 public class Scherm extends JFrame implements ActionListener {
-
+    // Weergave van het bpp model
     private Graphicspanel tekenscherm;
+    // Weergave van de resultaten
     private Logpanel tekstpanel;
+    // scrollbarpaneel 
     private JScrollPane Scrollscherm;
+    // knoppen
     private JButton genereerPakketten, uitvoeren, gemiddelde;
+    // algoritmeselectie
     private JComboBox selectAlgoritme;
+    //resultaten
     private ArrayList<Resultaat> resultaten;
     int Tottime = 0; 
     int Totdozen = 0;
     Resultaat nieuwste = null;
-
+    // Het formaat van het scherm wordt automatisch aaangepast aan de grootte van het scherm.
     public Scherm() {
         // width
         int ScreenWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() * 0.8);
@@ -55,6 +60,7 @@ public class Scherm extends JFrame implements ActionListener {
         this.setTitle("BPP-simulator");
         ScreenHeight = ScreenHeight - 60;
         ScreenWidth = ScreenWidth - 25;
+        this.setResizable(false);
 
         //Graphicspanel dimension setup
         int xbound = 0;
@@ -120,16 +126,17 @@ public class Scherm extends JFrame implements ActionListener {
 
     }
     int aangeklikt = 0;
-
+    // Executeables
     @Override
     public void actionPerformed(ActionEvent e) {
-        
+        // Genereert een willekeurig aantal pakketten
         if (e.getSource() == genereerPakketten) {
             aangeklikt++;
 
             //pakketten genereren
             tekenscherm.getOrder().genPackets(9, 10);
             tekenscherm.repaint();
+            //Afgesloten knoppen worden geactiveerd omdat er data is om mee te werken.
             if (aangeklikt > 0) {
                 selectAlgoritme.setEnabled(true);
                 uitvoeren.setEnabled(true);
@@ -146,6 +153,7 @@ public class Scherm extends JFrame implements ActionListener {
             }
 
         }
+        //uitvoeren van een algortime
         if (e.getSource() == uitvoeren) {
             long time = System.currentTimeMillis();
             int time2;
@@ -154,11 +162,13 @@ public class Scherm extends JFrame implements ActionListener {
           //  dozen = tekenscherm.getOrder().getDozen();
             tekenscherm.getOrder().emptyDozen();
             tekstpanel.append("\nAlgoritme is uitgevoerd\n");
+            // algoritme selecteren
             if (selectAlgoritme.getSelectedIndex() == 0) {
                 //todo first pick algoritme
                 Gretig a = new Gretig();
                 tekenscherm.getOrder().setDozen(a.runAlgorithm(tekenscherm.getOrder().getDozen(), tekenscherm.getOrder().getPakketten()));
                 time2 = (int) (System.currentTimeMillis() - time);
+                // resultaten algoritme weergeven
                 tekstpanel.append(nieuwste.updateResult(0, "First Pick", time2, tekenscherm.getOrder().getDozen()));
                
                     Tottime = Tottime + time2;
@@ -170,6 +180,7 @@ public class Scherm extends JFrame implements ActionListener {
                 //todo numeriek algoritme
                 tekenscherm.getOrder().setDozen(a.runAlgorithm(tekenscherm.getOrder().getDozen(), tekenscherm.getOrder().getPakketten()));
                 time2 = (int) (System.currentTimeMillis() - time);
+                // resultaten algoritme weergeven
                  tekstpanel.append(nieuwste.updateResult(1, "Numeriek", time2, tekenscherm.getOrder().getDozen()));
                  
                    Tottime = Tottime + time2;
@@ -180,6 +191,7 @@ public class Scherm extends JFrame implements ActionListener {
                 Size a = new Size();
                 tekenscherm.getOrder().setDozen(a.runAlgorithm(tekenscherm.getOrder().getDozen(), tekenscherm.getOrder().getPakketten()));
                 time2 = (int) (System.currentTimeMillis() - time);
+                // resultaten algoritme weergeven
                  tekstpanel.append(nieuwste.updateResult(2, "Size", time2, tekenscherm.getOrder().getDozen())) ;
                  
                    Tottime = Tottime + time2;
@@ -190,6 +202,7 @@ public class Scherm extends JFrame implements ActionListener {
                 Fill a = new Fill();
                 tekenscherm.getOrder().setDozen(a.runAlgorithm(tekenscherm.getOrder().getDozen(), tekenscherm.getOrder().getPakketten()));
                 time2 = (int) (System.currentTimeMillis() - time);
+                // resultaten algoritme weergeven
                 tekstpanel.append (nieuwste.updateResult(0, "Fill", time2, tekenscherm.getOrder().getDozen()));
                 
                   Tottime = Tottime + time2;
@@ -199,13 +212,13 @@ public class Scherm extends JFrame implements ActionListener {
             time = System.currentTimeMillis() - time;
             
      
-            //algoritmes uitvoeren
-            for (Doos ab : tekenscherm.getOrder().getDozen()) {
-                System.out.println("\nDoos");
-                for (Pakket ac : ab.getPakketten()) {
-                    System.out.println("- " + ac.getSize());
-                }
-            }
+//            // dozen herinladen
+//            for (Doos ab : tekenscherm.getOrder().getDozen()) {
+//                System.out.println("\nDoos");
+//                for (Pakket ac : ab.getPakketten()) {
+//                    System.out.println("- " + ac.getSize());
+//                }
+//            }
             tekenscherm.repaint();
         }
         if (e.getSource() == gemiddelde) {

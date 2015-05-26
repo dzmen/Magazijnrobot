@@ -6,6 +6,7 @@ package bpp.sim;
 
 import java.util.ArrayList;
 
+// Dit is het systeem dat de dozen en pakketten aanmaakt.
 public class Sorter {
 
     private ArrayList<Doos> dozen = new ArrayList<>();
@@ -40,7 +41,7 @@ public class Sorter {
     public void setDozen(ArrayList<Doos> lijst) {
         this.dozen = lijst;
     }
-
+    // dozen worden leeggemaakt.
     public void emptyDozen() {
         for (Doos a : dozen) {
             a.Clear();

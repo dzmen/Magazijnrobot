@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class Size extends Template {
 
     @Override
+    //
     public ArrayList<Doos> runAlgorithm(ArrayList<Doos> dozen, ArrayList<Pakket> pakkett) {
         ArrayList<Pakket> pakketten = new ArrayList<>(pakkett);
         ArrayList<Pakket> newpacks = new ArrayList<>();
@@ -23,13 +24,16 @@ public class Size extends Template {
         while (pakketten.size() > 0) {
             double smallest = 1;
             int pakket = 0;
+            // kleinste wordt geselecteerd
             for (int a = 0; a < pakketten.size(); a++) {
                 if (pakketten.get(a).getSize() < smallest) {
                     pakket = a;
                     smallest = pakketten.get(a).getSize();
                 }
             }
+            //kleinste pakket wordt aan nieuwe lijst toegevoegd
             newpacks.add(pakketten.get(pakket));
+            // kleinste pakket wordt verwijdert uit de oude lijst
             pakketten.remove(pakket);
 
         }
