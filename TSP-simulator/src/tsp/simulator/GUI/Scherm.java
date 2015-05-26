@@ -107,8 +107,13 @@ public class Scherm extends JFrame implements ActionListener {
         bOrder.setBounds(200, 410, 150, 25);
     }
 
+    int gen1 = 0, gen2 = 0, gen3 = 0;
+    long time1 = 0, time2 = 0, time3 = 0;
+    int leng1 = 0, leng2 = 0, leng3 = 0;
+
     @Override
     public void actionPerformed(ActionEvent e) {
+
         if (e.getSource().equals(bOrder)) {
             //Maak een nieuwe order
             this.order = new Order(this);
@@ -128,6 +133,24 @@ public class Scherm extends JFrame implements ActionListener {
         }
         if (e.getSource().equals(bUitvoeren)) {
             order.genereerRoute(dAlgoritme.getSelectedIndex());
+            switch (dAlgoritme.getSelectedIndex()) {
+                case 0:
+                    gen1++;
+                    time1 = time1 + order.getBerekenTijd();
+                    leng1 = leng1 + order.getLengte();
+                    this.setGemiddelde(0, time1, leng1, gen1);
+                case 1:
+                    gen2++;
+                    time2 = time2 + order.getBerekenTijd();
+                    leng2 = leng2 + order.getLengte();
+                    this.setGemiddelde(1, time2, leng2, gen2);
+                case 2:
+                    gen3++;
+                    time3 = time3 + order.getBerekenTijd();
+                    leng3 = leng3 + order.getLengte();
+                    this.setGemiddelde(2, time3, leng3, gen3);
+
+            }
             tLog.append("Generatietijd: " + order.getBerekenTijd() + " nanoseconden\n");
             tLog.append("Afstand: " + order.getLengte() + " schappen waar hij langs gaat\n");
             setResultaat(dAlgoritme.getSelectedIndex(), order.getBerekenTijd(), order.getLengte());
@@ -138,7 +161,6 @@ public class Scherm extends JFrame implements ActionListener {
     }
 
     private void setResultaat(int algoritme, long tijd, int lengte) {
-        setGemiddelde(algoritme, tijd, lengte);
         //Zorgt ervoor dat de tijd in miniseconden wordt gerekenend (1.12 ms)
         double deTijd = Math.floor(tijd) / 1000000;
         DecimalFormat df = new DecimalFormat("#.###");
@@ -152,21 +174,23 @@ public class Scherm extends JFrame implements ActionListener {
         }
     }
 
-    private void setGemiddelde(int algoritme, long tijd, int lengte) {
+    private void setGemiddelde(int algoritme, long tijd, int lengte, int gen) {
         DecimalFormat df = new DecimalFormat("#.###");
         if (algoritme == 0) {
-            this.iLVolledige = (iLVolledige + lengte) / 2;
-            iTVolledige = Math.floor((iTVolledige + tijd) / 2) / 1000000;
+            this.iLVolledige = lengte / gen;
+            iTVolledige = Math.floor(tijd / gen) / 1000000;
             String x = df.format(iTVolledige);
             gVolledige.setText(x + " ms, " + iLVolledige + " stappen");
-        } else if (algoritme == 1) {
-            this.iLSimpel = (iLSimpel + lengte) / 2;
-            iTSimpel = Math.floor((iTSimpel + tijd) / 2) / 1000000;
+        }
+        if (algoritme == 1) {
+            this.iLSimpel = lengte / gen;
+            iTSimpel = Math.floor(tijd / gen) / 1000000;
             String x = df.format(iTSimpel);
             this.gSimpel.setText(x + " ms, " + iLSimpel + " stappen");
-        } else if (algoritme == 2) {
-            this.iLGretig = (iLGretig + lengte) / 2;
-            iTGretig = Math.floor((iTGretig + tijd) / 2) / 1000000;
+        }
+        if (algoritme == 2) {
+            this.iLGretig = lengte / gen;
+            iTGretig = Math.floor(tijd / gen) / 1000000;
             String x = df.format(iTGretig);
             this.gGretig.setText(x + " ms, " + iLGretig + " stappen");
         }

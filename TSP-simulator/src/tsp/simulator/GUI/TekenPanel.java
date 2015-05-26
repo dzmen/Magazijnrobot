@@ -72,12 +72,12 @@ public class TekenPanel extends JPanel {
         for (int i = 0; i < order.getRoute().size() - 1; i++) {
             if (i > 0) {
                 start = order.getRoute().get(i);
-                beginX = ((start.getX()-1) * boxBreedte) + (boxBreedte / 2);
-                beginY = ((start.getY()-1) * boxHoogte) + (boxHoogte / 2);
+                beginX = ((start.getX()-1) * boxBreedte) + (boxBreedte / 2)+(int)(Math.random()*6);
+                beginY = ((start.getY()-1) * boxHoogte) + (boxHoogte / 2)+(int)(Math.random()*6);
             }
             einde = order.getRoute().get(i + 1);
-            eindeX = ((einde.getX()-1) * boxBreedte) + (boxBreedte / 2);
-            eindeY = ((einde.getY()-1) * boxHoogte) + (boxHoogte / 2);
+            eindeX = ((einde.getX()-1) * boxBreedte) + (boxBreedte / 2)-(int)(Math.random()*6);
+            eindeY = ((einde.getY()-1) * boxHoogte) + (boxHoogte / 2)-(int)(Math.random()*6);
             Point beginP = new Point(beginX, beginY);
             Point eindeP = new Point(eindeX, eindeY);
             tekenPijl(g2d, eindeP, beginP);
