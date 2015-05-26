@@ -1,9 +1,9 @@
 //Pinnen
 //motor
-int pinXpwm = 5;
-int pinXdir = 4; //ON up, OFF down
-int pinBpwm = 6;
-int pinBdir = 7; //ON forward, OFF backward
+int pinXpwm = 7;
+int pinXdir = 6; //ON up, OFF down
+int pinBpwm = 5;
+int pinBdir = 4; //ON forward, OFF backward
 //Meters
 int ldrX = 0;
 int ledX = 13;
@@ -20,7 +20,7 @@ void setup() {
   pinMode(ledX, OUTPUT);
   pinMode(ldrX, INPUT);
 }
-
+/*
 void serialEvent() {
   //Check if serial open is
   while (Serial.available()) {
@@ -37,8 +37,20 @@ void serialEvent() {
    Serial.flush();
    }
 }
-
+*/
 void loop() {
+    if(Serial.available()){
+      int c = Serial.read();
+      switch(c)
+      {
+        case '1':
+        zetDoos(1);
+        break;
+        case '2':
+        zetDoos(2);
+        break;
+      }
+    }
      if(stringComplete){
         Serial.println("BPP: String received");
         int splitter = inputString.indexOf(':');

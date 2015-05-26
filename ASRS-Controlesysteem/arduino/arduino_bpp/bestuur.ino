@@ -3,14 +3,14 @@ int huidigeX = 0;
 int huidigeDoos = 1;
 //Motor speed
 int xSpeed = 110;
-int bSpeed = 110;
+int bSpeed = 150;
 //De counters die nodig zijn om de stippen te tellen
 int tetellen = 0;
 int getelt = 0;
 //LDR waardes
 int ldrXwaarde = 190;
 //BPP motor wachttijd
-int bWacht = 1000;
+int bWachten = 1000;
 //Om een count loop te voorkomen
 boolean wachtenX = false;
 
@@ -70,6 +70,8 @@ void zetDoos(int doos){
     analogWrite(pinBpwm, bSpeed);
     delay(bWachten);
     analogWrite(pinBpwm, 0);
+    Serial.print("Doos gezet");
+    huidigeDoos = doos;
   }
 }  
 
