@@ -16,34 +16,14 @@ import java.util.Collections;
  */
 public class Numeriek extends Template {
 
-    private ArrayList<ArrayList<Pakket>> pakkettenlijst = new ArrayList<>();
-
+    private ArrayList<Pakket>pakketlijst = new ArrayList<>();
+    private int aantalDozen = 999999;
     @Override
     public ArrayList<Doos> runAlgorithm(ArrayList<Doos> dozen, ArrayList<Pakket> pakket) {
         ArrayList<Pakket> pakketten = new ArrayList<>(pakket);
         makelist(pakketten.size(), pakketten);
-        ArrayList<Pakket> kleinstecombinatie = new ArrayList<>();
-        int min = dozen.size();
-        for (ArrayList<Pakket> aa : pakkettenlijst) {
-            System.out.println(" A ");
-            int aantaldozen = 1;
-            double inhoud = 0;
-            for (Pakket ab : aa) {
-                System.out.print("   E  ");
-                if (ab.getSize() + inhoud > 1) {
-                    aantaldozen++;
-                    inhoud = 0;
-                }
-                inhoud = inhoud + ab.getSize();
-
-            }
-            if (aantaldozen < min) {
-                kleinstecombinatie = aa;
-                min = aantaldozen;
-            }
-
-        }
-        this.fillboxes(dozen, kleinstecombinatie);
+        
+        this.fillboxes(dozen, pakketlijst);
         return dozen;
     }
 
@@ -52,7 +32,24 @@ public class Numeriek extends Template {
             return packets;
         } else {
             for (int i = 0; i < n; i++) {
-                pakkettenlijst.add(makelist(n - 1, packets));
+                ArrayList <Pakket> newLijst  = makelist(n - 1, packets);
+                ArrayList<Pakket> newLijstje = new ArrayList<>();
+                int dozen = 1;
+                double inhoud = 0;
+                for (Pakket ab : newLijst) {
+                    if (ab.getSize() + inhoud > 1) {
+                        dozen++;
+                        inhoud = 0;
+                    }
+                    inhoud = inhoud + ab.getSize();
+                     
+                }
+                System.out.println("nieuw:" + dozen);
+                if (dozen < aantalDozen) {
+                    this.aantalDozen = dozen;
+                    this.pakketlijst = new ArrayList<>(newLijst);
+                    System.out.println(aantalDozen);
+                 }
                 int j = 0;
                 if (n % 2 == 0) {
                     j = i;
