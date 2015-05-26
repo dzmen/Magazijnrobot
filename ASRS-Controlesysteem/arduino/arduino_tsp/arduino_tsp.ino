@@ -24,7 +24,7 @@ void setup() {
   pinMode(ldrY, INPUT);
   pinMode(ldrZ, INPUT);
 }
-
+/*
 void serialEvent() {
   //Check if serial open is
   while (Serial.available()) {
@@ -41,8 +41,39 @@ void serialEvent() {
    Serial.flush();
    }
 }
-
+*/
 void loop() {
+     if (Serial.available()) 
+   {
+       int c = Serial.read();
+       switch (c)
+     {
+       case '1':
+         stuurY(1);
+         break;                    // send command one time
+       case '2':
+         pakPakket(1);
+         break;
+       case '3':
+         stuurY(2);
+	 break;
+      case '4':
+         pakPakket(2);
+         break;
+      case '5':
+         stuurY(3);
+         break;
+      case '6':
+         pakPakket(3);
+         break;
+      case '7':
+         stuurY(5);
+         break;
+      case '8':
+         pakPakket(5);
+         break;
+     }
+   }
      if(stringComplete){
         Serial.println("TSP: String received");
         int splitter = inputString.indexOf(':');
@@ -58,7 +89,7 @@ void loop() {
           pakPakket(waarde);
         }
         if(verzending == "droppakket"){
-          dropPakket(waarde);
+          //dropPakket(waarde);
         }
         inputString = "";
         stringComplete = false;

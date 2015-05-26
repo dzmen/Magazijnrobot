@@ -124,12 +124,15 @@ public class Scherm extends JFrame implements ActionListener {
         //if (e.getSource() == jBUitvoeren && order != null) {
         if (e.getSource() == jBUitvoeren) {
             log("Start genereren route");
-            order.genereerRoute();
+            //order.genereerRoute();
             log("Genereren route voltooid!");
             log("Start ophalen pakketen");
             //Dit is een test array om de robot te testen
             ArrayList<Artikel> test = new ArrayList<>();
             test.add(new Artikel(1, 1, 1, "temp", new Locatie(2, 2)));
+            test.add(new Artikel(1, 1, 1, "temp2", new Locatie(2, 1)));
+            test.add(new Artikel(1, 1, 1, "temp3", new Locatie(2, 4)));
+            test.add(new Artikel(1, 1, 1, "temp3", new Locatie(2, 5)));
             //test.add(new Locatie(2, 1));
             //test.add(new Locatie(2, 5));
             //test.add(new Locatie(2, 4));
