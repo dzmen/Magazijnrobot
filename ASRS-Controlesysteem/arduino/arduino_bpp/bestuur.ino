@@ -2,13 +2,13 @@
 int huidigeX = 0;
 int huidigeDoos = 1;
 //Motor speed
-int xSpeed = 110;
+int xSpeed = 230;
 int bSpeed = 150;
 //De counters die nodig zijn om de stippen te tellen
 int tetellen = 0;
 int getelt = 0;
 //LDR waardes
-int ldrXwaarde = 190;
+int ldrXwaarde = 820;
 //BPP motor wachttijd
 int bWachten = 1000;
 //Om een count loop te voorkomen
@@ -22,12 +22,13 @@ boolean tellenXas(){
   }else if(analogRead(ldrX) < ldrXwaarde && wachtenX == true){
     wachtenX = false;
   }
-  if(getelt < tetellen){
-    return false;
-  }else{
+  Serial.println(getelt);
+  if(getelt == tetellen){
     //De counters weer resetten wanneer hij klaar is
     resetTeller();
     return true;
+  }else{
+    return false;
   }
 }
 

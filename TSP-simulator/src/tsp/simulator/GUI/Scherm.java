@@ -13,17 +13,14 @@ import tsp.simulator.Order;
 
 public class Scherm extends JFrame implements ActionListener {
 
-    private JLabel lGemiddelde;
-
-    private JComboBox dAlgoritme;
+    private final JComboBox dAlgoritme;
     public JTextArea tLog;
-    private JLabel lAlgoritme, lResultaten, lVolledige, lGretig, lSimpel;
-    private JLabel rVolledige, rGretig, rSimpel;
-    private JLabel gVolledige, gSimpel, gGretig;
+    private final JLabel lGemiddelde, lAlgoritme, lResultaten, lVolledige, lGretig, lSimpel;
+    private final JLabel rVolledige, rGretig, rSimpel;
+    private final JLabel gVolledige, gSimpel, gGretig;
     private double iTVolledige = 0, iTSimpel = 0, iTGretig = 0, iLVolledige = 0, iLSimpel = 0, iLGretig = 0;
-    private JButton bUitvoeren, bOrder;
+    private final JButton bUitvoeren, bOrder;
     public TekenPanel vel;
-    private String[] algoritmeItems = {"Volledige enumeratie", "Simpel Gretig algoritme", "Gretig algoritme"};
     private Order order;
 
     public Scherm() {
@@ -139,17 +136,19 @@ public class Scherm extends JFrame implements ActionListener {
                     time1 = time1 + order.getBerekenTijd();
                     leng1 = leng1 + order.getLengte();
                     this.setGemiddelde(0, time1, leng1, gen1);
+                    break;
                 case 1:
                     gen2++;
                     time2 = time2 + order.getBerekenTijd();
                     leng2 = leng2 + order.getLengte();
                     this.setGemiddelde(1, time2, leng2, gen2);
+                    break;
                 case 2:
                     gen3++;
                     time3 = time3 + order.getBerekenTijd();
                     leng3 = leng3 + order.getLengte();
                     this.setGemiddelde(2, time3, leng3, gen3);
-
+                    break;
             }
             tLog.append("Generatietijd: " + order.getBerekenTijd() + " nanoseconden\n");
             tLog.append("Afstand: " + order.getLengte() + " schappen waar hij langs gaat\n");

@@ -1,7 +1,7 @@
 //Pinnen
 //motor
-int pinXpwm = 7;
-int pinXdir = 6; //ON up, OFF down
+int pinXpwm = 6;
+int pinXdir = 7; //ON up, OFF down
 int pinBpwm = 5;
 int pinBdir = 4; //ON forward, OFF backward
 //Meters
@@ -44,10 +44,10 @@ void loop() {
       switch(c)
       {
         case '1':
-        zetDoos(1);
+        stuurX(1);
         break;
         case '2':
-        zetDoos(2);
+        stuurX(2);
         break;
       }
     }
