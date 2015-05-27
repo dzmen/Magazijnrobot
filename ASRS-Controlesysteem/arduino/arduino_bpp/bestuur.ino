@@ -2,13 +2,11 @@
 int huidigeX = 0;
 int huidigeDoos = 1;
 //Motor speed
-int xSpeed = 230;
+int xSpeed = 210;
 int bSpeed = 150;
 //De counters die nodig zijn om de stippen te tellen
 int tetellen = 0;
 int getelt = 0;
-//LDR waardes
-int ldrXwaarde = 820;
 //BPP motor wachttijd
 int bWachten = 1000;
 //Om een count loop te voorkomen
@@ -23,7 +21,7 @@ boolean tellenXas(){
     wachtenX = false;
   }
   Serial.println(getelt);
-  if(getelt == tetellen){
+  if(getelt >= tetellen){
     //De counters weer resetten wanneer hij klaar is
     resetTeller();
     return true;
@@ -35,22 +33,22 @@ boolean tellenXas(){
 
 //Hiermee sturen we de X as
 void stuurX(int xas){
-  int stappen = 0;
   digitalWrite(ledX, HIGH);
   //Kijkt of hij naar boven of naar beneden moet
   //Dit is naar beneden
   if(xas - huidigeX < 0){
-    stappen = xas * -1;
-    tetellen = stappen;
+    tetellen = huidigeX - xas;
     digitalWrite(pinXdir, LOW);
-    analogWrite(pinXpwm, xSpeed);
+    analogWrite(pinXpwm, xSpeed - 20);
   //Dit is naar boven
   }else if(xas - huidigeX > 0){
-    stappen = xas - huidigeX;
-    tetellen = stappen;
+    tetellen = xas - huidigeX;
     digitalWrite(pinXdir, HIGH);
     analogWrite(pinXpwm, xSpeed);
   }
+  Serial.print("Te tellen: ");
+  Serial.print(tetellen);
+  delay(500);
   //Wachten tot hij op de juiste positie staat
   while(!tellenXas());
   //Schakel de motor en lampje van X as uit

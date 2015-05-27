@@ -2,7 +2,7 @@
 int huidigeY = 0;
 //De stippen per vak
 int vakkenY[] = {0, 7, 7, 8, 7, 5};
-int vakkenZ[] = {0, 13, 11, 9, 7, 5};
+int vakkenZ[] = {0, 12, 11, 9, 7, 5};
 //Motor speed
 int ySpeed = 110;
 int zSpeed = 200;
@@ -23,7 +23,7 @@ boolean tellenYas(){
   }else if(analogRead(ldrY) > ldrYwaarde && wachtenY == true){
     wachtenY = false;
   }
-  if(getelt == tetellen){
+  if(getelt >= tetellen){
     //De counters weer resetten wanneer hij klaar is
     resetTeller();
     return true;
@@ -106,7 +106,7 @@ void pakPakket(int pakket){
   digitalWrite(pinYdir, HIGH);
   analogWrite(pinYpwm, ySpeed);
   //Wachten tot die op positie is
-  tetellen = 2;
+  tetellen = 3;
   while(!tellenYas());
   //Schakel de motor en lampje van Y as uit
   analogWrite(pinYpwm, 0);
@@ -134,7 +134,7 @@ void pakPakket(int pakket){
   digitalWrite(pinYdir, LOW);
   analogWrite(pinYpwm, ySpeed);
   //Wachten tot die op positie is
-  tetellen = 1;
+  tetellen = 2;
   while(!tellenYas());
   //Schakel de motor en lampje van Y as uit
   analogWrite(pinYpwm, 0);

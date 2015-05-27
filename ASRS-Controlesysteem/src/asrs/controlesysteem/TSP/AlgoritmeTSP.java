@@ -10,10 +10,6 @@ import java.util.ArrayList;
 import asrs.controlesysteem.bestelling.Locatie;
 import asrs.controlesysteem.bestelling.Order;
 
-/**
- *
- * @author Danny
- */
 public class AlgoritmeTSP {
 
     private final ArrayList<Artikel> posities, route;

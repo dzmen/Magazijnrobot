@@ -23,9 +23,8 @@ void setup() {
   pinMode(ledZ, OUTPUT);
   pinMode(ldrY, INPUT);
   pinMode(ldrZ, INPUT);
-  pinMode(2, OUTPUT);
 }
-/*
+
 void serialEvent() {
   //Check if serial open is
   while (Serial.available()) {
@@ -42,8 +41,9 @@ void serialEvent() {
    Serial.flush();
    }
 }
-*/
+
 void loop() {
+  /*
      if (Serial.available()) 
    {
        int c = Serial.read();
@@ -75,7 +75,7 @@ void loop() {
          break;
      }
    }
-   digitalWrite(2, HIGH);
+   */
      if(stringComplete){
         Serial.println("TSP: String received");
         int splitter = inputString.indexOf(':');
@@ -95,8 +95,6 @@ void loop() {
         }
         inputString = "";
         stringComplete = false;
-        
-   
     }
          
 }

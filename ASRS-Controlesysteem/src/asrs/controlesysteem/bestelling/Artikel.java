@@ -8,14 +8,10 @@ package asrs.controlesysteem.bestelling;
 import asrs.controlesysteem.readers.SQLReader;
 import java.util.ArrayList;
 
-/**
- *
- * @author Danny
- */
 public class Artikel {
 
     private int artikelNr, grote, aantal;
-    private String naam;
+    private final String naam;
     private Locatie loc;
 
     public Artikel(int artikelNr, int grote, int aantal, String naam, Locatie loc) {
@@ -30,7 +26,7 @@ public class Artikel {
     public Artikel(SQLReader sql, int nr) {
         ArrayList<Object> artikel = sql.getArtikel(nr);
         this.artikelNr = nr;
-        if (artikel.size() != 0) {
+        if (!artikel.isEmpty()) {
             this.naam = (String) artikel.get(1);
             this.loc = (Locatie) artikel.get(2);
             this.grote = (int) artikel.get(3);

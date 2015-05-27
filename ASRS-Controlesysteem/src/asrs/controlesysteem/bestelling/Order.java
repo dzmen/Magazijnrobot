@@ -11,16 +11,12 @@ import asrs.controlesysteem.readers.SQLReader;
 import asrs.controlesysteem.readers.XMLReader;
 import java.util.ArrayList;
 
-/**
- *
- * @author Danny
- */
 public class Order {
 
-    private ArrayList<Integer> artikelnrs;
+    private final ArrayList<Integer> artikelnrs;
     private ArrayList<Artikel> artikelen, doos1, doos2, route;
     private ArrayList<Locatie> locatie;
-    private ArrayList<Artikel> nietBeschikbaar;
+    private final ArrayList<Artikel> nietBeschikbaar;
 
     public Order(XMLReader xml, SQLReader sql) {
         this.artikelnrs = new ArrayList<>(xml.getArtikelen());

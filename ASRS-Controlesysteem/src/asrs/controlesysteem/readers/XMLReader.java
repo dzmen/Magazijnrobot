@@ -72,7 +72,7 @@ public class XMLReader {
         } catch (SAXParseException se) {
             this.melding = "Het bestand is niet het juiste formaat!";
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
     }
 

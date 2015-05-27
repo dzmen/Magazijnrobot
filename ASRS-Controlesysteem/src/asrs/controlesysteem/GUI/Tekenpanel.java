@@ -11,10 +11,6 @@ import java.awt.RenderingHints;
 import java.awt.geom.Line2D;
 import javax.swing.JPanel;
 
-/**
- *
- * @author Danny
- */
 public class Tekenpanel extends JPanel {
 
     private Order order;

@@ -25,7 +25,7 @@ public class DeVerbinder implements SerialPortEventListener {
 
     private SerialPort TSPVerbinding, BPPVerbinding;
     private final String portTSP = "COM4";             //De poort waarmee de applicatie moet verbinden
-    private final String portBPP = "COM12";             //De poort waarmee de applicatie moet verbinden
+    private final String portBPP = "COM5";             //De poort waarmee de applicatie moet verbinden
     private static final int TIME_OUT = 2000;    //time in milliseconds (De wachtijd hoelang het kan duren voor een antwoord)
     private static final int BAUD_RATE = 9600; //baud rate to 9600bps (de snelheid waarmee de applicatie communiseerd met de arduino)
     private BufferedReader BPPInput, TSPInput;
@@ -42,6 +42,8 @@ public class DeVerbinder implements SerialPortEventListener {
     //Zoek de poort
     public DeVerbinder(Scherm scherm) {
         this.scherm = scherm;
+        VerbindTSP();
+        VerbindBPP();
     }
 
     //Hiermee verbind je de applicatie met de arduino
@@ -114,7 +116,6 @@ public class DeVerbinder implements SerialPortEventListener {
 
                     //set serial port parameters
                     BPPVerbinding.setSerialPortParams(BAUD_RATE, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
-                    return true;
                 } catch (PortInUseException e) {
                     scherm.log(portBPP + " is al in gebruik door een andere applicatie!");
                 } catch (NullPointerException e2) {
@@ -131,6 +132,7 @@ public class DeVerbinder implements SerialPortEventListener {
                     BPPVerbinding.addEventListener(this);
                     BPPVerbinding.notifyOnDataAvailable(true);
                     BPPVerbinding.notifyOnOutputEmpty(true);
+                    return true;
                 } catch (Exception e) {
                     System.out.println(e.toString());
                 }
@@ -147,26 +149,31 @@ public class DeVerbinder implements SerialPortEventListener {
     //readWrite serial port. Dit event gaat automatisch in een loop wanneer de port open wordt gezet en wordt verbonden met deze class
     @Override
     public void serialEvent(SerialPortEvent evt) {
-        if (evt.getEventType() == SerialPortEvent.DATA_AVAILABLE && evt.getSource() == TSPVerbinding) { //if data available on serial port
+        if (evt.getEventType() == SerialPortEvent.DATA_AVAILABLE) { //if data available on serial port
             try {
                 String inputLine = TSPInput.readLine();
                 System.out.println(inputLine);
                 if (inputLine.equalsIgnoreCase("ydone")) {
                     sendTSP("krijgpakket:" + huidigePakket);
-                    //todo
                 }
                 if (inputLine.equalsIgnoreCase("pakketdone")) {
                     stuurPakketten();
                 }
+                if (inputLine.equalsIgnoreCase("dropdone")) {
+                    dropPakketten();
+                }
             } catch (Exception e) {
                 System.err.println(e.toString());
             }
-        } else if (evt.getEventType() == SerialPortEvent.DATA_AVAILABLE && evt.getSource() == BPPVerbinding) { //if data available on serial port
+        } else if (evt.getEventType() == SerialPortEvent.DATA_AVAILABLE) { //if data available on serial port
             try {
                 String inputLine = BPPInput.readLine();
                 System.out.println(inputLine);
                 if (inputLine.equalsIgnoreCase("xdone")) {
                     sendTSP("yas:" + loc.getY());
+                }
+                if (inputLine.equalsIgnoreCase("zetdone")) {
+                    sendTSP("drop:" + huidigePakket);
                 }
             } catch (Exception e) {
                 System.err.println(e.toString());
@@ -183,14 +190,12 @@ public class DeVerbinder implements SerialPortEventListener {
         huidigePakket++;
         if (huidigePakket > route.size()) {
             scherm.log("Pakketten zullen nu naar de bakken gebracht worden!");
-            //sendBPP("xas:0");
-            //dropPakketten();
+            dropPakketten();
         } else {
             loc = route.get(huidigePakket - 1).getLocatie();
+            scherm.nextLocation(huidigePakket);
             try {
-                //DIT MOET AANGEPAST WORDEN WANNEER X AS WERKT!!!!
-                //sendBPP("xas:" + loc.getX());
-                sendTSP("yas:" + loc.getY());
+                sendBPP("xas:" + loc.getX());
             } catch (Exception e) {
                 System.err.println(e.toString());
             }
@@ -207,7 +212,7 @@ public class DeVerbinder implements SerialPortEventListener {
                 System.err.println(e.toString());
             }
         } else {
-            //Helemaal klaar
+            scherm.log("De robot is nu klaar!");
         }
     }
 

@@ -7,6 +7,8 @@ int pinBdir = 4; //ON forward, OFF backward
 //Meters
 int ldrX = 0;
 int ledX = 13;
+//LDR waardes
+int ldrXwaarde = 940;
 //Serial read
 boolean stringComplete = false;
 String inputString = "";
@@ -20,7 +22,7 @@ void setup() {
   pinMode(ledX, OUTPUT);
   pinMode(ldrX, INPUT);
 }
-/*
+
 void serialEvent() {
   //Check if serial open is
   while (Serial.available()) {
@@ -37,8 +39,10 @@ void serialEvent() {
    Serial.flush();
    }
 }
-*/
+
 void loop() {
+  /*
+    Serial.println(analogRead(ldrX));
     if(Serial.available()){
       int c = Serial.read();
       switch(c)
@@ -49,8 +53,18 @@ void loop() {
         case '2':
         stuurX(2);
         break;
+        case '3':
+        stuurX(3);
+        break;
+        case '4':
+        stuurX(4);
+        break;
+        case '5':
+        stuurX(5);
+        break;
       }
     }
+        delay(500);*/
      if(stringComplete){
         Serial.println("BPP: String received");
         int splitter = inputString.indexOf(':');
@@ -58,7 +72,7 @@ void loop() {
         int waarde = inputString.substring(splitter + 1).toInt();
         Serial.println(inputString);
         if(verzending == "xas"){
-          Serial.println("We gaan de y sturen");
+          Serial.println("We gaan de x sturen");
           stuurX(waarde);
         }
         if(verzending == "zetdoos"){
