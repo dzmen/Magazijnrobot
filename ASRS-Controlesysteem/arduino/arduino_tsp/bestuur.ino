@@ -10,7 +10,7 @@ int tetellen = 0;
 int getelt = 0;
 //LDR waardes
 int ldrYwaarde = 200;
-int ldrZwaarde = 580;
+int ldrZwaarde = 700;
 //Om een count loop te voorkomen
 boolean wachtenY = false;
 boolean wachtenZ = false;
@@ -19,16 +19,17 @@ boolean wachtenZ = false;
 boolean tellenYas(){
   if(analogRead(ldrY) < ldrYwaarde && wachtenY == false){
     getelt++;
+    delay(100);
     wachtenY = true;
   }else if(analogRead(ldrY) > ldrYwaarde && wachtenY == true){
     wachtenY = false;
   }
-  if(getelt >= tetellen){
+  if(getelt > tetellen){
     //De counters weer resetten wanneer hij klaar is
     resetTeller();
     return true;
   }else{
-    Serial.println(getelt);
+    //Serial.println(getelt);
     return false;
   }
 }
@@ -37,6 +38,7 @@ boolean tellenYas(){
 boolean tellenZas(){
   if(analogRead(ldrZ) < ldrZwaarde && wachtenZ == false){
     getelt++;
+    delay(100);
     wachtenZ = true;
   }else if(analogRead(ldrZ) > ldrZwaarde && wachtenZ == true){
     wachtenZ = false;
@@ -53,6 +55,7 @@ boolean tellenZas(){
 
 //Hiermee sturen we de Y as
 void stuurY(int yas){
+  delay(500);
   int stappen = 0;
   digitalWrite(ledY, HIGH);
   //Kijkt of hij naar boven of naar beneden moet
@@ -62,6 +65,8 @@ void stuurY(int yas){
        stappen += vakkenY[i];
     }
     tetellen = stappen;
+    delay(500);
+    Serial.println("start hij?");
     digitalWrite(pinYdir, LOW);
     analogWrite(pinYpwm, ySpeed - 30);
   //Dit is naar boven
@@ -70,6 +75,8 @@ void stuurY(int yas){
        stappen += vakkenY[i];
     }
     tetellen = stappen;
+    delay(500);
+    Serial.println("start hij l?");
     digitalWrite(pinYdir, HIGH);
     analogWrite(pinYpwm, ySpeed);
   }
@@ -80,7 +87,10 @@ void stuurY(int yas){
   digitalWrite(ledY, LOW);
   //De counters weer resetten wanneer hij klaar is
   huidigeY = yas;
+  Serial.println("test1");
+  delay(500);
   Serial.println("ydone");
+  
 }
 
 void pakPakket(int pakket){

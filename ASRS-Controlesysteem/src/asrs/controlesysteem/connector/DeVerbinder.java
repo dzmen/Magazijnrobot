@@ -149,7 +149,7 @@ public class DeVerbinder implements SerialPortEventListener {
     //readWrite serial port. Dit event gaat automatisch in een loop wanneer de port open wordt gezet en wordt verbonden met deze class
     @Override
     public void serialEvent(SerialPortEvent evt) {
-        if (evt.getEventType() == SerialPortEvent.DATA_AVAILABLE) { //if data available on serial port
+        if (evt.getEventType() == SerialPortEvent.DATA_AVAILABLE && evt.getSource() == TSPVerbinding) { //if data available on serial port
             try {
                 String inputLine = TSPInput.readLine();
                 System.out.println(inputLine);
@@ -165,7 +165,7 @@ public class DeVerbinder implements SerialPortEventListener {
             } catch (Exception e) {
                 System.err.println(e.toString());
             }
-        } else if (evt.getEventType() == SerialPortEvent.DATA_AVAILABLE) { //if data available on serial port
+        } else if (evt.getEventType() == SerialPortEvent.DATA_AVAILABLE && evt.getSource() == BPPVerbinding) { //if data available on serial port
             try {
                 String inputLine = BPPInput.readLine();
                 System.out.println(inputLine);
@@ -188,14 +188,15 @@ public class DeVerbinder implements SerialPortEventListener {
 
     private void stuurPakketten() {
         huidigePakket++;
-        if (huidigePakket > route.size()) {
+        if (huidigePakket >= route.size()) {
             scherm.log("Pakketten zullen nu naar de bakken gebracht worden!");
             dropPakketten();
         } else {
-            loc = route.get(huidigePakket - 1).getLocatie();
+            loc = route.get(huidigePakket).getLocatie();
             scherm.nextLocation(huidigePakket);
             try {
                 sendBPP("xas:" + loc.getX());
+                //sendTSP("yas:" + 1);
             } catch (Exception e) {
                 System.err.println(e.toString());
             }

@@ -112,8 +112,12 @@ public class Scherm extends JFrame implements ActionListener {
             order.genereerRoute();
             log("Genereren route voltooid!");
             log("Start ophalen pakketen");
+            for (Artikel art : order.getArtikelen()) {
+                System.out.println(art);
+            }
             arduino.stuurPakketten(order.getRoute());
             jBUitvoeren.setEnabled(false);
+
         }
     }
 

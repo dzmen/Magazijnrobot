@@ -56,4 +56,9 @@ public class Artikel {
         return artikelNr;
     }
 
+    @Override
+    public String toString() {
+        return "Artikel{" + "artikelNr=" + artikelNr + ", grote=" + grote + ", aantal=" + aantal + ", naam=" + naam + ", loc=" + loc + '}';
+    }
+
 }

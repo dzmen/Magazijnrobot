@@ -8,7 +8,7 @@ int bSpeed = 150;
 int tetellen = 0;
 int getelt = 0;
 //BPP motor wachttijd
-int bWachten = 1000;
+int bWachten = 2000;
 //Om een count loop te voorkomen
 boolean wachtenX = false;
 
@@ -16,12 +16,13 @@ boolean wachtenX = false;
 boolean tellenXas(){
   if(analogRead(ldrX) > ldrXwaarde && wachtenX == false){
     getelt++;
+    delay(100);
     wachtenX = true;
   }else if(analogRead(ldrX) < ldrXwaarde && wachtenX == true){
     wachtenX = false;
   }
-  Serial.println(getelt);
-  if(getelt >= tetellen){
+  //Serial.println(getelt);
+  if(getelt > tetellen){
     //De counters weer resetten wanneer hij klaar is
     resetTeller();
     return true;
@@ -33,21 +34,25 @@ boolean tellenXas(){
 
 //Hiermee sturen we de X as
 void stuurX(int xas){
+  xas = xas + 1;
+  delay(500);
   digitalWrite(ledX, HIGH);
   //Kijkt of hij naar boven of naar beneden moet
   //Dit is naar beneden
   if(xas - huidigeX < 0){
     tetellen = huidigeX - xas;
+    delay(100);
     digitalWrite(pinXdir, LOW);
     analogWrite(pinXpwm, xSpeed - 20);
   //Dit is naar boven
   }else if(xas - huidigeX > 0){
     tetellen = xas - huidigeX;
+    delay(100);
     digitalWrite(pinXdir, HIGH);
     analogWrite(pinXpwm, xSpeed);
   }
   Serial.print("Te tellen: ");
-  Serial.print(tetellen);
+  Serial.println(tetellen);
   delay(500);
   //Wachten tot hij op de juiste positie staat
   while(!tellenXas());
@@ -56,6 +61,7 @@ void stuurX(int xas){
   digitalWrite(ledX, LOW);
   //De counters weer resetten wanneer hij klaar is
   huidigeX = xas;
+  delay(500);
   Serial.println("xdone");
 }
 
@@ -69,7 +75,8 @@ void zetDoos(int doos){
     analogWrite(pinBpwm, bSpeed);
     delay(bWachten);
     analogWrite(pinBpwm, 0);
-    Serial.print("Doos gezet");
+    delay(100);
+    Serial.println("zetdone");
     huidigeDoos = doos;
   }
 }  
