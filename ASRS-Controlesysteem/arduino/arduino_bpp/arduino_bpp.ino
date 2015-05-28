@@ -8,7 +8,7 @@ int pinBdir = 4; //ON forward, OFF backward
 int ldrX = 0;
 int ledX = 13;
 //LDR waardes
-int ldrXwaarde = 980;
+int ldrXwaarde = 950;
 //Serial read
 boolean stringComplete = false;
 String inputString = "";

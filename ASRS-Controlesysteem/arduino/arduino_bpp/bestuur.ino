@@ -2,7 +2,7 @@
 int huidigeX = 0;
 int huidigeDoos = 1;
 //Motor speed
-int xSpeed = 210;
+int xSpeed = 180;
 int bSpeed = 150;
 //De counters die nodig zijn om de stippen te tellen
 int tetellen = 0;
