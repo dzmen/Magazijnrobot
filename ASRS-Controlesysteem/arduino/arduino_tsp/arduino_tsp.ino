@@ -24,7 +24,7 @@ void setup() {
   pinMode(ldrY, INPUT);
   pinMode(ldrZ, INPUT);
 }
-
+/*
 void serialEvent() {
   //Check if serial open is
   while (Serial.available()) {
@@ -41,9 +41,9 @@ void serialEvent() {
    Serial.flush();
    }
 }
-
+*/
 void loop() {
-  /*
+  
      if (Serial.available()) 
    {
        int c = Serial.read();
@@ -75,7 +75,7 @@ void loop() {
          break;
      }
    }
-   */
+   
      if(stringComplete){
         Serial.println("TSP: String received");
         int splitter = inputString.indexOf(':');
