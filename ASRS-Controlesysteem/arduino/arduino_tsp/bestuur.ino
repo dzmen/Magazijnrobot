@@ -1,7 +1,7 @@
 //Positie
 int huidigeY = 0;
 //De stippen per vak
-int vakkenY[] = {0, 7, 7, 8, 7, 5};
+int vakkenY[] = {0, 6, 7, 8, 7, 5};
 int vakkenZ[] = {0, 12, 11, 9, 7, 5};
 //Motor speed
 int ySpeed = 110;
@@ -66,7 +66,6 @@ void stuurY(int yas){
     }
     tetellen = stappen;
     delay(500);
-    Serial.println("start hij?");
     digitalWrite(pinYdir, LOW);
     analogWrite(pinYpwm, ySpeed - 30);
   //Dit is naar boven
@@ -76,7 +75,6 @@ void stuurY(int yas){
     }
     tetellen = stappen;
     delay(500);
-    Serial.println("start hij l?");
     digitalWrite(pinYdir, HIGH);
     analogWrite(pinYpwm, ySpeed);
   }

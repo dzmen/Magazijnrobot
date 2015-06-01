@@ -2,7 +2,7 @@
 int huidigeX = 0;
 int huidigeDoos = 1;
 //Motor speed
-int xSpeed = 180;
+int xSpeed = 170;
 int bSpeed = 150;
 //De counters die nodig zijn om de stippen te tellen
 int tetellen = 0;
@@ -34,7 +34,7 @@ boolean tellenXas(){
 
 //Hiermee sturen we de X as
 void stuurX(int xas){
-  xas = xas + 1;
+  xas = xas + 2;
   delay(500);
   digitalWrite(ledX, HIGH);
   //Kijkt of hij naar boven of naar beneden moet
