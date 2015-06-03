@@ -33,7 +33,7 @@ public class Numeriek extends Template {
         } else {
             for (int i = 0; i < n; i++) {
                 ArrayList <Pakket> newLijst  = makelist(n - 1, packets);
-                ArrayList<Pakket> newLijstje = new ArrayList<>();
+                
                 int dozen = 1;
                 double inhoud = 0;
                 for (Pakket ab : newLijst) {
@@ -50,6 +50,7 @@ public class Numeriek extends Template {
                     this.pakketlijst = new ArrayList<>(newLijst);
                     System.out.println(aantalDozen);
                  }
+                //omwissellen waardes 
                 int j = 0;
                 if (n % 2 == 0) {
                     j = i;

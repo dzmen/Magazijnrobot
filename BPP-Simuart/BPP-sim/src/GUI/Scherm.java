@@ -148,10 +148,6 @@ public class Scherm extends JFrame implements ActionListener {
             // statusbalk aantal gegenereerde pakketten
             resultaten.add(new Resultaat(tekenscherm.getOrder().getPakketten()));
             nieuwste = resultaten.get(resultaten.size() - 1);
-            for (Pakket lijstprint : tekenscherm.getOrder().getPakketten()) {
-             //j  tekstpanel.append("\n" + lijstprint.getSize());
-            }
-
         }
         //uitvoeren van een algortime
         if (e.getSource() == uitvoeren) {
@@ -159,7 +155,6 @@ public class Scherm extends JFrame implements ActionListener {
             int time2;
             int dozen;
             dozen = 0;
-          //  dozen = tekenscherm.getOrder().getDozen();
             tekenscherm.getOrder().emptyDozen();
             tekstpanel.append("\nAlgoritme is uitgevoerd\n");
             // algoritme selecteren
@@ -208,17 +203,6 @@ public class Scherm extends JFrame implements ActionListener {
                   Tottime = Tottime + time2;
                   Totdozen = Totdozen + dozen;
             }
-            
-            time = System.currentTimeMillis() - time;
-            
-     
-//            // dozen herinladen
-//            for (Doos ab : tekenscherm.getOrder().getDozen()) {
-//                System.out.println("\nDoos");
-//                for (Pakket ac : ab.getPakketten()) {
-//                    System.out.println("- " + ac.getSize());
-//                }
-//            }
             tekenscherm.repaint();
         }
         if (e.getSource() == gemiddelde) {
@@ -246,9 +230,6 @@ public class Scherm extends JFrame implements ActionListener {
                 if (selectAlgoritme.getSelectedIndex() == 3) {
             tekstpanel.append(nieuwste.updateResult(3, "Fill", time2, tekenscherm.getOrder().getDozen()));
              }
-            
-           // tijd = results[index][1]
-           // tijd =  tijd + nieuwe tijd / 2
           
             
         }

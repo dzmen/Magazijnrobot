@@ -37,8 +37,8 @@ public class Order {
 
     public void genereerArtikelen() {
         //Genereer de veld breedte en hoogte
-        this.xVeldGrote = randomWaarde(3, 25);
-        this.yVeldGrote = randomWaarde(3, 15);
+        this.xVeldGrote = randomWaarde(4, 25);
+        this.yVeldGrote = randomWaarde(4, 15);
         //De totaal aantal vakken in het magazijn
         int veldGrote = this.xVeldGrote * this.yVeldGrote;
         //Random artikelen maken
