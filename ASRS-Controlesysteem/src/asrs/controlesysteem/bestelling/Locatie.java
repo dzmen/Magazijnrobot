@@ -19,7 +19,7 @@ public class Locatie {
     }
 
     public int getY() {
-        return this.y;
+        return (5- this.y);
     }
 
     @Override

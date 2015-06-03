@@ -51,8 +51,10 @@ public class Tekenpanel extends JPanel {
         for (Artikel artikel : order.getArtikelen()) {
             Locatie loc = artikel.getLocatie();
             System.out.println(loc);
-            int xStart = (loc.getX() - 1) * boxBreedte + 1;
-            int yStart = (loc.getY() - 1) * boxHoogte + 1;
+            int xAs = loc.getX() - 1;
+            int yAs = loc.getY();
+            int xStart = (xAs) * boxBreedte + 1;
+            int yStart = (yAs) * boxHoogte + 1;
             g.setColor(Color.orange);
             g.fillRect(xStart, yStart, boxBreedte - 1, boxHoogte - 1);
         }
@@ -72,11 +74,11 @@ public class Tekenpanel extends JPanel {
             if (i > 0) {
                 start = order.getLocatie().get(i);
                 beginX = ((start.getX() - 1) * boxBreedte) + (boxBreedte / 2) - 5;
-                beginY = ((start.getY() - 1) * boxHoogte) + (boxHoogte / 2) - 5;
+                beginY = ((start.getY()) * boxHoogte) + (boxHoogte / 2) - 5;
             }
             einde = order.getLocatie().get(i + 1);
             eindeX = ((einde.getX() - 1) * boxBreedte) + (boxBreedte / 2) + 5;
-            eindeY = ((einde.getY() - 1) * boxHoogte) + (boxHoogte / 2) + 5;
+            eindeY = ((einde.getY()) * boxHoogte) + (boxHoogte / 2) + 5;
             Point beginP = new Point(beginX, beginY);
             Point eindeP = new Point(eindeX, eindeY);
             tekenPijl(g2d, eindeP, beginP);

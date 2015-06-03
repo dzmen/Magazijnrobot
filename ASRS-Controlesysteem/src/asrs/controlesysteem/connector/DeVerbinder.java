@@ -43,8 +43,8 @@ public class DeVerbinder implements SerialPortEventListener {
     //Zoek de poort
     public DeVerbinder(Scherm scherm) {
         this.scherm = scherm;
-        VerbindTSP();
-        VerbindBPP();
+//        VerbindTSP();
+//        VerbindBPP();
     }
 
     //Hiermee verbind je de applicatie met de arduino
