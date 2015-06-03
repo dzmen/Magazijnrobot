@@ -178,7 +178,8 @@ public class DeVerbinder implements SerialPortEventListener {
                     if (pdone) {
                         dropPakketten();
                     } else {
-                        sendTSP("yas:" + loc.getY());
+                        int yAs = 5- loc.getY();
+                        sendTSP("yas:" + yAs);
                     }
                 }
                 if (inputLine.equalsIgnoreCase("zetdone")) {
