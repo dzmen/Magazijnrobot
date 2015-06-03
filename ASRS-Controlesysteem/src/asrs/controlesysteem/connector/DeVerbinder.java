@@ -38,6 +38,7 @@ public class DeVerbinder implements SerialPortEventListener {
     private Locatie loc;
     //Huidige pakket
     private int huidigePakket = 0;
+    private boolean pdone = false;
 
     //Zoek de poort
     public DeVerbinder(Scherm scherm) {
@@ -154,7 +155,11 @@ public class DeVerbinder implements SerialPortEventListener {
                 String inputLine = TSPInput.readLine();
                 System.out.println(inputLine);
                 if (inputLine.equalsIgnoreCase("ydone")) {
-                    sendTSP("krijgpakket:" + huidigePakket);
+                    if (pdone) {
+                        sendBPP("xas:0");
+                    } else {
+                        sendTSP("krijgpakket:" + huidigePakket);
+                    }
                 }
                 if (inputLine.equalsIgnoreCase("pakketdone")) {
                     stuurPakketten();
@@ -170,7 +175,11 @@ public class DeVerbinder implements SerialPortEventListener {
                 String inputLine = BPPInput.readLine();
                 System.out.println(inputLine);
                 if (inputLine.equalsIgnoreCase("xdone")) {
-                    sendTSP("yas:" + loc.getY());
+                    if (pdone) {
+                        dropPakketten();
+                    } else {
+                        sendTSP("yas:" + loc.getY());
+                    }
                 }
                 if (inputLine.equalsIgnoreCase("zetdone")) {
                     sendTSP("drop:" + huidigePakket);
@@ -190,13 +199,13 @@ public class DeVerbinder implements SerialPortEventListener {
         huidigePakket++;
         if (huidigePakket >= route.size()) {
             scherm.log("Pakketten zullen nu naar de bakken gebracht worden!");
-            dropPakketten();
+            pdone = true;
+            sendTSP("yas:3");
         } else {
             loc = route.get(huidigePakket).getLocatie();
             scherm.nextLocation(huidigePakket);
             try {
                 sendBPP("xas:" + loc.getX());
-                //sendTSP("yas:" + 1);
             } catch (Exception e) {
                 System.err.println(e.toString());
             }
@@ -214,6 +223,7 @@ public class DeVerbinder implements SerialPortEventListener {
             }
         } else {
             scherm.log("De robot is nu klaar!");
+            scherm.popup();
         }
     }
 

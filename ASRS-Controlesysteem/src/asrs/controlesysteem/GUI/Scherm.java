@@ -13,7 +13,10 @@ import asrs.controlesysteem.connector.DeVerbinder;
 import asrs.controlesysteem.readers.SQLReader;
 import asrs.controlesysteem.readers.XMLReader;
 import java.awt.event.*;
+import java.awt.print.PrinterException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
@@ -139,6 +142,22 @@ public class Scherm extends JFrame implements ActionListener {
         jTOrder.append("\nNiet beschikbare artikelen:\n");
         for (Artikel art : order.getNietBeschikbaar()) {
             jTOrder.append("nr: " + art.getArtikelNr() + "\n");
+        }
+    }
+
+    public void popup() {
+        jBInvoeren.setEnabled(true);
+        JTextArea text = new JTextArea();
+        printOrder(xmlreader, text);
+        final JComponent[] inputs = new JComponent[]{
+            text
+        };
+        JOptionPane.showMessageDialog(
+                null, inputs, "Printer", JOptionPane.PLAIN_MESSAGE);
+        try {
+            text.print();
+        } catch (PrinterException ex) {
+            Logger.getLogger(Scherm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

@@ -10,7 +10,8 @@ import java.util.ArrayList;
 
 public class Artikel {
 
-    private int artikelNr, grote, aantal;
+    private int artikelNr, aantal;
+    private double grote;
     private final String naam;
     private Locatie loc;
 
@@ -29,14 +30,14 @@ public class Artikel {
         if (!artikel.isEmpty()) {
             this.naam = (String) artikel.get(1);
             this.loc = (Locatie) artikel.get(2);
-            this.grote = (int) artikel.get(3);
+            this.grote = (double) artikel.get(3);
             this.aantal = (int) artikel.get(4);
         } else {
             this.naam = "";
         }
     }
 
-    public int getGrote() {
+    public double getGrote() {
         return grote;
     }
 

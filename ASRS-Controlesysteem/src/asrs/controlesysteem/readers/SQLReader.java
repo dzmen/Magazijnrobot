@@ -130,7 +130,7 @@ public class SQLReader {
                 list.add(nr);//0
                 list.add(rs.getString("naam"));//1
                 list.add(new Locatie(rs.getInt("locx"), rs.getInt("locy")));//2
-                list.add(rs.getInt("grote"));//3
+                list.add(rs.getDouble("grote"));//3
                 list.add(rs.getInt("aantal"));//4
             }
             return list;

@@ -50,11 +50,13 @@ public class Tekenpanel extends JPanel {
     public void tekenArtikelen(Graphics g) {
         for (Artikel artikel : order.getArtikelen()) {
             Locatie loc = artikel.getLocatie();
+            System.out.println(loc);
             int xStart = (loc.getX() - 1) * boxBreedte + 1;
             int yStart = (loc.getY() - 1) * boxHoogte + 1;
             g.setColor(Color.orange);
             g.fillRect(xStart, yStart, boxBreedte - 1, boxHoogte - 1);
         }
+        System.out.println("=====================");
     }
 
     //Veldgrote is x 700 en y 200
