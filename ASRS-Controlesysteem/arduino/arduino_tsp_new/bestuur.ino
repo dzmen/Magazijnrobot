@@ -2,11 +2,12 @@
 int huidigeY = 0;
 //De stippen per vak
 //int vakkenY[] = {0, 7, 5, 7, 7, 5};
-int vakkenY[] = {0, 950, 880, 880, 880, 880};
+int vakkenY[] = {0, 970, 970, 970, 970, 920};
 int vakkenZ[] = {0, 2000, 1400, 1000, 500, 100};
 //Motor speed
 int ySpeed = 138;
 int zSpeed = 190;
+int yVertraging = 35;
 
 //Hiermee sturen we de Y as
 void stuurY(int yas){
@@ -19,17 +20,17 @@ void stuurY(int yas){
        dedelay += vakkenY[i];
     }
     if(huidigeY - yas == 1){
-      dedelay = dedelay - 240;
+      dedelay = dedelay - 200;
     }
     digitalWrite(pinYdir, LOW);
-    analogWrite(pinYpwm, ySpeed - 42);
+    analogWrite(pinYpwm, ySpeed - yVertraging);
   //Dit is naar boven
   }else if(yas - huidigeY > 0){
     for (int i = huidigeY + 1; i <= yas; i++) {
        dedelay += vakkenY[i];
     }
     digitalWrite(pinYdir, HIGH);
-    analogWrite(pinYpwm, ySpeed - 20);
+    analogWrite(pinYpwm, ySpeed);
   }
   delay(dedelay);
   //Schakel de motor en lampje van Y as uit
@@ -65,6 +66,7 @@ void pakPakket(int pakket){
   //Einde Y as omhoog
   //Begin Z as naar achter
   dedelay = vakkenZ[pakket];
+  dedelay = dedelay - 100;
   //Start de motor
   digitalWrite(pinZdir, LOW);
   analogWrite(pinZpwm, zSpeed + 20);
@@ -74,7 +76,7 @@ void pakPakket(int pakket){
   analogWrite(pinZpwm, 0);
   //Einde Z as naar achter
   digitalWrite(pinYdir, LOW);
-  analogWrite(pinYpwm, ySpeed-44);
+  analogWrite(pinYpwm, ySpeed - yVertraging);
   //Wachten tot die op positie is
   delay(410);
   //Schakel de motor en lampje van Y as uit
@@ -85,6 +87,13 @@ void pakPakket(int pakket){
 }
 
 void dropPakket(int pakket){
+    //Start de motor
+  analogWrite(pinYpwm, ySpeed);
+  //Wachten tot die op positie is
+  delay(400); 
+    //Schakel de motor en lampje van Y as uit
+  analogWrite(pinYpwm, 0);
+  
   //De Z as naar voren
   int dedelay = vakkenZ[pakket];
   
@@ -99,7 +108,7 @@ void dropPakket(int pakket){
   //Einde Z as naar voren
   //Start de motor
   digitalWrite(pinYdir, LOW);
-  analogWrite(pinYpwm, ySpeed - 10);
+  analogWrite(pinYpwm, ySpeed - yVertraging);
   //Wachten tot die op positie is
   delay(1300);
   //Schakel de motor en lampje van Y as uit

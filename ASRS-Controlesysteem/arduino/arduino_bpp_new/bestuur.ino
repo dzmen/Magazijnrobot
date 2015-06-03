@@ -5,7 +5,7 @@ int huidigeDoos = 1;
 int xSpeed = 240;
 int bSpeed = 190;
 //De counters die nodig zijn om de stippen te tellen
-int vakkenX[] = {0, 670, 620, 610, 610, 610};
+int vakkenX[] = {0, 690, 640, 620, 630, 610};
 //BPP motor wachttijd
 int bWachten = 1800;
 //Om een count loop te voorkomen
@@ -21,7 +21,7 @@ void stuurX(int xas){
     for (int i = huidigeX; i >= xas; i--) {
        dedelay = vakkenX[i];
        digitalWrite(pinXdir, LOW);
-       analogWrite(pinXpwm, xSpeed - 42);
+       analogWrite(pinXpwm, xSpeed - 40);
        delay(dedelay);
        //Schakel de motor en lampje van Y as uit
        analogWrite(pinXpwm, 0);
